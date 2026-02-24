@@ -1,0 +1,52 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "last_updated": "2025-02-01",
+    "total_entries": 30
+  },
+  "categories": [
+    {"id": "surfactant", "name_en": "Surfactants", "name_zh": "表面活性剂"},
+    {"id": "humectant", "name_en": "Humectants", "name_zh": "保湿剂"},
+    {"id": "emollient", "name_en": "Emollients", "name_zh": "润肤剂"},
+    {"id": "occlusive", "name_en": "Occlusives", "name_zh": "封闭剂"},
+    {"id": "active", "name_en": "Active Ingredients", "name_zh": "活性成分"},
+    {"id": "preservative", "name_en": "Preservatives", "name_zh": "防腐剂"},
+    {"id": "antioxidant", "name_en": "Antioxidants", "name_zh": "抗氧化剂"},
+    {"id": "fragrance", "name_en": "Fragrance", "name_zh": "香料"},
+    {"id": "sunscreen", "name_en": "Sunscreen Agents", "name_zh": "防晒剂"},
+    {"id": "exfoliant", "name_en": "Exfoliants", "name_zh": "去角质剂"},
+    {"id": "solvent", "name_en": "Solvents", "name_zh": "溶剂"}
+  ],
+  "entries": [
+    {"inci_name": "Aqua", "chinese_name": "水", "aliases_en": ["Water", "Purified Water"], "aliases_zh": ["纯净水"], "category": "solvent", "function_en": "Base/solvent for most formulations", "function_zh": "大多数配方的基底/溶剂", "notes_en": "Almost always first ingredient in water-based products", "notes_zh": "在水基产品中几乎总是第一个成分"},
+    {"inci_name": "Glycerin", "chinese_name": "甘油", "aliases_en": ["Glycerol", "Vegetable Glycerin"], "aliases_zh": ["丙三醇"], "category": "humectant", "function_en": "Attracts moisture; strengthens barrier", "function_zh": "吸引水分；增强屏障", "notes_en": "One of the most effective humectants", "notes_zh": "最有效的保湿剂之一"},
+    {"inci_name": "Niacinamide", "chinese_name": "烟酰胺", "aliases_en": ["Vitamin B3", "Nicotinamide"], "aliases_zh": ["维生素B3"], "category": "active", "function_en": "Brightening, oil control, barrier repair", "function_zh": "美白、控油、修复屏障", "notes_en": "Well-tolerated, versatile active", "notes_zh": "耐受性好的多功能活性成分"},
+    {"inci_name": "Sodium Hyaluronate", "chinese_name": "透明质酸钠", "aliases_en": ["Hyaluronic Acid", "HA"], "aliases_zh": ["玻尿酸"], "category": "humectant", "function_en": "Holds 1000x its weight in water", "function_zh": "可吸收自身重量1000倍的水分", "notes_en": "Salt form with better penetration", "notes_zh": "盐形式，渗透性更好"},
+    {"inci_name": "Retinol", "chinese_name": "视黄醇", "aliases_en": ["Vitamin A"], "aliases_zh": ["A醇"], "category": "active", "function_en": "Anti-aging, cell turnover, reduces wrinkles", "function_zh": "抗衰老，促进细胞更新，减少皱纹", "notes_en": "Gold standard anti-aging; avoid in pregnancy", "notes_zh": "抗衰老黄金标准；孕期避免"},
+    {"inci_name": "Salicylic Acid", "chinese_name": "水杨酸", "aliases_en": ["BHA"], "aliases_zh": ["β-羟基酸"], "category": "active", "function_en": "Exfoliant, unclogs pores, anti-inflammatory", "function_zh": "去角质、疏通毛孔、消炎", "notes_en": "Oil-soluble; penetrates into pores", "notes_zh": "脂溶性；能渗透毛孔"},
+    {"inci_name": "Ascorbic Acid", "chinese_name": "抗坏血酸", "aliases_en": ["Vitamin C", "L-Ascorbic Acid"], "aliases_zh": ["维生素C", "左旋维C"], "category": "active", "function_en": "Antioxidant, brightening, collagen boost", "function_zh": "抗氧化、美白、促进胶原蛋白", "notes_en": "Unstable; needs proper packaging", "notes_zh": "不稳定；需要合适的包装"},
+    {"inci_name": "Sodium Lauryl Sulfate", "chinese_name": "月桂基硫酸钠", "aliases_en": ["SLS"], "aliases_zh": ["十二烷基硫酸钠"], "category": "surfactant", "function_en": "Strong cleansing and foaming", "function_zh": "强效清洁和起泡", "notes_en": "Can irritate dry/sensitive skin", "notes_zh": "可能刺激干性/敏感皮肤"},
+    {"inci_name": "Cocamidopropyl Betaine", "chinese_name": "椰油酰胺丙基甜菜碱", "aliases_en": ["Coco-Betaine"], "aliases_zh": [], "category": "surfactant", "function_en": "Gentle cleansing, foam boosting", "function_zh": "温和清洁、增强泡沫", "notes_en": "One of the gentlest surfactants", "notes_zh": "最温和的表面活性剂之一"},
+    {"inci_name": "Phenoxyethanol", "chinese_name": "苯氧乙醇", "aliases_en": [], "aliases_zh": [], "category": "preservative", "function_en": "Prevents microbial growth", "function_zh": "防止微生物生长", "notes_en": "Common paraben alternative", "notes_zh": "常见的对羟基苯甲酸酯替代品"},
+    {"inci_name": "Dimethicone", "chinese_name": "聚二甲基硅氧烷", "aliases_en": ["Silicone"], "aliases_zh": ["硅油"], "category": "emollient", "function_en": "Smooths skin, protective barrier", "function_zh": "平滑皮肤，保护屏障", "notes_en": "Non-comedogenic despite myths", "notes_zh": "尽管有误解但不会堵塞毛孔"},
+    {"inci_name": "Fragrance", "chinese_name": "香精", "aliases_en": ["Parfum"], "aliases_zh": ["香料"], "category": "fragrance", "function_en": "Provides scent", "function_zh": "提供香味", "notes_en": "Common allergen; 3000+ possible compounds", "notes_zh": "常见过敏原；可能包含3000多种化合物"},
+    {"inci_name": "Tocopherol", "chinese_name": "生育酚", "aliases_en": ["Vitamin E"], "aliases_zh": ["维生素E"], "category": "antioxidant", "function_en": "Antioxidant, moisturizing, stabilizer", "function_zh": "抗氧化、保湿、稳定剂", "notes_en": "Often stabilizes Vitamin C formulas", "notes_zh": "常用于稳定维生素C配方"},
+    {"inci_name": "Zinc Oxide", "chinese_name": "氧化锌", "aliases_en": [], "aliases_zh": [], "category": "sunscreen", "function_en": "Broad-spectrum UV protection", "function_zh": "广谱紫外线防护", "notes_en": "Gentle mineral filter; may leave white cast", "notes_zh": "温和的矿物过滤剂；可能留白"},
+    {"inci_name": "Titanium Dioxide", "chinese_name": "二氧化钛", "aliases_en": [], "aliases_zh": [], "category": "sunscreen", "function_en": "Physical UV filter, mainly UVB", "function_zh": "物理紫外线过滤剂，主要防UVB", "notes_en": "Often combined with zinc oxide", "notes_zh": "常与氧化锌组合使用"},
+    {"inci_name": "Cetearyl Alcohol", "chinese_name": "鲸蜡硬脂醇", "aliases_en": [], "aliases_zh": [], "category": "emollient", "function_en": "Emollient, emulsifier, thickener", "function_zh": "润肤剂、乳化剂、增稠剂", "notes_en": "Fatty alcohol—not drying like simple alcohols", "notes_zh": "脂肪醇——不像简单醇类那样干燥"},
+    {"inci_name": "Alcohol Denat", "chinese_name": "变性乙醇", "aliases_en": ["Denatured Alcohol", "SD Alcohol"], "aliases_zh": ["变性酒精"], "category": "solvent", "function_en": "Solvent, penetration enhancer, quick-drying", "function_zh": "溶剂，渗透促进剂，快干", "notes_en": "Can be drying in high amounts", "notes_zh": "高浓度可能导致干燥"},
+    {"inci_name": "Centella Asiatica Extract", "chinese_name": "积雪草提取物", "aliases_en": ["Cica", "Tiger Grass"], "aliases_zh": ["积雪草"], "category": "active", "function_en": "Soothing, healing, anti-inflammatory", "function_zh": "舒缓、愈合、消炎", "notes_en": "K-beauty favorite for sensitive skin", "notes_zh": "韩国护肤品中敏感肌的最爱"},
+    {"inci_name": "Ceramide NP", "chinese_name": "神经酰胺NP", "aliases_en": ["Ceramides"], "aliases_zh": ["神经酰胺"], "category": "emollient", "function_en": "Barrier repair, moisture retention", "function_zh": "修复屏障、保持水分", "notes_en": "Skin-identical; restores barrier", "notes_zh": "皮肤本身就有；修复屏障"},
+    {"inci_name": "Glycolic Acid", "chinese_name": "乙醇酸", "aliases_en": ["AHA"], "aliases_zh": ["果酸"], "category": "exfoliant", "function_en": "Chemical exfoliation, brightening", "function_zh": "化学去角质，亮肤", "notes_en": "Strongest AHA; requires sunscreen", "notes_zh": "最强的AHA；需要防晒"},
+    {"inci_name": "Lactic Acid", "chinese_name": "乳酸", "aliases_en": ["AHA"], "aliases_zh": ["果酸"], "category": "exfoliant", "function_en": "Gentle exfoliation, hydrating", "function_zh": "温和去角质，保湿", "notes_en": "Gentler than glycolic; has humectant properties", "notes_zh": "比乙醇酸更温和；有保湿特性"},
+    {"inci_name": "Squalane", "chinese_name": "角鲨烷", "aliases_en": [], "aliases_zh": ["鲨烷"], "category": "emollient", "function_en": "Lightweight moisturizing, mimics sebum", "function_zh": "轻薄保湿，模拟皮脂", "notes_en": "Non-comedogenic; good for oily skin too", "notes_zh": "不致粉刺；也适合油性皮肤"},
+    {"inci_name": "Panthenol", "chinese_name": "泛醇", "aliases_en": ["Pro-Vitamin B5"], "aliases_zh": ["维生素B5前体"], "category": "humectant", "function_en": "Moisturizing, healing, soothing", "function_zh": "保湿、愈合、舒缓", "notes_en": "Extremely well-tolerated", "notes_zh": "耐受性极好"},
+    {"inci_name": "Azelaic Acid", "chinese_name": "壬二酸", "aliases_en": [], "aliases_zh": ["杜鹃花酸"], "category": "active", "function_en": "Acne, rosacea, hyperpigmentation", "function_zh": "痤疮、玫瑰痤疮、色素沉着", "notes_en": "Gentle multitasker; pregnancy-safe", "notes_zh": "温和的多效成分；孕期安全"},
+    {"inci_name": "Benzoyl Peroxide", "chinese_name": "过氧化苯甲酰", "aliases_en": ["BPO"], "aliases_zh": [], "category": "active", "function_en": "Kills acne bacteria", "function_zh": "杀死痤疮细菌", "notes_en": "Very effective; bleaches fabrics", "notes_zh": "非常有效；会漂白织物"},
+    {"inci_name": "Alpha-Arbutin", "chinese_name": "α-熊果苷", "aliases_en": ["Arbutin"], "aliases_zh": ["熊果苷"], "category": "active", "function_en": "Brightening, fades dark spots", "function_zh": "美白，淡化色斑", "notes_en": "Gentler alternative to hydroquinone", "notes_zh": "比对苯二酚更温和的替代品"},
+    {"inci_name": "Butylene Glycol", "chinese_name": "丁二醇", "aliases_en": [], "aliases_zh": [], "category": "humectant", "function_en": "Humectant, solvent, penetration enhancer", "function_zh": "保湿剂、溶剂、渗透促进剂", "notes_en": "Very common; helps absorption", "notes_zh": "非常常见；帮助吸收"},
+    {"inci_name": "Petrolatum", "chinese_name": "凡士林", "aliases_en": ["Petroleum Jelly", "Vaseline"], "aliases_zh": ["石油冻"], "category": "occlusive", "function_en": "Seals moisture, protects barrier", "function_zh": "锁住水分，保护屏障", "notes_en": "Most effective occlusive; non-comedogenic", "notes_zh": "最有效的封闭剂；不致粉刺"},
+    {"inci_name": "Shea Butter", "chinese_name": "乳木果油", "aliases_en": [], "aliases_zh": [], "category": "emollient", "function_en": "Rich moisturizer, softens skin", "function_zh": "丰富的保湿剂，软化皮肤", "notes_en": "Great for dry skin; may be heavy for oily", "notes_zh": "适合干性皮肤；对油性可能太厚重"},
+    {"inci_name": "Allantoin", "chinese_name": "尿囊素", "aliases_en": [], "aliases_zh": [], "category": "active", "function_en": "Soothing, healing, moisturizing", "function_zh": "舒缓、愈合、保湿", "notes_en": "Very gentle; good for sensitive skin", "notes_zh": "非常温和；适合敏感肌"}
+  ]
+}

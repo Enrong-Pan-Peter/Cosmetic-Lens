@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../../components/layout/BaseLayout.astro';
+import GlossaryTable from '../../components/glossary/GlossaryTable.jsx';
+import { getTranslations } from '../../i18n/utils';
+import glossaryData from '../../data/glossary-data.json';
+
+const lang = 'zh';
+const t = getTranslations(lang);
+---
+
+<BaseLayout
+  title={t.glossary.title}
+  description={t.glossary.subtitle}
+  lang={lang}
+>
+  <section class="py-8 sm:py-10 lg:py-16">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <div class="mb-8 space-y-2">
+        <h1 class="text-2xl font-semibold text-foreground sm:text-3xl">{t.glossary.title}</h1>
+        <p class="text-muted-foreground">{t.glossary.subtitle}</p>
+      </div>
+
+      <GlossaryTable
+        client:load
+        entries={glossaryData.entries}
+        categories={glossaryData.categories}
+        lang={lang}
+        translations={t}
+      />
+    </div>
+  </section>
+</BaseLayout>

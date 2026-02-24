@@ -1,0 +1,57 @@
+---
+import { getTranslations } from '../../i18n/utils';
+
+export interface Props {
+  lang: 'en' | 'zh';
+}
+
+const { lang } = Astro.props;
+const t = getTranslations(lang);
+
+const footerLinks = [
+  { href: `/${lang}/`, label: t.nav.home },
+  { href: `/${lang}/chat`, label: t.nav.analyze },
+  { href: `/${lang}/glossary`, label: t.nav.glossary },
+];
+---
+
+<footer>
+  <!-- Top: Logo + Nav + Disclaimer -->
+  <div class="gradient-divider"></div>
+
+  <div class="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between gap-6 max-md:flex-col">
+      <!-- Logo -->
+      <a href={`/${lang}/`} class="flex items-center gap-2.5">
+        <span class="text-xl">🔍</span>
+        <span class="font-semibold text-lg text-foreground tracking-tight">
+          {lang === 'zh' ? '成分透视' : 'CosmeticLens'}
+        </span>
+      </a>
+
+      <!-- Links -->
+      <div class="flex items-center gap-6 lg:gap-12">
+        {footerLinks.map(link => (
+          <a
+            href={link.href}
+            class="text-base font-medium text-muted-foreground hover:text-foreground transition-colors"
+          >
+            {link.label}
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <div class="gradient-divider"></div>
+
+  <!-- Bottom: Copyright + Disclaimer -->
+  <div class="mx-auto max-w-5xl px-4 py-6 sm:px-6">
+    <p class="text-center text-sm text-muted-foreground">
+      {t.footer.copyright}
+    </p>
+    <p class="text-center text-xs text-muted-foreground/70 mt-2 max-w-2xl mx-auto">
+      {t.footer.disclaimer_text}
+    </p>
+  </div>
+</footer>

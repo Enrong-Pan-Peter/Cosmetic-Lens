@@ -1,0 +1,147 @@
+---
+import BaseLayout from '../../components/layout/BaseLayout.astro';
+import { getTranslations } from '../../i18n/utils';
+
+const lang = 'en';
+const t = getTranslations(lang);
+
+const features = [
+  { icon: '🧪', title: t.home.feature_1_title, desc: t.home.feature_1_desc },
+  { icon: '✅', title: t.home.feature_2_title, desc: t.home.feature_2_desc },
+  { icon: '💰', title: t.home.feature_3_title, desc: t.home.feature_3_desc },
+  { icon: '👤', title: t.home.feature_4_title, desc: t.home.feature_4_desc },
+];
+
+const steps = [
+  { num: '1', text: t.home.step_1 },
+  { num: '2', text: t.home.step_2 },
+  { num: '3', text: t.home.step_3 },
+];
+---
+
+<BaseLayout
+  title={t.home.hero_title}
+  description={t.site.description}
+  lang={lang}
+>
+  <!-- Hero Section -->
+  <section class="py-16 md:py-24 lg:py-32">
+    <div class="mx-auto max-w-5xl px-4 text-center sm:px-6 lg:px-8">
+      <span class="inline-flex items-center rounded-full border border-border px-3 py-1 text-sm font-medium text-foreground mb-6">
+        ✨ AI-Powered Ingredient Analysis
+      </span>
+
+      <h1 class="text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl text-foreground">
+        {t.home.hero_title}
+      </h1>
+
+      <p class="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto sm:text-xl">
+        {t.home.hero_subtitle}
+      </p>
+
+      <div class="mt-10 flex flex-col sm:flex-row gap-3 justify-center max-sm:items-center">
+        <a
+          href={`/${lang}/chat`}
+          class="inline-flex items-center justify-center h-11 rounded-lg bg-primary px-8 text-base font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+        >
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          {t.home.cta_analyze}
+        </a>
+        <a
+          href={`/${lang}/glossary`}
+          class="inline-flex items-center justify-center h-11 rounded-lg border border-input bg-background px-8 text-base font-medium text-foreground shadow-sm hover:bg-accent hover:text-accent-foreground transition-colors"
+        >
+          📚 {t.home.cta_learn}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="gradient-divider"></div>
+
+  <!-- Features Section -->
+  <section class="py-16 md:py-20 lg:py-24">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12 sm:mb-16">
+        <h2 class="text-2xl font-semibold sm:text-3xl lg:text-4xl text-foreground">
+          {t.home.features_title}
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {features.map(f => (
+          <div class="flex flex-col gap-4 rounded-xl border border-border bg-card p-6 shadow-sm transition-shadow hover:shadow-md">
+            <span class="text-3xl">{f.icon}</span>
+            <div>
+              <h3 class="font-semibold text-card-foreground mb-1">{f.title}</h3>
+              <p class="text-sm text-muted-foreground">{f.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <div class="gradient-divider"></div>
+
+  <!-- How It Works Section -->
+  <section class="py-16 md:py-20 lg:py-24">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12 sm:mb-16">
+        <h2 class="text-2xl font-semibold sm:text-3xl lg:text-4xl text-foreground">
+          {t.home.how_it_works}
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {steps.map(step => (
+          <div class="text-center">
+            <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full border-2 border-border bg-secondary">
+              <span class="text-lg font-semibold text-secondary-foreground">{step.num}</span>
+            </div>
+            <p class="text-muted-foreground">{step.text}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="text-center mt-12">
+        <a
+          href={`/${lang}/chat`}
+          class="inline-flex items-center justify-center h-11 rounded-lg bg-primary px-8 text-base font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+        >
+          {t.home.cta_analyze}
+          <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="bg-primary py-12 sm:py-16 lg:py-20">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between gap-6 max-lg:flex-col max-lg:text-center">
+        <div class="space-y-3">
+          <h2 class="text-2xl font-semibold text-primary-foreground sm:text-3xl lg:text-4xl">
+            {lang === 'en' ? 'Know What\'s In Your Products' : '了解您产品中的成分'}
+          </h2>
+          <p class="text-primary-foreground/70 text-lg">
+            {lang === 'en' ? 'Start your first ingredient analysis in seconds.' : '几秒钟内开始您的第一次成分分析。'}
+          </p>
+        </div>
+        <a
+          href={`/${lang}/chat`}
+          class="shrink-0 inline-flex items-center justify-center h-11 rounded-lg bg-secondary px-8 text-base font-medium text-secondary-foreground hover:bg-secondary/80 transition-colors"
+        >
+          {t.home.cta_analyze}
+          <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
