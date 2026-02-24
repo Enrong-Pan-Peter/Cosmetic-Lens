@@ -5,11 +5,22 @@ import { getTranslations } from '../../i18n/utils';
 const lang = 'zh';
 const t = getTranslations(lang);
 
+const icons = {
+  flask: 'M221.69,199.77,160,96.92V40h8a8,8,0,0,0,0-16H88a8,8,0,0,0,0,16h8V96.92L34.31,199.77A16,16,0,0,0,48,224H208a16,16,0,0,0,13.72-24.23ZM110.86,103.25A7.93,7.93,0,0,0,112,99.14V40h32V99.14a7.93,7.93,0,0,0,1.14,4.11L183.36,167c-12,2.37-29.07,1.37-51.75-10.11-15.91-8.05-31.05-12.32-45.22-12.81ZM48,208l28.54-47.58c14.25-1.74,30.31,1.85,47.82,10.72,19,9.61,35,12.88,48,12.88a69.89,69.89,0,0,0,19.55-2.7L208,208Z',
+  shieldCheck: 'M208,40H48A16,16,0,0,0,32,56v56c0,52.72,25.52,84.67,46.93,102.19,23.06,18.86,46,25.26,47,25.53a8,8,0,0,0,4.2,0c1-.27,23.91-6.67,47-25.53C198.48,196.67,224,164.72,224,112V56A16,16,0,0,0,208,40Zm0,72c0,37.07-13.66,67.16-40.6,89.42A129.3,129.3,0,0,1,128,223.62a128.25,128.25,0,0,1-38.92-21.81C61.82,179.51,48,149.3,48,112l0-56,160,0ZM82.34,141.66a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35a8,8,0,0,1,11.32,11.32l-56,56a8,8,0,0,1-11.32,0Z',
+  currencyDollar: 'M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm40-68a28,28,0,0,1-28,28h-4v8a8,8,0,0,1-16,0v-8H104a8,8,0,0,1,0-16h36a12,12,0,0,0,0-24H116a28,28,0,0,1,0-56h4V72a8,8,0,0,1,16,0v8h16a8,8,0,0,1,0,16H116a12,12,0,0,0,0,24h24A28,28,0,0,1,168,148Z',
+  userCircle: 'M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24ZM74.08,197.5a64,64,0,0,1,107.84,0,87.83,87.83,0,0,1-107.84,0ZM96,120a32,32,0,1,1,32,32A32,32,0,0,1,96,120Zm97.76,66.41a79.66,79.66,0,0,0-36.06-28.75,48,48,0,1,0-59.4,0,79.66,79.66,0,0,0-36.06,28.75,88,88,0,1,1,131.52,0Z',
+  sparkle: 'M197.58,129.06,146,110l-19-51.62a15.92,15.92,0,0,0-29.88,0L78,110l-51.62,19a15.92,15.92,0,0,0,0,29.88L78,178l19,51.62a15.92,15.92,0,0,0,29.88,0L146,178l51.62-19a15.92,15.92,0,0,0,0-29.88ZM137,164.22a8,8,0,0,0-4.74,4.74L112,223.85,91.78,169A8,8,0,0,0,87,164.22L32.15,144,87,123.78A8,8,0,0,0,91.78,119L112,64.15,132.22,119a8,8,0,0,0,4.74,4.74L191.85,144ZM144,40a8,8,0,0,1,8-8h16V16a8,8,0,0,1,16,0V32h16a8,8,0,0,1,0,16H184V64a8,8,0,0,1-16,0V48H152A8,8,0,0,1,144,40ZM248,88a8,8,0,0,1-8,8h-8v8a8,8,0,0,1-16,0V96h-8a8,8,0,0,1,0-16h8V72a8,8,0,0,1,16,0v8h8A8,8,0,0,1,248,88Z',
+  bookOpen: 'M232,48H160a40,40,0,0,0-32,16A40,40,0,0,0,96,48H24a8,8,0,0,0-8,8V200a8,8,0,0,0,8,8H96a24,24,0,0,1,24,24,8,8,0,0,0,16,0,24,24,0,0,1,24-24h72a8,8,0,0,0,8-8V56A8,8,0,0,0,232,48ZM96,192H32V64H96a24,24,0,0,1,24,24V200A39.81,39.81,0,0,0,96,192Zm128,0H160a39.81,39.81,0,0,0-24,8V88a24,24,0,0,1,24-24h64Z',
+  microscope: 'M224,208H203.94A88.05,88.05,0,0,0,144,64.37V32a16,16,0,0,0-16-16H80A16,16,0,0,0,64,32V136a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V80.46A72,72,0,0,1,181.25,208H32a8,8,0,0,0,0,16H224a8,8,0,0,0,0-16Zm-96-72H80V32h48V136ZM72,184a8,8,0,0,1,0-16h64a8,8,0,0,1,0,16Z',
+  arrowRight: 'M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z',
+};
+
 const features = [
-  { icon: '🧪', title: t.home.feature_1_title, desc: t.home.feature_1_desc },
-  { icon: '✅', title: t.home.feature_2_title, desc: t.home.feature_2_desc },
-  { icon: '💰', title: t.home.feature_3_title, desc: t.home.feature_3_desc },
-  { icon: '👤', title: t.home.feature_4_title, desc: t.home.feature_4_desc },
+  { icon: icons.flask, title: t.home.feature_1_title, desc: t.home.feature_1_desc },
+  { icon: icons.shieldCheck, title: t.home.feature_2_title, desc: t.home.feature_2_desc },
+  { icon: icons.currencyDollar, title: t.home.feature_3_title, desc: t.home.feature_3_desc },
+  { icon: icons.userCircle, title: t.home.feature_4_title, desc: t.home.feature_4_desc },
 ];
 
 const steps = [
@@ -27,8 +38,9 @@ const steps = [
   <!-- Hero Section -->
   <section class="py-16 md:py-24 lg:py-32">
     <div class="mx-auto max-w-5xl px-4 text-center sm:px-6 lg:px-8">
-      <span class="inline-flex items-center rounded-full border border-border px-3 py-1 text-sm font-medium text-foreground mb-6">
-        ✨ AI智能成分分析
+      <span class="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-sm font-medium text-foreground mb-6">
+        <svg class="w-4 h-4" viewBox="0 0 256 256" fill="currentColor"><path d={icons.sparkle} /></svg>
+        AI智能成分分析
       </span>
 
       <h1 class="text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl text-foreground">
@@ -44,16 +56,15 @@ const steps = [
           href={`/${lang}/chat`}
           class="inline-flex items-center justify-center h-11 rounded-lg bg-primary px-8 text-base font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
         >
-          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
+          <svg class="w-4 h-4 mr-2" viewBox="0 0 256 256" fill="currentColor"><path d={icons.microscope} /></svg>
           {t.home.cta_analyze}
         </a>
         <a
           href={`/${lang}/glossary`}
           class="inline-flex items-center justify-center h-11 rounded-lg border border-input bg-background px-8 text-base font-medium text-foreground shadow-sm hover:bg-accent hover:text-accent-foreground transition-colors"
         >
-          📚 {t.home.cta_learn}
+          <svg class="w-4 h-4 mr-2" viewBox="0 0 256 256" fill="currentColor"><path d={icons.bookOpen} /></svg>
+          {t.home.cta_learn}
         </a>
       </div>
     </div>
@@ -73,7 +84,9 @@ const steps = [
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {features.map(f => (
           <div class="flex flex-col gap-4 rounded-xl border border-border bg-card p-6 shadow-sm transition-shadow hover:shadow-md">
-            <span class="text-3xl">{f.icon}</span>
+            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <svg class="w-5 h-5" viewBox="0 0 256 256" fill="currentColor"><path d={f.icon} /></svg>
+            </div>
             <div>
               <h3 class="font-semibold text-card-foreground mb-1">{f.title}</h3>
               <p class="text-sm text-muted-foreground">{f.desc}</p>
@@ -112,9 +125,7 @@ const steps = [
           class="inline-flex items-center justify-center h-11 rounded-lg bg-primary px-8 text-base font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
         >
           {t.home.cta_analyze}
-          <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-          </svg>
+          <svg class="w-4 h-4 ml-2" viewBox="0 0 256 256" fill="currentColor"><path d={icons.arrowRight} /></svg>
         </a>
       </div>
     </div>
@@ -137,9 +148,7 @@ const steps = [
           class="shrink-0 inline-flex items-center justify-center h-11 rounded-lg bg-secondary px-8 text-base font-medium text-secondary-foreground hover:bg-secondary/80 transition-colors"
         >
           {t.home.cta_analyze}
-          <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-          </svg>
+          <svg class="w-4 h-4 ml-2" viewBox="0 0 256 256" fill="currentColor"><path d={icons.arrowRight} /></svg>
         </a>
       </div>
     </div>

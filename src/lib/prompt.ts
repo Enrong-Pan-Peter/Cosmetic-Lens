@@ -1,6 +1,7 @@
 // @ts-nocheck - raw import for markdown
 import systemPromptTemplate from '../data/system-prompt.md?raw';
 import ingredientsDatabase from '../data/ingredients-database.json';
+import translationsReference from '../data/translations-reference.json';
 
 export type Language = 'en' | 'zh';
 
@@ -40,6 +41,11 @@ export function buildSystemPrompt(
     : getNoProfileText(language);
   prompt = prompt.replace('{{USER_PROFILE}}', profileText);
 
+  // Append Chinese terminology reference to reinforce correct term usage
+  if (language === 'zh') {
+    prompt += `\n\n## 中文术语参考\n请严格使用以下标准中文术语，不要混入英文：\n\`\`\`json\n${JSON.stringify(translationsReference, null, 2)}\n\`\`\``;
+  }
+
   return prompt;
 }
 
@@ -49,7 +55,8 @@ export function buildSystemPrompt(
 
 export function buildUserMessage(
   context: ProductContext,
-  ingredientData: any[]
+  ingredientData: any[],
+  language: Language = 'en'
 ): string {
   let message = `[source: verified]\n\nPlease analyze this cosmetic product:\n\n`;
   message += `**Product Name:** ${context.productName}\n`;
@@ -72,6 +79,11 @@ export function buildUserMessage(
   }
 
   message += `\nAnalyze this product following your output format. Keep it concise (under 500 words).`;
+
+  if (language === 'zh') {
+    message += `\n\n**重要**: 请用自然流畅的简体中文回复。所有标题、表格头、评级标签都必须使用中文。不要在中文句子中混入英文单词（INCI成分名除外，放在括号中）。`;
+  }
+
   return message;
 }
 
@@ -81,6 +93,7 @@ export function buildUserMessage(
 
 export function buildProductNameOnlyMessage(
   productName: string,
+  language: Language,
   productBrand?: string
 ): string {
   let message = `[source: llm_knowledge]\n\n`;
@@ -95,7 +108,12 @@ export function buildProductNameOnlyMessage(
   message += `If you confidently know this product (e.g., it's a well-known product from a brand that publishes formulations), provide a full analysis.\n`;
   message += `If you're not certain about the exact ingredients, clearly state this and provide general information about what this type of product typically contains.\n`;
   message += `If you truly don't know this product at all, say so honestly and suggest the user paste the ingredient list.\n\n`;
-  message += `Follow your standard output format. Start with the confidence disclaimer banner as instructed for Mode B. Keep it concise (under 500 words).`;
+  message += `Follow your standard output format. Start with the confidence disclaimer banner as instructed for Mode B. Keep it concise (under 500 words).\n`;
+
+  if (language === 'zh') {
+    message += `\n**重要**: 请用自然流畅的简体中文回复。所有标题、表格头、评级标签都必须使用中文。不要在中文句子中混入英文单词（INCI成分名除外，放在括号中）。`;
+  }
+
   return message;
 }
 

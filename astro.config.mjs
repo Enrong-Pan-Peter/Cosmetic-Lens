@@ -12,7 +12,7 @@ export default defineConfig({
   adapter: vercel(),
   vite: {
     ssr: {
-      noExternal: ['react-markdown']
+      noExternal: ['react-markdown', 'remark-gfm', '@phosphor-icons/react']
     }
   }
 });

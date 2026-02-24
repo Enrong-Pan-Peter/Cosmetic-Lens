@@ -1,48 +1,165 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
+import { Microscope } from '@phosphor-icons/react';
+import ChatSidebar from './ChatSidebar';
 import ChatMessage from './ChatMessage';
 import ProductInput from './ProductInput';
 import LoadingIndicator from './LoadingIndicator';
 
+// ---------------------------------------------------------------------------
+// localStorage helpers
+// ---------------------------------------------------------------------------
+const STORAGE_KEY = 'cosmeticlens_chat_history';
+
+function generateId() {
+  return Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
+}
+
+function loadHistory() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+function persistHistory(history) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+  } catch (e) {
+    console.warn('Failed to persist chat history:', e);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Component
+// ---------------------------------------------------------------------------
 export default function ChatInterface({ lang, translations: t }) {
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [activeChatId, setActiveChatId] = useState(null);
+  const [chatHistory, setChatHistory] = useState([]);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const messagesEndRef = useRef(null);
 
+  // Bootstrap from localStorage
+  useEffect(() => {
+    setChatHistory(loadHistory());
+  }, []);
+
+  // Auto-scroll on new messages
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const handleAnalyze = async (input) => {
-    if (!input.trim() || isLoading) return;
+  // -------------------------------------------------------------------
+  // Persist helpers (always receive explicit values to avoid stale state)
+  // -------------------------------------------------------------------
+  const saveChat = useCallback(
+    (msgs, chatId) => {
+      if (!msgs || msgs.length === 0) return chatId;
 
-    setError(null);
+      const id = chatId || generateId();
+      const title =
+        msgs.find((m) => m.role === 'user')?.content?.slice(0, 50) ||
+        (lang === 'zh' ? '新分析' : 'New Analysis');
+      const now = new Date().toISOString();
 
-    const userMessage = { role: 'user', content: input };
-    setMessages(prev => [...prev, userMessage]);
-
-    setIsLoading(true);
-
-    try {
-      const response = await fetch('/api/analyze', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          productName: input,
-          language: lang,
-        })
+      setChatHistory((prev) => {
+        const exists = prev.find((c) => c.id === id);
+        let next;
+        if (exists) {
+          next = prev.map((c) =>
+            c.id === id ? { ...c, messages: msgs, updatedAt: now, title } : c,
+          );
+        } else {
+          next = [
+            { id, title, messages: msgs, createdAt: now, updatedAt: now },
+            ...prev,
+          ];
+        }
+        persistHistory(next);
+        return next;
       });
 
-      const data = await response.json();
+      return id;
+    },
+    [lang],
+  );
+
+  // -------------------------------------------------------------------
+  // Actions
+  // -------------------------------------------------------------------
+  const handleNewChat = () => {
+    if (messages.length > 0 && activeChatId) {
+      saveChat(messages, activeChatId);
+    }
+    setMessages([]);
+    setActiveChatId(null);
+    setError(null);
+  };
+
+  const handleSelectChat = (chatId) => {
+    if (messages.length > 0 && activeChatId) {
+      saveChat(messages, activeChatId);
+    }
+    const chat = chatHistory.find((c) => c.id === chatId);
+    if (chat) {
+      setMessages(chat.messages);
+      setActiveChatId(chat.id);
+      setError(null);
+    }
+  };
+
+  const handleDeleteChat = (chatId) => {
+    setChatHistory((prev) => {
+      const next = prev.filter((c) => c.id !== chatId);
+      persistHistory(next);
+      return next;
+    });
+    if (activeChatId === chatId) {
+      setMessages([]);
+      setActiveChatId(null);
+    }
+  };
+
+  const handleAnalyze = async (input) => {
+    if (!input.trim() || isLoading) return;
+    setError(null);
+
+    const userMsg = { role: 'user', content: input };
+    const withUser = [...messages, userMsg];
+    setMessages(withUser);
+
+    // Ensure we have a chat id
+    let chatId = activeChatId;
+    if (!chatId) {
+      chatId = generateId();
+      setActiveChatId(chatId);
+    }
+    saveChat(withUser, chatId);
+
+    setIsLoading(true);
+    try {
+      const res = await fetch('/api/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ productName: input, language: lang }),
+      });
+      const data = await res.json();
 
       if (data.success) {
-        setMessages(prev => [...prev, {
+        const assistantMsg = {
           role: 'assistant',
           content: data.data,
           cached: data.cached,
-          source: data.source,       // 'verified' | 'llm_knowledge'
-          product: data.product
-        }]);
+          source: data.source,
+          product: data.product,
+        };
+        const full = [...withUser, assistantMsg];
+        setMessages(full);
+        saveChat(full, chatId);
       } else {
         switch (data.error) {
           case 'rate_limit_exceeded':
@@ -60,116 +177,131 @@ export default function ChatInterface({ lang, translations: t }) {
     }
   };
 
-  const handleNewChat = () => {
-    setMessages([]);
-    setError(null);
-  };
+  const examples = [t.chat.example_1, t.chat.example_2, t.chat.example_3];
 
-  const examples = [
-    t.chat.example_1,
-    t.chat.example_2,
-    t.chat.example_3
-  ];
-
+  // -------------------------------------------------------------------
+  // Render
+  // -------------------------------------------------------------------
   return (
-    <div className="flex flex-col h-[calc(100vh-12rem)] mx-auto max-w-4xl">
-      {/* Messages area */}
-      <div className="flex-grow overflow-y-auto px-4 py-6 space-y-6 scrollbar-thin">
-        {messages.length === 0 ? (
-          <div className="text-center py-16">
-            <h1 className="text-2xl font-semibold text-foreground sm:text-3xl mb-4">
-              {t.chat.title}
-            </h1>
-            <p className="text-muted-foreground mb-10 max-w-lg mx-auto text-lg">
-              {lang === 'zh'
-                ? '输入产品名称或粘贴成分表，获取专业的成分分析'
-                : 'Enter a product name or paste an ingredient list to get a professional analysis'}
-            </p>
+    <div className="flex h-full">
+      {/* ---- Sidebar ---- */}
+      <ChatSidebar
+        lang={lang}
+        chatHistory={chatHistory}
+        activeChatId={activeChatId}
+        onNewChat={handleNewChat}
+        onSelectChat={handleSelectChat}
+        onDeleteChat={handleDeleteChat}
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+      />
 
-            {/* Tips card */}
-            <div className="rounded-xl border border-border bg-card p-6 max-w-lg mx-auto mb-10 text-left shadow-sm">
-              <h3 className="font-semibold text-card-foreground mb-3 text-sm">
-                {t.chat.tips_title}
-              </h3>
-              <ul className="space-y-2.5 text-sm text-muted-foreground">
-                <li className="flex items-start gap-2.5">
-                  <span className="mt-1 block h-1.5 w-1.5 rounded-full bg-foreground/30 shrink-0" />
-                  {t.chat.tip_1}
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <span className="mt-1 block h-1.5 w-1.5 rounded-full bg-foreground/30 shrink-0" />
-                  {t.chat.tip_2}
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <span className="mt-1 block h-1.5 w-1.5 rounded-full bg-foreground/30 shrink-0" />
-                  {t.chat.tip_3}
-                </li>
-              </ul>
-            </div>
+      {/* ---- Main chat column ---- */}
+      <div className="flex-1 flex flex-col min-w-0 bg-[hsl(var(--background))]">
+        {/* Top bar */}
+        <div className="flex items-center gap-3 h-12 px-4 border-b border-border shrink-0">
+          {/* Mobile sidebar toggle */}
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className="lg:hidden -ml-1 p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+            aria-label="Open sidebar"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
 
-            {/* Example pills */}
-            <div className="space-y-3">
-              <p className="text-sm text-muted-foreground">{t.chat.examples_title}</p>
-              <div className="flex flex-wrap justify-center gap-2">
-                {examples.map((example, index) => (
-                  <button
-                    key={index}
-                    onClick={() => handleAnalyze(example)}
-                    className="inline-flex items-center rounded-full border border-border bg-card px-4 py-2 text-sm font-medium text-foreground shadow-sm hover:bg-accent hover:text-accent-foreground transition-colors"
-                  >
-                    {example}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        ) : (
-          <>
-            {messages.map((message, index) => (
-              <ChatMessage
-                key={index}
-                message={message}
-                lang={lang}
-              />
-            ))}
+          <span className="text-sm font-medium text-foreground truncate">
+            {activeChatId
+              ? chatHistory.find((c) => c.id === activeChatId)?.title || t.chat.title
+              : t.chat.title}
+          </span>
 
-            {isLoading && (
-              <LoadingIndicator text={t.chat.analyzing} />
-            )}
-
-            {error && (
-              <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-4 text-sm text-destructive">
-                {error}
-              </div>
-            )}
-
-            <div ref={messagesEndRef} />
-          </>
-        )}
-      </div>
-
-      {/* Input area */}
-      <div className="border-t border-border bg-background p-4">
-        {messages.length > 0 && (
-          <div className="flex justify-end mb-3">
+          {/* New chat shortcut (visible when a conversation is loaded) */}
+          {messages.length > 0 && (
             <button
               onClick={handleNewChat}
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              className="ml-auto p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+              title={lang === 'zh' ? '新对话' : 'New Chat'}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
               </svg>
-              {t.chat.new_chat}
             </button>
-          </div>
-        )}
+          )}
+        </div>
 
-        <ProductInput
-          onSubmit={handleAnalyze}
-          isLoading={isLoading}
-          placeholder={t.chat.placeholder}
-          buttonText={t.chat.analyze_button}
-        />
+        {/* Messages area — scrollable */}
+        <div className="flex-1 overflow-y-auto scrollbar-thin">
+          <div className="mx-auto max-w-[48rem] px-4 sm:px-6 py-6">
+            {messages.length === 0 ? (
+              /* ---------- Empty state ---------- */
+              <div className="flex flex-col items-center justify-center min-h-[60vh]">
+                <div className="text-center max-w-xl w-full">
+                  <div className="mb-5 text-primary"><Microscope size={48} weight="regular" /></div>
+                  <h1 className="text-2xl sm:text-3xl font-semibold text-foreground mb-2">
+                    {t.chat.title}
+                  </h1>
+                  <p className="text-muted-foreground mb-10 text-[15px] max-w-md mx-auto">
+                    {lang === 'zh'
+                      ? '输入产品名称或粘贴成分表，获取专业的成分分析'
+                      : 'Enter a product name or paste an ingredient list for professional analysis'}
+                  </p>
+
+                  {/* Example cards */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-left">
+                    {examples.map((ex, i) => (
+                      <button
+                        key={i}
+                        onClick={() => handleAnalyze(ex)}
+                        className="rounded-xl border border-border bg-card p-4 text-sm text-foreground hover:bg-accent/60 transition-colors text-left"
+                      >
+                        <div className="text-[11px] font-medium text-muted-foreground mb-1">
+                          {lang === 'zh' ? '示例' : 'Example'}
+                        </div>
+                        <span className="leading-snug">{ex}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              /* ---------- Conversation ---------- */
+              <div className="space-y-8">
+                {messages.map((msg, i) => (
+                  <ChatMessage key={i} message={msg} lang={lang} />
+                ))}
+
+                {isLoading && <LoadingIndicator text={t.chat.analyzing} />}
+
+                {error && (
+                  <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive">
+                    {error}
+                  </div>
+                )}
+
+                <div ref={messagesEndRef} />
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Input bar — pinned to bottom */}
+        <div className="shrink-0 border-t border-border bg-[hsl(var(--background))]">
+          <div className="mx-auto max-w-[48rem] px-4 sm:px-6 py-3">
+            <ProductInput
+              onSubmit={handleAnalyze}
+              isLoading={isLoading}
+              placeholder={t.chat.placeholder}
+              buttonText={t.chat.analyze_button}
+            />
+            <p className="text-center text-[11px] text-muted-foreground/60 mt-2 select-none">
+              {lang === 'zh'
+                ? '成分分析仅供参考，不构成医疗建议'
+                : 'Ingredient analysis is for reference only, not medical advice'}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -7,12 +7,14 @@ export interface Props {
   title: string;
   description?: string;
   lang?: 'en' | 'zh';
+  hideFooter?: boolean;
 }
 
 const {
   title,
   description = '',
   lang = 'en',
+  hideFooter = false,
 } = Astro.props;
 
 const siteName = lang === 'zh' ? '成分透视' : 'CosmeticLens';
@@ -42,10 +44,10 @@ const fullTitle = `${title} | ${siteName}`;
 <body class="flex min-h-screen w-full flex-col">
   <Navigation lang={lang} />
 
-  <main class="flex flex-1 flex-col">
+  <main class="flex flex-1 flex-col overflow-hidden">
     <slot />
   </main>
 
-  <Footer lang={lang} />
+  {!hideFooter && <Footer lang={lang} />}
 </body>
 </html>

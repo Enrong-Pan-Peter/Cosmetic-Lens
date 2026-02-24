@@ -1,0 +1,43 @@
+{
+  "section_headers": {
+    "quick_verdict": { "en": "Quick Verdict", "zh": "快速总结" },
+    "key_ingredients": { "en": "Key Ingredients", "zh": "关键成分" },
+    "star_ingredients": { "en": "Star Ingredients", "zh": "明星成分" },
+    "supporting_ingredients": { "en": "Supporting Ingredients", "zh": "辅助成分" },
+    "concerns": { "en": "Potential Concerns", "zh": "潜在问题" },
+    "claims_check": { "en": "Claims Check", "zh": "功效验证" },
+    "best_for": { "en": "Best For", "zh": "适合人群" },
+    "not_for": { "en": "May Not Suit", "zh": "不适合人群" },
+    "bottom_line": { "en": "Bottom Line", "zh": "总结建议" },
+    "value": { "en": "Value Assessment", "zh": "性价比评估" }
+  },
+  "table_headers": {
+    "claim": { "en": "Claim", "zh": "宣传" },
+    "verdict": { "en": "Verdict", "zh": "评级" },
+    "analysis": { "en": "Analysis", "zh": "分析" },
+    "why": { "en": "Why", "zh": "原因" }
+  },
+  "verdicts": {
+    "supported": { "en": "✅ Supported", "zh": "✅ 有支持" },
+    "partial": { "en": "⚠️ Partially Supported", "zh": "⚠️ 部分支持" },
+    "unsupported": { "en": "❌ Unsupported", "zh": "❌ 无支持" },
+    "unverifiable": { "en": "❓ Unverifiable", "zh": "❓ 无法验证" }
+  },
+  "skin_types": {
+    "oily": { "en": "Oily skin", "zh": "油性皮肤/油皮" },
+    "dry": { "en": "Dry skin", "zh": "干性皮肤/干皮" },
+    "combination": { "en": "Combination skin", "zh": "混合性皮肤/混油皮" },
+    "sensitive": { "en": "Sensitive skin", "zh": "敏感肌" },
+    "normal": { "en": "Normal skin", "zh": "中性皮肤" }
+  },
+  "common_terms": {
+    "hydrating": { "en": "Hydrating", "zh": "保湿" },
+    "oil_control": { "en": "Oil control", "zh": "控油" },
+    "brightening": { "en": "Brightening", "zh": "美白/提亮" },
+    "anti_aging": { "en": "Anti-aging", "zh": "抗老/抗衰" },
+    "soothing": { "en": "Soothing", "zh": "舒缓" },
+    "exfoliating": { "en": "Exfoliating", "zh": "去角质" },
+    "fragrance_free": { "en": "Fragrance-free", "zh": "无香精" },
+    "ingredient_conscious": { "en": "Ingredient-conscious", "zh": "成分党" }
+  }
+}

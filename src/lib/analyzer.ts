@@ -151,12 +151,14 @@ export async function analyzeProduct(request: AnalysisRequest): Promise<Analysis
         productBrand: productData?.brands,
         ingredients: ingredientList,
       },
-      ingredientData
+      ingredientData,
+      language
     );
   } else {
     // Mode B: LLM knowledge fallback — product name only
     userMessage = buildProductNameOnlyMessage(
       productName!,
+      language,
       productData?.brands
     );
   }

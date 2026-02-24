@@ -11,8 +11,9 @@ const t = getTranslations(lang);
   title={t.chat.title}
   description="Analyze cosmetic product ingredients with AI"
   lang={lang}
+  hideFooter={true}
 >
-  <section class="flex-1 flex flex-col py-2">
+  <div class="flex-1 h-[calc(100vh-4rem)] overflow-hidden">
     <ChatInterface client:load lang={lang} translations={t} />
-  </section>
+  </div>
 </BaseLayout>

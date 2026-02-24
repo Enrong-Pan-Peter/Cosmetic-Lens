@@ -3,9 +3,10 @@ import { analyzeProduct } from '../../lib/analyzer';
 import { createServerClient } from '../../lib/supabase';
 import type { Language } from '../../lib/prompt';
 
-// Rate limits
-const RATE_LIMIT_ANONYMOUS = 5;  // per day
-const RATE_LIMIT_AUTHENTICATED = 20;  // per day
+// Rate limits — disabled for testing. Re-enable by uncommenting the block below.
+// const RATE_LIMIT_ANONYMOUS = 5;  // per day
+// const RATE_LIMIT_AUTHENTICATED = 20;  // per day
+const RATE_LIMIT_DISABLED = true;
 
 export const POST: APIRoute = async ({ request, clientAddress }) => {
   try {
@@ -29,26 +30,27 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
       });
     }
 
-    // Check rate limit (non-blocking — if check fails, allow the request)
-    const identifier = userId || hashIP(clientAddress);
-    const limit = userId ? RATE_LIMIT_AUTHENTICATED : RATE_LIMIT_ANONYMOUS;
-
-    try {
-      const isWithinLimit = await checkRateLimit(identifier, limit);
-      if (!isWithinLimit) {
-        return new Response(JSON.stringify({
-          success: false,
-          error: 'rate_limit_exceeded',
-          message: userId
-            ? 'Daily analysis limit reached. Try again tomorrow!'
-            : 'Daily limit reached. Create an account for more analyses!'
-        }), {
-          status: 429,
-          headers: { 'Content-Type': 'application/json' }
-        });
+    // Check rate limit (currently disabled for testing)
+    if (!RATE_LIMIT_DISABLED) {
+      const identifier = userId || hashIP(clientAddress);
+      const limit = 999; // placeholder
+      try {
+        const isWithinLimit = await checkRateLimit(identifier, limit);
+        if (!isWithinLimit) {
+          return new Response(JSON.stringify({
+            success: false,
+            error: 'rate_limit_exceeded',
+            message: userId
+              ? 'Daily analysis limit reached. Try again tomorrow!'
+              : 'Daily limit reached. Create an account for more analyses!'
+          }), {
+            status: 429,
+            headers: { 'Content-Type': 'application/json' }
+          });
+        }
+      } catch (rateLimitError) {
+        console.warn('Rate limit check failed, allowing request:', rateLimitError);
       }
-    } catch (rateLimitError) {
-      console.warn('Rate limit check failed, allowing request:', rateLimitError);
     }
 
     // Run analysis (delegates to analyzer.ts — now with smart fallback)
@@ -59,12 +61,13 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
       userId
     });
 
-    // Increment rate limit on successful analysis (fire-and-forget, never blocks response)
-    if (result.success && !result.cached) {
-      incrementRateLimit(identifier, userId ? 'user' : 'ip').catch((err) => {
-        console.warn('Rate limit increment failed (non-blocking):', err);
-      });
-    }
+    // Increment rate limit on successful analysis (currently disabled for testing)
+    // if (result.success && !result.cached) {
+    //   const identifier = userId || hashIP(clientAddress);
+    //   incrementRateLimit(identifier, userId ? 'user' : 'ip').catch((err) => {
+    //     console.warn('Rate limit increment failed (non-blocking):', err);
+    //   });
+    // }
 
     // Map error codes to HTTP status codes
     // Note: 'product_not_found' is no longer returned — the LLM fallback handles it
