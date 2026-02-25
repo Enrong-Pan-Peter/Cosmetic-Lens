@@ -48,10 +48,12 @@ export default function ChatInterface({ lang, translations: t }) {
     setChatHistory(loadHistory());
   }, []);
 
-  // Auto-scroll on new messages
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  // Scroll helper — called only when the user submits a message
+  const scrollToBottom = () => {
+    setTimeout(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, 50);
+  };
 
   // -------------------------------------------------------------------
   // Persist helpers (always receive explicit values to avoid stale state)
@@ -131,6 +133,7 @@ export default function ChatInterface({ lang, translations: t }) {
     const userMsg = { role: 'user', content: input };
     const withUser = [...messages, userMsg];
     setMessages(withUser);
+    scrollToBottom();
 
     // Ensure we have a chat id
     let chatId = activeChatId;
@@ -197,13 +200,13 @@ export default function ChatInterface({ lang, translations: t }) {
       />
 
       {/* ---- Main chat column ---- */}
-      <div className="flex-1 flex flex-col min-w-0 bg-[hsl(var(--background))]">
+      <div className="flex-1 flex flex-col min-w-0 h-full bg-gray-50">
         {/* Top bar */}
-        <div className="flex items-center gap-3 h-12 px-4 border-b border-border shrink-0">
+        <div className="flex items-center gap-3 h-12 px-4 border-b border-stone-200 bg-white shrink-0">
           {/* Mobile sidebar toggle */}
           <button
             onClick={() => setSidebarOpen(true)}
-            className="lg:hidden -ml-1 p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+            className="lg:hidden -ml-1 p-1.5 rounded-md text-stone-500 hover:text-stone-700 hover:bg-stone-100 transition-colors"
             aria-label="Open sidebar"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -211,7 +214,7 @@ export default function ChatInterface({ lang, translations: t }) {
             </svg>
           </button>
 
-          <span className="text-sm font-medium text-foreground truncate">
+          <span className="text-sm font-medium text-stone-800 truncate">
             {activeChatId
               ? chatHistory.find((c) => c.id === activeChatId)?.title || t.chat.title
               : t.chat.title}
@@ -221,7 +224,7 @@ export default function ChatInterface({ lang, translations: t }) {
           {messages.length > 0 && (
             <button
               onClick={handleNewChat}
-              className="ml-auto p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+              className="ml-auto p-1.5 rounded-md text-stone-500 hover:text-stone-700 hover:bg-stone-100 transition-colors"
               title={lang === 'zh' ? '新对话' : 'New Chat'}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -233,16 +236,18 @@ export default function ChatInterface({ lang, translations: t }) {
 
         {/* Messages area — scrollable */}
         <div className="flex-1 overflow-y-auto scrollbar-thin">
-          <div className="mx-auto max-w-[48rem] px-4 sm:px-6 py-6">
+          <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-6">
             {messages.length === 0 ? (
               /* ---------- Empty state ---------- */
               <div className="flex flex-col items-center justify-center min-h-[60vh]">
                 <div className="text-center max-w-xl w-full">
-                  <div className="mb-5 text-primary"><Microscope size={48} weight="regular" /></div>
-                  <h1 className="text-2xl sm:text-3xl font-semibold text-foreground mb-2">
+                  <div className="mb-5 flex justify-center text-stone-400">
+                    <Microscope size={48} weight="regular" />
+                  </div>
+                  <h1 className="text-2xl sm:text-3xl font-semibold text-stone-800 mb-2">
                     {t.chat.title}
                   </h1>
-                  <p className="text-muted-foreground mb-10 text-[15px] max-w-md mx-auto">
+                  <p className="text-stone-500 mb-10 text-[15px] max-w-md mx-auto">
                     {lang === 'zh'
                       ? '输入产品名称或粘贴成分表，获取专业的成分分析'
                       : 'Enter a product name or paste an ingredient list for professional analysis'}
@@ -254,9 +259,9 @@ export default function ChatInterface({ lang, translations: t }) {
                       <button
                         key={i}
                         onClick={() => handleAnalyze(ex)}
-                        className="rounded-xl border border-border bg-card p-4 text-sm text-foreground hover:bg-accent/60 transition-colors text-left"
+                        className="rounded-xl border border-stone-200 bg-white p-4 text-sm text-stone-700 hover:bg-stone-50 hover:border-stone-300 transition-colors text-left shadow-sm"
                       >
-                        <div className="text-[11px] font-medium text-muted-foreground mb-1">
+                        <div className="text-[11px] font-medium text-stone-400 mb-1">
                           {lang === 'zh' ? '示例' : 'Example'}
                         </div>
                         <span className="leading-snug">{ex}</span>
@@ -275,7 +280,7 @@ export default function ChatInterface({ lang, translations: t }) {
                 {isLoading && <LoadingIndicator text={t.chat.analyzing} />}
 
                 {error && (
-                  <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive">
+                  <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">
                     {error}
                   </div>
                 )}
@@ -287,15 +292,15 @@ export default function ChatInterface({ lang, translations: t }) {
         </div>
 
         {/* Input bar — pinned to bottom */}
-        <div className="shrink-0 border-t border-border bg-[hsl(var(--background))]">
-          <div className="mx-auto max-w-[48rem] px-4 sm:px-6 py-3">
+        <div className="shrink-0 border-t border-stone-200 bg-white">
+          <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-3">
             <ProductInput
               onSubmit={handleAnalyze}
               isLoading={isLoading}
               placeholder={t.chat.placeholder}
               buttonText={t.chat.analyze_button}
             />
-            <p className="text-center text-[11px] text-muted-foreground/60 mt-2 select-none">
+            <p className="text-center text-[11px] text-stone-400 mt-2 select-none">
               {lang === 'zh'
                 ? '成分分析仅供参考，不构成医疗建议'
                 : 'Ingredient analysis is for reference only, not medical advice'}

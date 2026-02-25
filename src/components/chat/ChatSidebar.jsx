@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { Microscope } from '@phosphor-icons/react';
+import { Microscope, UserCircle, DotsThree } from '@phosphor-icons/react';
 
 export default function ChatSidebar({
   lang,
@@ -10,6 +9,7 @@ export default function ChatSidebar({
   onDeleteChat,
   isOpen,
   onClose,
+  user = null,
 }) {
   const groupByDate = (chats) => {
     const now = new Date();
@@ -42,8 +42,8 @@ export default function ChatSidebar({
   const renderGroup = (label, chats) => {
     if (chats.length === 0) return null;
     return (
-      <div className="mb-2" key={label}>
-        <div className="px-3 py-1.5 text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
+      <div className="mb-3" key={label}>
+        <div className="px-3 py-1.5 text-[11px] font-semibold text-stone-400 uppercase tracking-wider">
           {label}
         </div>
         {chats.map((chat) => (
@@ -58,13 +58,13 @@ export default function ChatSidebar({
             onKeyDown={(e) => {
               if (e.key === 'Enter') { onSelectChat(chat.id); onClose(); }
             }}
-            className={`group mx-2 flex items-center gap-2 rounded-lg px-3 py-2 text-[13px] cursor-pointer transition-colors ${
+            className={`group mx-2 flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-[13px] cursor-pointer transition-colors ${
               chat.id === activeChatId
-                ? 'bg-gray-700/80 text-white'
-                : 'text-gray-300 hover:bg-gray-800/60'
+                ? 'bg-stone-200/80 text-stone-900 font-medium'
+                : 'text-stone-600 hover:bg-stone-200/50 hover:text-stone-800'
             }`}
           >
-            <svg className="w-4 h-4 shrink-0 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 shrink-0 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
             </svg>
             <span className="truncate flex-1">{chat.title}</span>
@@ -73,7 +73,7 @@ export default function ChatSidebar({
                 e.stopPropagation();
                 onDeleteChat(chat.id);
               }}
-              className="opacity-0 group-hover:opacity-100 shrink-0 p-1 rounded hover:bg-gray-600 text-gray-500 hover:text-gray-200 transition-all"
+              className="opacity-0 group-hover:opacity-100 shrink-0 p-1 rounded hover:bg-stone-300/60 text-stone-400 hover:text-stone-600 transition-all"
               title={lang === 'zh' ? '删除' : 'Delete'}
             >
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -91,7 +91,7 @@ export default function ChatSidebar({
       {/* Mobile backdrop */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/60 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/40 z-40 lg:hidden"
           onClick={onClose}
         />
       )}
@@ -99,12 +99,15 @@ export default function ChatSidebar({
       {/* Sidebar panel */}
       <aside
         className={`
-          fixed top-0 left-0 z-50 h-full w-[260px] bg-gray-900 flex flex-col
+          fixed top-0 left-0 z-50 h-screen w-[260px] bg-stone-100 border-r border-stone-200 flex flex-col
           transition-transform duration-300 ease-in-out
-          lg:relative lg:z-auto lg:translate-x-0
+          lg:relative lg:z-auto lg:translate-x-0 lg:h-full
           ${isOpen ? 'translate-x-0' : '-translate-x-full'}
         `}
       >
+        {/* Spacer for navbar on mobile (fixed overlay needs this) */}
+        <div className="h-16 shrink-0 lg:hidden" />
+
         {/* New Chat button */}
         <div className="p-3">
           <button
@@ -112,7 +115,7 @@ export default function ChatSidebar({
               onNewChat();
               onClose();
             }}
-            className="w-full flex items-center gap-2.5 rounded-lg border border-gray-700 px-3 py-2.5 text-[13px] font-medium text-gray-200 hover:bg-gray-800 transition-colors"
+            className="w-full flex items-center gap-2.5 rounded-lg border border-stone-300 bg-white px-3 py-2.5 text-[13px] font-medium text-stone-700 hover:bg-stone-50 transition-colors shadow-sm"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
@@ -124,7 +127,7 @@ export default function ChatSidebar({
         {/* History list */}
         <div className="flex-1 overflow-y-auto py-1 sidebar-scrollbar">
           {chatHistory.length === 0 ? (
-            <div className="px-3 py-12 text-center text-[13px] text-gray-600">
+            <div className="px-3 py-12 text-center text-[13px] text-stone-400">
               {lang === 'zh' ? '暂无聊天记录' : 'No chat history yet'}
             </div>
           ) : (
@@ -137,11 +140,20 @@ export default function ChatSidebar({
           )}
         </div>
 
-        {/* Bottom brand strip */}
-        <div className="px-4 py-3 border-t border-gray-800">
-          <div className="flex items-center gap-2 text-gray-500 text-xs">
-            <Microscope size={14} weight="regular" />
-            <span className="font-medium">{lang === 'zh' ? '成分透视' : 'CosmeticLens'}</span>
+        {/* Bottom user account section */}
+        <div className="px-3 py-3 border-t border-stone-200 shrink-0">
+          <div className="flex items-center gap-2.5 rounded-lg px-2 py-2 hover:bg-stone-200/50 cursor-pointer transition-colors">
+            <div className="h-8 w-8 shrink-0 rounded-full bg-stone-300 flex items-center justify-center text-white">
+              {user?.avatar ? (
+                <img src={user.avatar} alt="" className="h-8 w-8 rounded-full object-cover" />
+              ) : (
+                <UserCircle size={22} weight="fill" />
+              )}
+            </div>
+            <span className="flex-1 text-sm font-medium text-stone-700 truncate">
+              {user?.name || (lang === 'zh' ? '访客' : 'Guest')}
+            </span>
+            <DotsThree size={18} weight="bold" className="text-stone-400 shrink-0" />
           </div>
         </div>
       </aside>

@@ -108,7 +108,7 @@
     @apply bg-muted-foreground/40;
   }
 
-  /* Sidebar scrollbar — dark backgrounds */
+  /* Sidebar scrollbar — light/ivory background */
   .sidebar-scrollbar::-webkit-scrollbar {
     width: 5px;
   }
@@ -118,12 +118,12 @@
   }
 
   .sidebar-scrollbar::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(0, 0, 0, 0.1);
     border-radius: 9999px;
   }
 
   .sidebar-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.22);
+    background: rgba(0, 0, 0, 0.18);
   }
 }
 

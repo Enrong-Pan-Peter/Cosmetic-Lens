@@ -35,7 +35,7 @@ export default function ProductInput({ onSubmit, isLoading, placeholder }) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="relative flex items-end gap-2 rounded-2xl border border-input bg-card shadow-sm px-4 py-2.5 focus-within:border-ring focus-within:ring-1 focus-within:ring-ring transition-shadow">
+      <div className="relative flex items-end gap-2 rounded-2xl border border-stone-300 bg-white shadow-sm px-4 py-2.5 focus-within:border-stone-400 focus-within:ring-1 focus-within:ring-stone-300 transition-shadow">
         <textarea
           ref={textareaRef}
           value={input}
@@ -44,13 +44,13 @@ export default function ProductInput({ onSubmit, isLoading, placeholder }) {
           placeholder={placeholder}
           disabled={isLoading}
           rows={1}
-          className="flex-1 resize-none bg-transparent text-sm leading-6 text-foreground placeholder:text-muted-foreground focus:outline-none disabled:opacity-50 max-h-[200px] py-0.5"
+          className="flex-1 resize-none bg-transparent text-sm leading-6 text-stone-800 placeholder:text-stone-400 focus:outline-none disabled:opacity-50 max-h-[200px] py-0.5"
         />
 
         <button
           type="submit"
           disabled={!input.trim() || isLoading}
-          className="shrink-0 flex items-center justify-center h-8 w-8 rounded-lg bg-foreground text-background disabled:opacity-25 hover:bg-foreground/85 transition-colors"
+          className="shrink-0 flex items-center justify-center h-8 w-8 rounded-lg bg-stone-800 text-white disabled:opacity-25 hover:bg-stone-700 transition-colors"
           aria-label="Send"
         >
           {isLoading ? (

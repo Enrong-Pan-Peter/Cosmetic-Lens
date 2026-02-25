@@ -41,7 +41,7 @@ const fullTitle = `${title} | ${siteName}`;
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
 </head>
-<body class="flex min-h-screen w-full flex-col">
+<body class={`flex w-full flex-col ${hideFooter ? 'h-screen overflow-hidden' : 'min-h-screen'}`}>
   <Navigation lang={lang} />
 
   <main class="flex flex-1 flex-col overflow-hidden">
