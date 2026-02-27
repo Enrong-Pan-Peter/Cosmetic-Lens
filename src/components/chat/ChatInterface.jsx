@@ -4,6 +4,7 @@ import ChatSidebar from './ChatSidebar';
 import ChatMessage from './ChatMessage';
 import ProductInput from './ProductInput';
 import LoadingIndicator from './LoadingIndicator';
+import { useAuth } from '../../lib/useAuth';
 
 // ---------------------------------------------------------------------------
 // localStorage helpers
@@ -35,6 +36,7 @@ function persistHistory(history) {
 // Component
 // ---------------------------------------------------------------------------
 export default function ChatInterface({ lang, translations: t }) {
+  const { user } = useAuth();
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -42,6 +44,10 @@ export default function ChatInterface({ lang, translations: t }) {
   const [chatHistory, setChatHistory] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const messagesEndRef = useRef(null);
+
+  const displayName = user?.user_metadata?.display_name
+    || user?.email?.split('@')[0]
+    || null;
 
   // Bootstrap from localStorage
   useEffect(() => {
@@ -135,7 +141,6 @@ export default function ChatInterface({ lang, translations: t }) {
     setMessages(withUser);
     scrollToBottom();
 
-    // Ensure we have a chat id
     let chatId = activeChatId;
     if (!chatId) {
       chatId = generateId();
@@ -145,10 +150,16 @@ export default function ChatInterface({ lang, translations: t }) {
 
     setIsLoading(true);
     try {
-      const res = await fetch('/api/analyze', {
+      // Send full conversation history to the multi-turn chat endpoint
+      const apiMessages = withUser.map((m) => ({
+        role: m.role,
+        content: m.content,
+      }));
+
+      const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ productName: input, language: lang }),
+        body: JSON.stringify({ messages: apiMessages, language: lang }),
       });
       const data = await res.json();
 
@@ -156,9 +167,7 @@ export default function ChatInterface({ lang, translations: t }) {
         const assistantMsg = {
           role: 'assistant',
           content: data.data,
-          cached: data.cached,
           source: data.source,
-          product: data.product,
         };
         const full = [...withUser, assistantMsg];
         setMessages(full);
@@ -173,7 +182,7 @@ export default function ChatInterface({ lang, translations: t }) {
         }
       }
     } catch (err) {
-      console.error('Analysis error:', err);
+      console.error('Chat error:', err);
       setError(t.chat.error_generic);
     } finally {
       setIsLoading(false);
@@ -197,6 +206,7 @@ export default function ChatInterface({ lang, translations: t }) {
         onDeleteChat={handleDeleteChat}
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
+        user={displayName ? { name: displayName } : null}
       />
 
       {/* ---- Main chat column ---- */}

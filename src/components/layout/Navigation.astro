@@ -14,6 +14,7 @@ const navLinks = [
   { href: `/${lang}/`, label: t.nav.home },
   { href: `/${lang}/chat`, label: t.nav.analyze },
   { href: `/${lang}/glossary`, label: t.nav.glossary },
+  { href: `/${lang}/education`, label: t.nav.education },
 ];
 ---
 
@@ -28,7 +29,7 @@ const navLinks = [
     </a>
 
     <!-- Desktop Navigation -->
-    <nav class="hidden md:flex items-center gap-8 lg:gap-12">
+    <nav class="hidden md:flex items-center gap-8 lg:gap-10">
       {navLinks.map(link => (
         <a
           href={link.href}
@@ -43,9 +44,63 @@ const navLinks = [
       ))}
     </nav>
 
-    <!-- Right side: Language + Mobile -->
+    <!-- Right side: Auth + Language + Mobile -->
     <div class="flex items-center gap-3">
       <LanguageSwitcher client:load lang={lang} currentPath={currentPath} />
+
+      <!-- Auth buttons (shown when logged out) -->
+      <div id="auth-buttons" class="hidden items-center gap-2">
+        <a
+          href={`/${lang}/login`}
+          class="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors px-3 py-1.5"
+        >
+          {t.nav.login}
+        </a>
+        <a
+          href={`/${lang}/signup`}
+          class="text-sm font-medium bg-primary text-primary-foreground px-4 py-1.5 rounded-lg hover:bg-primary/90 transition-colors"
+        >
+          {t.nav.signup}
+        </a>
+      </div>
+
+      <!-- Profile dropdown (shown when logged in) -->
+      <div id="profile-menu" class="hidden relative">
+        <button
+          id="profile-button"
+          class="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground px-2 py-1.5 rounded-lg hover:bg-accent transition-colors"
+        >
+          <span class="w-7 h-7 bg-primary/10 rounded-full flex items-center justify-center">
+            <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+          </span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <div id="profile-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-background rounded-lg shadow-lg border border-border z-50 py-1">
+          <a
+            href={`/${lang}/profile`}
+            class="block px-4 py-2 text-sm text-foreground hover:bg-accent transition-colors"
+          >
+            {t.nav.profile}
+          </a>
+          <a
+            href={`/${lang}/history`}
+            class="block px-4 py-2 text-sm text-foreground hover:bg-accent transition-colors"
+          >
+            {t.nav.history}
+          </a>
+          <div class="border-t border-border my-1"></div>
+          <button
+            id="logout-button"
+            class="w-full text-left px-4 py-2 text-sm text-destructive hover:bg-accent transition-colors"
+          >
+            {t.nav.logout}
+          </button>
+        </div>
+      </div>
 
       <!-- Mobile menu button -->
       <button
@@ -78,12 +133,107 @@ const navLinks = [
           {link.label}
         </a>
       ))}
+      <div class="border-t border-border my-2 pt-2">
+        <div id="mobile-auth-buttons">
+          <a
+            href={`/${lang}/login`}
+            class="block rounded-md px-3 py-2 text-base font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+          >
+            {t.nav.login}
+          </a>
+          <a
+            href={`/${lang}/signup`}
+            class="block rounded-md px-3 py-2 text-base font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+          >
+            {t.nav.signup}
+          </a>
+        </div>
+        <div id="mobile-profile-links" class="hidden">
+          <a
+            href={`/${lang}/profile`}
+            class="block rounded-md px-3 py-2 text-base font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+          >
+            {t.nav.profile}
+          </a>
+          <a
+            href={`/${lang}/history`}
+            class="block rounded-md px-3 py-2 text-base font-medium text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+          >
+            {t.nav.history}
+          </a>
+          <button
+            id="mobile-logout-button"
+            class="block w-full text-left rounded-md px-3 py-2 text-base font-medium text-destructive hover:bg-accent"
+          >
+            {t.nav.logout}
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </header>
 
 <script>
+  import { supabase } from '../../lib/supabase';
+
+  async function updateAuthUI() {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const authButtons = document.getElementById('auth-buttons');
+      const profileMenu = document.getElementById('profile-menu');
+      const mobileAuth = document.getElementById('mobile-auth-buttons');
+      const mobileProfile = document.getElementById('mobile-profile-links');
+
+      if (session) {
+        authButtons?.classList.add('hidden');
+        authButtons?.classList.remove('md:flex');
+        profileMenu?.classList.remove('hidden');
+        mobileAuth?.classList.add('hidden');
+        mobileProfile?.classList.remove('hidden');
+      } else {
+        authButtons?.classList.remove('hidden');
+        authButtons?.classList.add('md:flex');
+        profileMenu?.classList.add('hidden');
+        mobileAuth?.classList.remove('hidden');
+        mobileProfile?.classList.add('hidden');
+      }
+    } catch {
+      // Supabase not configured yet — show auth buttons by default
+    }
+  }
+
+  // Profile dropdown toggle
+  document.getElementById('profile-button')?.addEventListener('click', () => {
+    document.getElementById('profile-dropdown')?.classList.toggle('hidden');
+  });
+
+  // Close dropdown on outside click
+  document.addEventListener('click', (e) => {
+    const profileMenu = document.getElementById('profile-menu');
+    const dropdown = document.getElementById('profile-dropdown');
+    if (profileMenu && dropdown && !profileMenu.contains(e.target as Node)) {
+      dropdown.classList.add('hidden');
+    }
+  });
+
+  // Logout handler
+  async function handleLogout() {
+    await supabase.auth.signOut();
+    const lang = document.documentElement.lang === 'zh-CN' ? 'zh' : 'en';
+    window.location.href = `/${lang}/`;
+  }
+
+  document.getElementById('logout-button')?.addEventListener('click', handleLogout);
+  document.getElementById('mobile-logout-button')?.addEventListener('click', handleLogout);
+
+  // Mobile menu toggle
   document.getElementById('mobile-menu-button')?.addEventListener('click', () => {
     document.getElementById('mobile-menu')?.classList.toggle('hidden');
+  });
+
+  updateAuthUI();
+
+  supabase.auth.onAuthStateChange(() => {
+    updateAuthUI();
   });
 </script>

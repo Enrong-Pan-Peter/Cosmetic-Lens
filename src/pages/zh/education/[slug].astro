@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../../../components/layout/BaseLayout.astro';
+import { getTranslations } from '../../../i18n/utils';
+
+export const prerender = true;
+
+const lang = 'zh';
+const t = getTranslations(lang);
+
+export async function getStaticPaths() {
+  const articleGlob = import.meta.glob('../../../../content/zh/articles/*.md', { eager: true });
+  return Object.values(articleGlob).map((article: any) => ({
+    params: { slug: article.frontmatter.slug },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+const { Content } = article;
+---
+
+<BaseLayout
+  title={article.frontmatter.title}
+  description={article.frontmatter.description}
+  lang={lang}
+>
+  <article class="max-w-3xl mx-auto px-4 py-10">
+    <a
+      href={`/${lang}/education`}
+      class="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors"
+    >
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      {t.education.back_to_articles}
+    </a>
+
+    <header class="mb-8">
+      {article.frontmatter.category && (
+        <span class="inline-block px-3 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full mb-4">
+          {article.frontmatter.category}
+        </span>
+      )}
+      <h1 class="text-3xl font-bold text-foreground mb-3">{article.frontmatter.title}</h1>
+      <p class="text-muted-foreground">{article.frontmatter.description}</p>
+      <div class="flex items-center gap-4 mt-4 text-sm text-muted-foreground">
+        <span>{article.frontmatter.readingTime} 分钟阅读</span>
+        <span>{article.frontmatter.author}</span>
+      </div>
+    </header>
+
+    <div class="prose prose-stone max-w-none prose-headings:text-foreground prose-p:text-muted-foreground prose-li:text-muted-foreground prose-strong:text-foreground">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>

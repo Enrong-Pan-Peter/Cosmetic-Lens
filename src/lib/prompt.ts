@@ -288,3 +288,71 @@ function getPriceLabel(price: string, lang: Language): string {
   };
   return labels[price]?.[lang] || price;
 }
+
+// ================================================
+// HEURISTIC: does the input look like a product name?
+// ================================================
+
+const QUESTION_STARTS_EN = /^\s*(what|how|which|why|who|when|where|is|are|can|do|does|should|could|would|tell|explain|compare|recommend|suggest|find)/i;
+const QUESTION_STARTS_ZH = /^\s*(什么|怎么|为什么|哪个|哪些|是否|能不能|可以|推荐|比较|建议|告诉|解释|找)/;
+const KNOWN_BRANDS = /\b(cerave|la roche[- ]posay|the ordinary|neutrogena|cetaphil|olay|l'?oreal|laneige|innisfree|sulwhasoo|sk[- ]?ii|clinique|estee lauder|drunk elephant|paula'?s choice|cosrx|missha|bioderma|avene|vichy|eucerin|first aid beauty|tatcha|glow recipe|kiehl'?s|shiseido|fresh|origins|philosophy|murad|dermalogica|sunday riley|peter thomas roth|belief|珂润|薇诺娜|玉泽|理肤泉|雅漾|适乐肤|修丽可|欧莱雅|兰蔻|资生堂|黛珂|至本|润百颜|敷尔佳|完美日记)\b/i;
+
+/**
+ * Returns `true` if the text likely names a product,
+ * `false` if it's clearly a question/general text,
+ * `'maybe'` when uncertain (try OBF lookup but don't block on failure).
+ */
+export function looksLikeProductName(text: string): boolean | 'maybe' {
+  const trimmed = text.trim();
+
+  // Clearly a question
+  if (/[?？]/.test(trimmed)) return false;
+  if (QUESTION_STARTS_EN.test(trimmed)) return false;
+  if (QUESTION_STARTS_ZH.test(trimmed)) return false;
+
+  // Long text is almost never just a product name
+  if (trimmed.length > 100) return false;
+
+  // Looks like a raw ingredient list (many commas)
+  if ((trimmed.match(/,/g) || []).length >= 4) return false;
+
+  // Contains a known brand → likely a product
+  if (KNOWN_BRANDS.test(trimmed)) return true;
+
+  // Short text with mostly title-case words
+  if (trimmed.length <= 60 && /^[A-Z]/.test(trimmed)) return 'maybe';
+
+  return 'maybe';
+}
+
+// ================================================
+// ENRICH a user message with product / ingredient data
+// ================================================
+
+export function enrichMessageWithIngredients(
+  userMessage: string,
+  productName: string,
+  ingredientList: string | null,
+  ingredientData: any[],
+  source: IngredientSource,
+  language: Language,
+): string {
+  const parts: string[] = [`User asks: ${userMessage}`];
+
+  parts.push(`\n[source: ${source}]`);
+  parts.push(`Product: ${productName}`);
+
+  if (ingredientList) {
+    parts.push(`Ingredient List:\n${ingredientList}`);
+  }
+
+  if (ingredientData.length > 0) {
+    parts.push(`Relevant Ingredient Data:\n\`\`\`json\n${JSON.stringify(ingredientData, null, 2)}\n\`\`\``);
+  }
+
+  if (language === 'zh') {
+    parts.push('\n**重要**: 请用自然流畅的简体中文回复。');
+  }
+
+  return parts.join('\n');
+}

@@ -1,0 +1,89 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "last_updated": "2025-02-01",
+    "total_facts": 10
+  },
+  "facts": [
+    {
+      "id": "ha-water-weight",
+      "title": "Hyaluronic Acid is a Hydration Superstar",
+      "content": "A single gram of hyaluronic acid can hold up to 6 liters of water—that's about 12 standard water bottles! This incredible water-binding capacity is why it's such a popular ingredient in hydrating serums. However, in very dry climates with low humidity, HA can actually pull moisture FROM your skin if there's nothing in the air to draw from. Always seal it with a moisturizer!",
+      "ingredient_link": "sodium-hyaluronate",
+      "icon": "💧",
+      "category": "humectant"
+    },
+    {
+      "id": "retinol-accident",
+      "title": "Retinol's Anti-Aging Powers Were Discovered by Accident",
+      "content": "Retinoids were originally developed in the 1970s purely to treat acne. Dermatologists noticed that patients' skin wasn't just clearer—it was also becoming smoother, more even-toned, and more youthful-looking. This happy accident launched the entire topical anti-aging industry we know today!",
+      "ingredient_link": "retinol",
+      "icon": "✨",
+      "category": "active"
+    },
+    {
+      "id": "fragrance-mystery",
+      "title": "\"Fragrance\" is an Umbrella for 3,000+ Chemicals",
+      "content": "When you see 'Fragrance' or 'Parfum' on an ingredient list, it's not just one thing—it's an umbrella term that can contain any combination of over 3,000 different scent chemicals. Companies aren't required to disclose the specific blend because it's considered a trade secret. If you have sensitive skin, 'fragrance-free' products are your friends!",
+      "ingredient_link": null,
+      "icon": "🔍",
+      "category": "fragrance"
+    },
+    {
+      "id": "vitamin-c-diva",
+      "title": "Vitamin C: The Most High-Maintenance Ingredient",
+      "content": "Pure Vitamin C (L-Ascorbic Acid) starts oxidizing the moment it's exposed to light, air, or heat, transforming from clear to orange, then brown. An oxidized vitamin C serum isn't harmful, but it's much less effective. That's why quality vitamin C products come in dark, airless packaging. If your serum has turned the color of iced tea, it's time for a fresh bottle!",
+      "ingredient_link": "ascorbic-acid",
+      "icon": "🍊",
+      "category": "active"
+    },
+    {
+      "id": "ceramides-native",
+      "title": "Ceramides: You Already Have Them!",
+      "content": "Ceramides make up about 50% of your skin's natural barrier! Think of your skin barrier like a brick wall: skin cells are the bricks, and ceramides are the mortar holding everything together. When products add ceramides, they're essentially replenishing what your skin already produces but may be losing due to aging, harsh cleansers, or environmental damage.",
+      "ingredient_link": "ceramides",
+      "icon": "🧱",
+      "category": "emollient"
+    },
+    {
+      "id": "spf-math",
+      "title": "SPF Math: It's Not What You Think",
+      "content": "SPF 30 doesn't block twice as much UV as SPF 15! SPF 15 blocks about 93% of UVB rays, SPF 30 blocks about 97%, and SPF 50 blocks about 98%. The returns diminish significantly after SPF 30. What matters MORE is applying enough (about 1/4 teaspoon for your face) and reapplying every 2 hours!",
+      "ingredient_link": "zinc-oxide",
+      "icon": "☀️",
+      "category": "sunscreen"
+    },
+    {
+      "id": "silicone-myths",
+      "title": "Silicones Don't Suffocate Your Skin",
+      "content": "Despite persistent myths, silicones like dimethicone don't 'suffocate' your skin or clog pores. They're actually non-comedogenic and create a breathable, protective layer—the molecules are simply too large to penetrate into pores. If you don't like the texture of silicones, that's a valid personal preference—just don't avoid them out of fear!",
+      "ingredient_link": "dimethicone",
+      "icon": "🫧",
+      "category": "emollient"
+    },
+    {
+      "id": "ingredient-order",
+      "title": "Ingredient Lists Are Like Recipes",
+      "content": "Cosmetic ingredient lists are legally required to be in descending order of concentration. Ingredients below 1% concentration can be listed in any order. So if that trendy active ingredient is listed near the very end? There's probably not enough of it to actually do anything. Look for key actives in the first half of the list!",
+      "ingredient_link": null,
+      "icon": "📋",
+      "category": "general"
+    },
+    {
+      "id": "preservatives-necessary",
+      "title": "Preservatives Keep You Safe",
+      "content": "Despite the 'preservative-free' marketing trend, preservatives are actually essential in any water-based product. Without them, your moisturizer would be a petri dish of bacteria, mold, and fungi within days. Some 'natural' or 'preservative-free' products have been recalled due to dangerous microbial contamination. A preserved product is a SAFE product!",
+      "ingredient_link": "phenoxyethanol",
+      "icon": "🛡️",
+      "category": "preservative"
+    },
+    {
+      "id": "niacinamide-allrounder",
+      "title": "Niacinamide: The Swiss Army Knife of Skincare",
+      "content": "Niacinamide (Vitamin B3) can help with oil control, enlarged pores, uneven skin tone, fine lines, dullness, and skin barrier function—all while being gentle enough for sensitive skin. Unlike many actives that are either 'exciting but irritating' or 'gentle but boring,' niacinamide delivers real results without drama.",
+      "ingredient_link": "niacinamide",
+      "icon": "🌟",
+      "category": "active"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../../components/layout/BaseLayout.astro';
+import LoginForm from '../../components/auth/LoginForm.jsx';
+import { getTranslations } from '../../i18n/utils';
+
+const lang = 'en';
+const t = getTranslations(lang);
+---
+
+<BaseLayout
+  title={t.auth.login_title}
+  description="Log in to CosmeticLens"
+  lang={lang}
+>
+  <div class="flex-1 flex items-center justify-center px-4 py-12">
+    <LoginForm client:load lang={lang} translations={t} />
+  </div>
+</BaseLayout>

@@ -1,0 +1,89 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "last_updated": "2025-02-01",
+    "total_facts": 10
+  },
+  "facts": [
+    {
+      "id": "ha-water-weight",
+      "title": "玻尿酸的超强锁水能力",
+      "content": "一克玻尿酸可以吸附高达6升水——相当于12瓶标准矿泉水！这种惊人的锁水能力使它成为保湿精华中的明星成分。但在非常干燥的低湿度环境中，玻尿酸反而可能从你的皮肤深层\"抢走\"水分。所以用完玻尿酸产品后，一定要涂上保湿霜锁住水分！",
+      "ingredient_link": "sodium-hyaluronate",
+      "icon": "💧",
+      "category": "humectant"
+    },
+    {
+      "id": "retinol-accident",
+      "title": "视黄醇的抗衰老功效是意外发现的",
+      "content": "视黄醇类成分最初是在1970年代作为治疗痤疮的药物开发的。皮肤科医生发现，使用这种药物的患者皮肤不仅痘痘好了，还变得更光滑、肤色更均匀、看起来更年轻。这个意外发现催生了我们今天熟知的整个外用抗衰老产业。",
+      "ingredient_link": "retinol",
+      "icon": "✨",
+      "category": "active"
+    },
+    {
+      "id": "fragrance-mystery",
+      "title": "\"香精\"可能包含3000多种化学物质",
+      "content": "当你在成分表上看到\"香精\"或\"Fragrance/Parfum\"时，它可能包含3000多种不同香味化学物质的任意组合。由于被视为商业机密，公司不需要披露具体配方。这就是为什么香精是导致皮肤敏感最常见的原因之一。如果你是敏感肌，\"无香料\"产品是你的好朋友！",
+      "ingredient_link": null,
+      "icon": "🔍",
+      "category": "fragrance"
+    },
+    {
+      "id": "vitamin-c-diva",
+      "title": "维C精华：护肤界的\"娇气公主\"",
+      "content": "纯维生素C（L-抗坏血酸）一旦接触到光、空气或高温，就会开始氧化，从透明或淡黄色变成橙色，再变成棕色。氧化的维C精华虽然无害，但效果会大打折扣。这就是为什么优质的维C产品都用深色、真空包装。如果你的精华液已经变成冰红茶的颜色，是时候换一瓶新的了！",
+      "ingredient_link": "ascorbic-acid",
+      "icon": "🍊",
+      "category": "active"
+    },
+    {
+      "id": "ceramides-native",
+      "title": "神经酰胺：你皮肤里本来就有！",
+      "content": "神经酰胺本来就占你皮肤天然屏障的50%左右！把你的皮肤屏障想象成一堵砖墙：皮肤细胞是砖块，神经酰胺就是把一切粘在一起的砂浆。护肤品中添加神经酰胺，本质上是在补充你的皮肤可能因为年龄增长、过度清洁或环境损害而流失的成分。",
+      "ingredient_link": "ceramides",
+      "icon": "🧱",
+      "category": "emollient"
+    },
+    {
+      "id": "spf-math",
+      "title": "防晒指数的数学：不是简单翻倍",
+      "content": "SPF 30并不是SPF 15防护力的两倍！SPF 15能阻挡约93%的UVB，SPF 30阻挡约97%，SPF 50阻挡约98%。超过SPF 30后，防护效果的提升变得很小。更重要的是涂够量（面部大约需要一元硬币大小）并且每两小时补涂一次！",
+      "ingredient_link": "zinc-oxide",
+      "icon": "☀️",
+      "category": "sunscreen"
+    },
+    {
+      "id": "silicone-myths",
+      "title": "硅油不会让你的皮肤\"窒息\"",
+      "content": "尽管有这样的传言，但硅油（如聚二甲基硅氧烷）其实不会让皮肤\"窒息\"或堵塞毛孔。它们实际上是非致粉刺性的，会形成一层透气的保护膜——硅油分子太大，根本无法渗透到毛孔中。如果你单纯不喜欢硅油的质感，这完全可以理解——只是不要因为害怕而避开它！",
+      "ingredient_link": "dimethicone",
+      "icon": "🫧",
+      "category": "emollient"
+    },
+    {
+      "id": "ingredient-order",
+      "title": "成分表就像一份食谱",
+      "content": "化妆品成分表在法律上要求按浓度从高到低排列。浓度低于1%的成分可以任意顺序排列。所以如果那个时髦的活性成分排在最后面？很可能它的含量少到根本起不了作用。关键活性成分要看成分表的前半部分！",
+      "ingredient_link": null,
+      "icon": "📋",
+      "category": "general"
+    },
+    {
+      "id": "preservatives-necessary",
+      "title": "防腐剂其实在保护你",
+      "content": "尽管\"无防腐剂\"是一个流行的营销趋势，但防腐剂对任何含水产品来说都是必需的。没有它们，你的保湿霜在几天内就会变成细菌、霉菌和真菌的培养皿。一些\"天然\"或\"无防腐剂\"的产品曾因危险的微生物污染而被召回。有防腐剂的产品才是安全的产品！",
+      "ingredient_link": "phenoxyethanol",
+      "icon": "🛡️",
+      "category": "preservative"
+    },
+    {
+      "id": "niacinamide-allrounder",
+      "title": "烟酰胺：护肤界的\"瑞士军刀\"",
+      "content": "烟酰胺（维生素B3）可以帮助控油、缩小毛孔外观、均匀肤色、减少细纹、改善暗沉、增强皮肤屏障——同时对敏感肌也足够温和。不像很多活性成分要么\"效果好但刺激\"要么\"温和但平庸\"，烟酰胺能在不引起问题的情况下带来真正的效果。",
+      "ingredient_link": "niacinamide",
+      "icon": "🌟",
+      "category": "active"
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../../../components/layout/BaseLayout.astro';
+import ArticleList from '../../../components/education/ArticleList.jsx';
+import FunFactCard from '../../../components/education/FunFactCard.jsx';
+import { getTranslations } from '../../../i18n/utils';
+
+export const prerender = true;
+
+const lang = 'en';
+const t = getTranslations(lang);
+
+// Load fun facts
+import funFactsData from '../../../../content/en/fun-facts.json';
+const funFacts = funFactsData.facts;
+
+// Load articles from markdown files
+const articleGlob = import.meta.glob('../../../../content/en/articles/*.md', { eager: true });
+const articles = Object.values(articleGlob).map((file: any) => ({
+  ...file.frontmatter,
+  slug: file.frontmatter.slug,
+}));
+---
+
+<BaseLayout
+  title={t.education.title}
+  description="Learn about cosmetic ingredients and skincare science"
+  lang={lang}
+>
+  <div class="max-w-5xl mx-auto px-4 py-10">
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <h1 class="text-3xl font-bold text-foreground">{t.education.title}</h1>
+      <p class="text-muted-foreground mt-2 text-lg">{t.education.subtitle}</p>
+    </div>
+
+    <!-- Fun Facts Section -->
+    <section class="mb-16">
+      <h2 class="text-xl font-semibold text-foreground mb-2">{t.education.fun_facts_title}</h2>
+      <p class="text-muted-foreground mb-6">{t.education.fun_facts_subtitle}</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {funFacts.map((fact) => (
+          <FunFactCard
+            client:visible
+            fact={fact}
+            glossaryPath={`/${lang}/glossary`}
+            lang={lang}
+          />
+        ))}
+      </div>
+    </section>
+
+    <!-- Articles Section -->
+    <section>
+      <h2 class="text-xl font-semibold text-foreground mb-6">
+        {lang === 'zh' ? '文章' : 'Articles'}
+      </h2>
+      <ArticleList
+        client:load
+        articles={articles}
+        lang={lang}
+        basePath={`/${lang}/education`}
+        translations={t}
+      />
+    </section>
+  </div>
+</BaseLayout>

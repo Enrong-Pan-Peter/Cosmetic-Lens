@@ -15,6 +15,14 @@ interface SearchResponse {
 
 const BASE_URL = 'https://world.openbeautyfacts.org';
 const USER_AGENT = 'CosmeticLens/1.0 (https://cosmeticlens.com)';
+const REQUEST_TIMEOUT_MS = 5000;
+
+function fetchWithTimeout(url: string, options: RequestInit & { timeout?: number } = {}): Promise<Response> {
+  const { timeout = REQUEST_TIMEOUT_MS, ...fetchOptions } = options;
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeout);
+  return fetch(url, { ...fetchOptions, signal: controller.signal }).finally(() => clearTimeout(id));
+}
 
 export async function searchProduct(query: string): Promise<ProductSearchResult | null> {
   try {
@@ -24,10 +32,9 @@ export async function searchProduct(query: string): Promise<ProductSearchResult 
     url.searchParams.set('page_size', '5');
     url.searchParams.set('fields', 'product_name,brands,ingredients_text,ingredients_text_en,image_url,categories');
 
-    const response = await fetch(url.toString(), {
-      headers: {
-        'User-Agent': USER_AGENT
-      }
+    const response = await fetchWithTimeout(url.toString(), {
+      headers: { 'User-Agent': USER_AGENT },
+      timeout: REQUEST_TIMEOUT_MS,
     });
 
     if (!response.ok) {
@@ -57,10 +64,9 @@ export async function getProductByBarcode(barcode: string): Promise<ProductSearc
   try {
     const url = `${BASE_URL}/api/v0/product/${barcode}.json`;
 
-    const response = await fetch(url, {
-      headers: {
-        'User-Agent': USER_AGENT
-      }
+    const response = await fetchWithTimeout(url, {
+      headers: { 'User-Agent': USER_AGENT },
+      timeout: REQUEST_TIMEOUT_MS,
     });
 
     if (!response.ok) {

@@ -1,3 +1,7 @@
+// ================================================================
+// Single-turn interfaces (used by /api/analyze)
+// ================================================================
+
 interface OpenAIRequest {
   systemPrompt: string;
   userMessage: string;
@@ -11,12 +15,33 @@ interface OpenAIResponse {
   error?: string;
 }
 
+// ================================================================
+// Multi-turn interfaces (used by /api/chat)
+// ================================================================
+
+export interface ChatMessage {
+  role: 'system' | 'user' | 'assistant';
+  content: string;
+}
+
+export interface ChatRequest {
+  messages: ChatMessage[];
+  temperature?: number;
+  maxTokens?: number;
+}
+
+// ================================================================
+// Shared internals
+// ================================================================
+
 const PRIMARY_MODEL = 'gpt-4.1-mini';
 const FALLBACK_MODEL = 'gpt-4o-mini';
 
-async function callOpenAIModel(
+async function callModel(
   model: string,
-  { systemPrompt, userMessage, temperature = 0.7, maxTokens = 4096 }: OpenAIRequest
+  messages: ChatMessage[],
+  temperature = 0.7,
+  maxTokens = 4096,
 ): Promise<OpenAIResponse> {
   const apiKey = import.meta.env.OPENAI_API_KEY;
 
@@ -30,14 +55,11 @@ async function callOpenAIModel(
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
+        Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
         model,
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: userMessage },
-        ],
+        messages,
         temperature,
         max_tokens: maxTokens,
         top_p: 0.95,
@@ -51,7 +73,6 @@ async function callOpenAIModel(
     }
 
     const data = await response.json();
-
     const content = data.choices?.[0]?.message?.content;
 
     if (!content) {
@@ -59,7 +80,6 @@ async function callOpenAIModel(
     }
 
     return { success: true, content };
-
   } catch (error) {
     console.error(`OpenAI API error (${model}):`, error);
     return {
@@ -69,45 +89,85 @@ async function callOpenAIModel(
   }
 }
 
-export async function callOpenAI(request: OpenAIRequest): Promise<OpenAIResponse> {
-  // Try primary model first
-  const primaryResult = await callOpenAIModel(PRIMARY_MODEL, request);
-  if (primaryResult.success) {
-    return primaryResult;
-  }
-
-  // Fallback to secondary model
-  console.warn(`Primary model (${PRIMARY_MODEL}) failed, falling back to ${FALLBACK_MODEL}`);
-  return callOpenAIModel(FALLBACK_MODEL, request);
+function withFallback(
+  messages: ChatMessage[],
+  temperature: number,
+  maxTokens: number,
+): () => Promise<OpenAIResponse> {
+  let tried = false;
+  return async () => {
+    if (!tried) {
+      tried = true;
+      const r = await callModel(PRIMARY_MODEL, messages, temperature, maxTokens);
+      if (r.success) return r;
+      console.warn(`Primary model (${PRIMARY_MODEL}) failed, falling back to ${FALLBACK_MODEL}`);
+    }
+    return callModel(FALLBACK_MODEL, messages, temperature, maxTokens);
+  };
 }
 
-// Retry wrapper for rate limiting
-export async function callOpenAIWithRetry(
-  request: OpenAIRequest,
-  maxRetries = 3
+async function retryLoop(
+  attempt: () => Promise<OpenAIResponse>,
+  maxRetries = 3,
 ): Promise<OpenAIResponse> {
   let lastError: string | undefined;
 
-  for (let attempt = 0; attempt < maxRetries; attempt++) {
-    const result = await callOpenAI(request);
-
-    if (result.success) {
-      return result;
-    }
+  for (let i = 0; i < maxRetries; i++) {
+    const result = await attempt();
+    if (result.success) return result;
 
     lastError = result.error;
 
-    // Retry on rate limit (429) or server errors (5xx)
     if (result.error?.includes('429') || result.error?.includes('rate') || result.error?.includes('5')) {
-      const waitTime = Math.pow(2, attempt) * 1000;
-      console.warn(`Retry attempt ${attempt + 1}/${maxRetries} after ${waitTime}ms...`);
-      await new Promise(resolve => setTimeout(resolve, waitTime));
+      const wait = Math.pow(2, i) * 1000;
+      console.warn(`Retry ${i + 1}/${maxRetries} after ${wait}ms...`);
+      await new Promise((r) => setTimeout(r, wait));
       continue;
     }
-
-    // Don't retry on other errors
     break;
   }
 
   return { success: false, error: lastError };
+}
+
+// ================================================================
+// Single-turn API (backward compat for /api/analyze)
+// ================================================================
+
+export async function callOpenAI(request: OpenAIRequest): Promise<OpenAIResponse> {
+  const messages: ChatMessage[] = [
+    { role: 'system', content: request.systemPrompt },
+    { role: 'user', content: request.userMessage },
+  ];
+  const fn = withFallback(messages, request.temperature ?? 0.7, request.maxTokens ?? 4096);
+  return fn();
+}
+
+export async function callOpenAIWithRetry(
+  request: OpenAIRequest,
+  maxRetries = 3,
+): Promise<OpenAIResponse> {
+  const messages: ChatMessage[] = [
+    { role: 'system', content: request.systemPrompt },
+    { role: 'user', content: request.userMessage },
+  ];
+  const fn = withFallback(messages, request.temperature ?? 0.7, request.maxTokens ?? 4096);
+  return retryLoop(fn, maxRetries);
+}
+
+// ================================================================
+// Multi-turn chat API (used by /api/chat)
+// ================================================================
+
+export async function callOpenAIChat(request: ChatRequest): Promise<OpenAIResponse> {
+  const fn = withFallback(request.messages, request.temperature ?? 0.7, request.maxTokens ?? 4096);
+  return fn();
+}
+
+export async function callOpenAIChatWithRetry(
+  request: ChatRequest,
+  maxRetries = 3,
+): Promise<OpenAIResponse> {
+  const fn = withFallback(request.messages, request.temperature ?? 0.7, request.maxTokens ?? 4096);
+  return retryLoop(fn, maxRetries);
 }

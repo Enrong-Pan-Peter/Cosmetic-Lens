@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../../components/layout/BaseLayout.astro';
+import LoginForm from '../../components/auth/LoginForm.jsx';
+import { getTranslations } from '../../i18n/utils';
+
+const lang = 'zh';
+const t = getTranslations(lang);
+---
+
+<BaseLayout
+  title={t.auth.login_title}
+  description="登录成分透视"
+  lang={lang}
+>
+  <div class="flex-1 flex items-center justify-center px-4 py-12">
+    <LoginForm client:load lang={lang} translations={t} />
+  </div>
+</BaseLayout>
