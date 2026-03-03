@@ -1,0 +1,508 @@
+{
+    "metadata": {
+      "version": "1.0",
+      "last_updated": "2025-03-02",
+      "total_pairs": 39
+    },
+    "pairs": [
+      {
+        "ingredients": [
+          "Retinol",
+          "Glycolic Acid"
+        ],
+        "ingredients_zh": [
+          "视黄醇",
+          "乙醇酸"
+        ],
+        "level": "caution",
+        "warning_en": "Using together can increase irritation significantly. Best to alternate nights or use at different times of day.",
+        "warning_zh": "同时使用可能显著增加刺激。建议隔夜交替使用或在不同时段使用。"
+      },
+      {
+        "ingredients": [
+          "Retinol",
+          "Lactic Acid"
+        ],
+        "ingredients_zh": [
+          "视黄醇",
+          "乳酸"
+        ],
+        "level": "caution",
+        "warning_en": "Both can cause irritation. Alternate nights when starting out. Can combine once skin is tolerant.",
+        "warning_zh": "两者都可能引起刺激。开始时隔夜交替。皮肤耐受后可以组合。"
+      },
+      {
+        "ingredients": [
+          "Retinol",
+          "Salicylic Acid"
+        ],
+        "ingredients_zh": [
+          "视黄醇",
+          "水杨酸"
+        ],
+        "level": "caution",
+        "warning_en": "Using together can increase dryness and irritation. Alternate nights, or use BHA in AM and retinol in PM.",
+        "warning_zh": "同时使用可能增加干燥和刺激。隔夜交替，或早上用BHA晚上用视黄醇。"
+      },
+      {
+        "ingredients": [
+          "Retinol",
+          "Benzoyl Peroxide"
+        ],
+        "ingredients_zh": [
+          "视黄醇",
+          "过氧化苯甲酰"
+        ],
+        "level": "caution",
+        "warning_en": "Benzoyl peroxide can oxidize and deactivate retinol. Use at different times of day (BP in AM, retinol in PM).",
+        "warning_zh": "过氧化苯甲酰可能氧化并使视黄醇失活。应在不同时段使用（BP早上，视黄醇晚上）。"
+      },
+      {
+        "ingredients": [
+          "Retinol",
+          "Vitamin C"
+        ],
+        "ingredients_zh": [
+          "视黄醇",
+          "维生素C"
+        ],
+        "level": "info",
+        "warning_en": "Old myth that they cancel out. Modern research shows they can be used together safely. Different pH optima but not a problem in practice.",
+        "warning_zh": "旧说法认为两者会相互抵消是误解。现代研究表明可以安全地一起使用。最佳pH不同但实际上不成问题。"
+      },
+      {
+        "ingredients": [
+          "Retinol"
+        ],
+        "ingredients_zh": [
+          "视黄醇"
+        ],
+        "level": "avoid",
+        "context": "pregnancy",
+        "warning_en": "All retinoids (retinol, retinal, tretinoin, adapalene, tazarotene) should be avoided during pregnancy due to teratogenic risk.",
+        "warning_zh": "孕期应避免使用所有视黄醇类成分（视黄醇、视黄醛、维A酸、阿达帕林、他扎罗汀），因有致畸风险。"
+      },
+      {
+        "ingredients": [
+          "Tretinoin",
+          "Benzoyl Peroxide"
+        ],
+        "ingredients_zh": [
+          "维A酸",
+          "过氧化苯甲酰"
+        ],
+        "level": "caution",
+        "warning_en": "BP degrades tretinoin. Apply at different times. Note: adapalene is stable with BP (as in Epiduo).",
+        "warning_zh": "BP会降解维A酸。在不同时间使用。注意：阿达帕林与BP可同时使用（如Epiduo）。"
+      },
+      {
+        "ingredients": [
+          "Adapalene",
+          "Benzoyl Peroxide"
+        ],
+        "ingredients_zh": [
+          "阿达帕林",
+          "过氧化苯甲酰"
+        ],
+        "level": "synergy",
+        "warning_en": "Effective proven combination for acne. Available as Epiduo/Epiduo Forte. Can be applied together.",
+        "warning_zh": "经证实的有效痤疮组合。即Epiduo/Epiduo Forte。可以同时涂抹。"
+      },
+      {
+        "ingredients": [
+          "Ascorbic Acid",
+          "Niacinamide"
+        ],
+        "ingredients_zh": [
+          "抗坏血酸",
+          "烟酰胺"
+        ],
+        "level": "info",
+        "warning_en": "Old myth they cancel out or form niacin. Modern formulations are fine together. Both work at different pH ranges but are safe to combine.",
+        "warning_zh": "旧说法认为两者会抵消或生成烟酸是误解。现代配方可以一起使用。两者在不同pH范围工作但可安全组合。"
+      },
+      {
+        "ingredients": [
+          "Ascorbic Acid",
+          "Sodium Benzoate"
+        ],
+        "ingredients_zh": [
+          "抗坏血酸",
+          "苯甲酸钠"
+        ],
+        "level": "caution",
+        "warning_en": "Can form trace amounts of benzene when exposed to heat and light. Modern formulations minimize this risk, but avoid if concerned.",
+        "warning_zh": "暴露于高温和光照时可能形成微量苯。现代配方已最小化此风险，但如有担忧可避免。"
+      },
+      {
+        "ingredients": [
+          "Ascorbic Acid",
+          "Copper Tripeptide-1"
+        ],
+        "ingredients_zh": [
+          "抗坏血酸",
+          "铜肽"
+        ],
+        "level": "caution",
+        "warning_en": "L-ascorbic acid may reduce copper peptide efficacy by interacting with the copper ion. Use at different times of day.",
+        "warning_zh": "左旋维C可能通过与铜离子相互作用降低铜肽效力。应在不同时段使用。"
+      },
+      {
+        "ingredients": [
+          "Ascorbic Acid",
+          "Ferulic Acid"
+        ],
+        "ingredients_zh": [
+          "抗坏血酸",
+          "阿魏酸"
+        ],
+        "level": "synergy",
+        "warning_en": "Ferulic acid doubles the photoprotective effect of Vitamins C+E. The gold standard antioxidant combination.",
+        "warning_zh": "阿魏酸使维C+维E的光防护效果翻倍。黄金标准抗氧化组合。"
+      },
+      {
+        "ingredients": [
+          "Ascorbic Acid",
+          "Tocopherol"
+        ],
+        "ingredients_zh": [
+          "抗坏血酸",
+          "生育酚"
+        ],
+        "level": "synergy",
+        "warning_en": "Vitamin E regenerates oxidized Vitamin C. Synergistic antioxidant pair. Best combined with ferulic acid.",
+        "warning_zh": "维生素E能再生被氧化的维生素C。协同抗氧化组合。最好搭配阿魏酸。"
+      },
+      {
+        "ingredients": [
+          "Glycolic Acid",
+          "Salicylic Acid"
+        ],
+        "ingredients_zh": [
+          "乙醇酸",
+          "水杨酸"
+        ],
+        "level": "caution",
+        "warning_en": "Combining AHA + BHA increases irritation risk. If using both, start slowly and monitor for over-exfoliation (redness, peeling, sensitivity).",
+        "warning_zh": "AHA+BHA组合增加刺激风险。如同时使用，缓慢开始并监测过度去角质（泛红、脱皮、敏感）。"
+      },
+      {
+        "ingredients": [
+          "Glycolic Acid",
+          "Niacinamide"
+        ],
+        "ingredients_zh": [
+          "乙醇酸",
+          "烟酰胺"
+        ],
+        "level": "info",
+        "warning_en": "Safe to use together. Niacinamide can help reduce irritation from glycolic acid.",
+        "warning_zh": "可以一起安全使用。烟酰胺可以帮助减少乙醇酸带来的刺激。"
+      },
+      {
+        "ingredients": [
+          "Salicylic Acid",
+          "Niacinamide"
+        ],
+        "ingredients_zh": [
+          "水杨酸",
+          "烟酰胺"
+        ],
+        "level": "synergy",
+        "warning_en": "Excellent combination for acne-prone skin. Niacinamide reduces inflammation while BHA clears pores.",
+        "warning_zh": "痤疮易发皮肤的优秀组合。烟酰胺减少炎症，BHA清洁毛孔。"
+      },
+      {
+        "ingredients": [
+          "Benzoyl Peroxide",
+          "Hydroquinone"
+        ],
+        "ingredients_zh": [
+          "过氧化苯甲酰",
+          "对苯二酚"
+        ],
+        "level": "caution",
+        "warning_en": "Can cause temporary dark staining of the skin. Do not apply simultaneously. Use at different times.",
+        "warning_zh": "可能导致皮肤暂时变色。不要同时涂抹。在不同时间使用。"
+      },
+      {
+        "ingredients": [
+          "Benzoyl Peroxide",
+          "Ascorbic Acid"
+        ],
+        "ingredients_zh": [
+          "过氧化苯甲酰",
+          "抗坏血酸"
+        ],
+        "level": "caution",
+        "warning_en": "BP is a strong oxidizer and can deactivate Vitamin C. Use at different times (BP in AM, Vit C in PM or vice versa).",
+        "warning_zh": "BP是强氧化剂，可能使维C失活。在不同时间使用。"
+      },
+      {
+        "ingredients": [
+          "Copper Tripeptide-1",
+          "AHAs"
+        ],
+        "ingredients_zh": [
+          "铜肽",
+          "果酸"
+        ],
+        "level": "caution",
+        "warning_en": "Low pH from AHAs may destabilize copper peptides. Use at different times of day.",
+        "warning_zh": "AHA的低pH可能使铜肽不稳定。在一天中不同时间使用。"
+      },
+      {
+        "ingredients": [
+          "Copper Tripeptide-1",
+          "Retinol"
+        ],
+        "ingredients_zh": [
+          "铜肽",
+          "视黄醇"
+        ],
+        "level": "info",
+        "warning_en": "Can be used together, but some formulation chemists suggest using at different times for optimal efficacy.",
+        "warning_zh": "可以一起使用，但部分配方师建议在不同时间使用以获得最佳效果。"
+      },
+      {
+        "ingredients": [
+          "Avobenzone",
+          "Octinoxate"
+        ],
+        "ingredients_zh": [
+          "阿伏苯宗",
+          "甲氧基肉桂酸乙基己酯"
+        ],
+        "level": "caution",
+        "warning_en": "Octinoxate can destabilize avobenzone, reducing UVA protection. Look for formulations with stabilizers like octocrylene.",
+        "warning_zh": "甲氧基肉桂酸乙基己酯可能使阿伏苯宗不稳定，降低UVA防护。选择含稳定剂（如奥克立林）的配方。"
+      },
+      {
+        "ingredients": [
+          "Avobenzone",
+          "Octocrylene"
+        ],
+        "ingredients_zh": [
+          "阿伏苯宗",
+          "奥克立林"
+        ],
+        "level": "synergy",
+        "warning_en": "Octocrylene stabilizes avobenzone, maintaining UVA protection. Common and effective combination in sunscreens.",
+        "warning_zh": "奥克立林稳定阿伏苯宗，维持UVA防护。防晒产品中常见且有效的组合。"
+      },
+      {
+        "ingredients": [
+          "Zinc Oxide",
+          "Titanium Dioxide"
+        ],
+        "ingredients_zh": [
+          "氧化锌",
+          "二氧化钛"
+        ],
+        "level": "synergy",
+        "warning_en": "Complementary mineral filters. ZnO covers UVA, TiO2 covers UVB. Together they provide broad-spectrum mineral protection.",
+        "warning_zh": "互补的矿物过滤剂。氧化锌覆盖UVA，二氧化钛覆盖UVB。组合提供广谱矿物防护。"
+      },
+      {
+        "ingredients": [
+          "Hydroquinone",
+          "Tretinoin"
+        ],
+        "ingredients_zh": [
+          "对苯二酚",
+          "维A酸"
+        ],
+        "level": "synergy",
+        "warning_en": "Proven synergistic combination (Kligman's formula: hydroquinone + tretinoin + steroid). Enhances brightening efficacy.",
+        "warning_zh": "经证实的协同组合（Kligman配方：对苯二酚+维A酸+类固醇）。增强美白效果。"
+      },
+      {
+        "ingredients": [
+          "Hydroquinone"
+        ],
+        "ingredients_zh": [
+          "对苯二酚"
+        ],
+        "level": "avoid",
+        "context": "pregnancy",
+        "warning_en": "Avoid during pregnancy. Significant systemic absorption (35-45%) makes it unsafe for pregnant women.",
+        "warning_zh": "孕期避免。显著的系统性吸收（35-45%）使其对孕妇不安全。"
+      },
+      {
+        "ingredients": [
+          "Hydroquinone"
+        ],
+        "ingredients_zh": [
+          "对苯二酚"
+        ],
+        "level": "warning",
+        "context": "prolonged_use",
+        "warning_en": "Do not use for more than 3-5 months continuously. Prolonged use can cause ochronosis (paradoxical darkening). Cycle on and off.",
+        "warning_zh": "不要连续使用超过3-5个月。长期使用可能导致褐黄病（矛盾性变黑）。间歇性使用。"
+      },
+      {
+        "ingredients": [
+          "Niacinamide",
+          "AHAs"
+        ],
+        "ingredients_zh": [
+          "烟酰胺",
+          "果酸"
+        ],
+        "level": "info",
+        "warning_en": "Safe together in modern formulations. Old concern about niacin formation is not relevant at cosmetic pH levels.",
+        "warning_zh": "在现代配方中可以安全同用。旧的关于生成烟酸的担忧在化妆品pH水平下不成立。"
+      },
+      {
+        "ingredients": [
+          "Hyaluronic Acid",
+          "Retinol"
+        ],
+        "ingredients_zh": [
+          "透明质酸",
+          "视黄醇"
+        ],
+        "level": "synergy",
+        "warning_en": "HA helps counteract dryness from retinol. Excellent pairing—apply HA first, then retinol.",
+        "warning_zh": "HA帮助抵消视黄醇导致的干燥。优秀搭配——先涂HA，再涂视黄醇。"
+      },
+      {
+        "ingredients": [
+          "Ceramides",
+          "Retinol"
+        ],
+        "ingredients_zh": [
+          "神经酰胺",
+          "视黄醇"
+        ],
+        "level": "synergy",
+        "warning_en": "Ceramides help repair barrier damage that retinoids can cause. Excellent supporting ingredient when using retinoids.",
+        "warning_zh": "神经酰胺帮助修复视黄醇类可能造成的屏障损伤。使用视黄醇类时的优秀辅助成分。"
+      },
+      {
+        "ingredients": [
+          "Centella Asiatica Extract",
+          "Retinol"
+        ],
+        "ingredients_zh": [
+          "积雪草提取物",
+          "视黄醇"
+        ],
+        "level": "synergy",
+        "warning_en": "Centella soothes irritation from retinoids. Popular combination in K-beauty for anti-aging without irritation.",
+        "warning_zh": "积雪草舒缓视黄醇类引起的刺激。韩国护肤中抗衰老无刺激的热门组合。"
+      },
+      {
+        "ingredients": [
+          "Tretinoin"
+        ],
+        "ingredients_zh": [
+          "维A酸"
+        ],
+        "level": "avoid",
+        "context": "pregnancy",
+        "warning_en": "Category X teratogen. Strictly avoid all forms of tretinoin during pregnancy.",
+        "warning_zh": "X类致畸剂。孕期严格避免所有形式的维A酸。"
+      },
+      {
+        "ingredients": [
+          "Adapalene"
+        ],
+        "ingredients_zh": [
+          "阿达帕林"
+        ],
+        "level": "avoid",
+        "context": "pregnancy",
+        "warning_en": "Retinoid—avoid during pregnancy as a precaution despite limited human data.",
+        "warning_zh": "视黄醇类——尽管人体数据有限，作为预防措施孕期应避免。"
+      },
+      {
+        "ingredients": [
+          "Salicylic Acid"
+        ],
+        "ingredients_zh": [
+          "水杨酸"
+        ],
+        "level": "caution",
+        "context": "pregnancy",
+        "warning_en": "Low concentrations (≤2% in wash-off products) are generally considered safe. Avoid high-concentration peels during pregnancy.",
+        "warning_zh": "低浓度（冲洗产品中≤2%）通常被认为安全。孕期避免高浓度去角质。"
+      },
+      {
+        "ingredients": [
+          "Octinoxate"
+        ],
+        "ingredients_zh": [
+          "甲氧基肉桂酸乙基己酯"
+        ],
+        "level": "caution",
+        "context": "pregnancy",
+        "warning_en": "Potential endocrine disruptor. Many dermatologists recommend mineral sunscreen filters during pregnancy instead.",
+        "warning_zh": "潜在内分泌干扰物。许多皮肤科医生建议孕期改用矿物防晒过滤剂。"
+      },
+      {
+        "ingredients": [
+          "Homosalate"
+        ],
+        "ingredients_zh": [
+          "胡莫柳酯"
+        ],
+        "level": "caution",
+        "context": "pregnancy",
+        "warning_en": "Under regulatory scrutiny for hormonal effects. Consider mineral sunscreen alternatives during pregnancy.",
+        "warning_zh": "因激素影响正受监管审查。孕期建议考虑矿物防晒替代品。"
+      },
+      {
+        "ingredients": [
+          "Niacinamide",
+          "Tranexamic Acid"
+        ],
+        "ingredients_zh": [
+          "烟酰胺",
+          "传明酸"
+        ],
+        "level": "synergy",
+        "warning_en": "Complementary brightening mechanisms. Niacinamide reduces melanin transfer, TXA inhibits melanin production. Excellent combo for hyperpigmentation.",
+        "warning_zh": "互补的美白机制。烟酰胺减少黑色素转移，传明酸抑制黑色素生成。治疗色素沉着的优秀组合。"
+      },
+      {
+        "ingredients": [
+          "Niacinamide",
+          "Hyaluronic Acid"
+        ],
+        "ingredients_zh": [
+          "烟酰胺",
+          "透明质酸"
+        ],
+        "level": "synergy",
+        "warning_en": "Excellent pairing. HA hydrates while niacinamide strengthens barrier. No interaction concerns.",
+        "warning_zh": "优秀搭配。HA保湿，烟酰胺增强屏障。无相互作用方面的担忧。"
+      },
+      {
+        "ingredients": [
+          "Azelaic Acid",
+          "Niacinamide"
+        ],
+        "ingredients_zh": [
+          "壬二酸",
+          "烟酰胺"
+        ],
+        "level": "synergy",
+        "warning_en": "Great combination for acne and hyperpigmentation. Both are gentle and pregnancy-safe.",
+        "warning_zh": "治疗痤疮和色素沉着的优秀组合。两者都温和且孕期安全。"
+      },
+      {
+        "ingredients": [
+          "Bakuchiol",
+          "Retinol"
+        ],
+        "ingredients_zh": [
+          "补骨脂酚",
+          "视黄醇"
+        ],
+        "level": "synergy",
+        "warning_en": "Can be combined for enhanced anti-aging effect. Bakuchiol may improve retinol tolerability.",
+        "warning_zh": "可以组合以增强抗衰老效果。补骨脂酚可能改善视黄醇的耐受性。"
+      }
+    ]
+  }

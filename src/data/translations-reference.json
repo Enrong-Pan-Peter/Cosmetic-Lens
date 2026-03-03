@@ -8,7 +8,7 @@
     "claims_check": { "en": "Claims Check", "zh": "功效验证" },
     "best_for": { "en": "Best For", "zh": "适合人群" },
     "not_for": { "en": "May Not Suit", "zh": "不适合人群" },
-    "bottom_line": { "en": "Bottom Line", "zh": "总结建议" },
+    "bottom_line": { "en": "Bottom Line", "zh": "底线建议" },
     "value": { "en": "Value Assessment", "zh": "性价比评估" }
   },
   "table_headers": {
@@ -18,9 +18,9 @@
     "why": { "en": "Why", "zh": "原因" }
   },
   "verdicts": {
-    "supported": { "en": "✅ Supported", "zh": "✅ 有支持" },
-    "partial": { "en": "⚠️ Partially Supported", "zh": "⚠️ 部分支持" },
-    "unsupported": { "en": "❌ Unsupported", "zh": "❌ 无支持" },
+    "supported": { "en": "✅ Supported", "zh": "✅ 有证据支持" },
+    "partial": { "en": "⚠️ Partially Supported", "zh": "⚠️ 部分证据支持" },
+    "unsupported": { "en": "❌ Unsupported", "zh": "❌ 虚假宣传" },
     "unverifiable": { "en": "❓ Unverifiable", "zh": "❓ 无法验证" }
   },
   "skin_types": {

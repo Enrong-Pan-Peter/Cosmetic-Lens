@@ -1,16 +1,16 @@
 {
   "site": {
-    "name": "成分透视",
-    "tagline": "看穿护肤品营销",
-    "description": "分析化妆品成分，发现护肤品里到底有什么"
+    "name": "护肤黄金眼",
+    "tagline": "破解护肤品营销",
+    "description": "分析化妆品成分，破解护肤品营销真相"
   },
   "nav": {
     "home": "首页",
     "analyze": "分析产品",
     "education": "成分科普",
     "glossary": "成分词典",
-    "profile": "我的档案",
-    "history": "分析历史",
+    "profile": "我的",
+    "history": "历史分析",
     "login": "登录",
     "signup": "注册",
     "logout": "退出"
@@ -53,7 +53,7 @@
     "tip_1": "输入完整的产品名称以自动查找成分",
     "tip_2": "或直接粘贴包装上的完整成分表",
     "tip_3": "可以追问，如\"这个适合油皮吗？\"或\"帮我找个平替\"",
-    "new_chat": "新分析",
+    "new_chat": "新分析对话",
     "clear": "清空",
     "copy": "复制",
     "copied": "已复制！"
@@ -69,18 +69,18 @@
     "claim": "宣传",
     "rating": "评级",
     "analysis": "分析",
-    "rating_supported": "有支持",
-    "rating_partial": "部分支持",
-    "rating_unsupported": "无支持",
+    "rating_supported": "有证据支持",
+    "rating_partial": "部分证据支持",
+    "rating_unsupported": "虚假宣传",
     "rating_unverifiable": "无法验证",
     "suitability": "适合人群",
-    "ideal_for": "适合",
-    "may_not_suit": "可能不适合",
+    "ideal_for": "适合肤质",
+    "may_not_suit": "不适合肤质",
     "cautions": "注意事项",
-    "value_assessment": "性价比评估",
+    "value_assessment": "性价比分析",
     "personalized_notes": "个性化建议",
     "interaction_warnings": "成分相互作用警告",
-    "dupe_suggestions": "相似产品"
+    "dupe_suggestions": "平替推荐"
   },
   "education": {
     "title": "成分科普",
@@ -148,8 +148,8 @@
     "title": "分析历史",
     "subtitle": "你过去的产品分析记录",
     "empty": "暂无分析记录",
-    "empty_desc": "分析一个产品，记录会显示在这里！",
-    "analyze_now": "去分析",
+    "empty_desc": "开始分析一个产品，你的分析记录会显示在这里！",
+    "analyze_now": "开始分析",
     "delete": "删除",
     "delete_confirm": "确定删除这条分析记录吗？",
     "view": "查看",
@@ -244,7 +244,7 @@
   },
   "footer": {
     "about": "关于我们",
-    "about_text": "成分透视帮助你了解护肤品中的真正成分。我们相信以证据为基础的信息和透明的成分分析。",
+    "about_text": "护肤黄金眼帮助你了解护肤品中的真正成分，破解护肤品营销真相。我们相信以证据为基础的信息和透明的成分分析。",
     "disclaimer": "免责声明",
     "disclaimer_text": "本工具仅提供教育信息，不构成医疗或皮肤科建议。使用新产品前请做皮肤测试，如有皮肤问题请咨询皮肤科医生。",
     "links": "链接",
@@ -252,7 +252,7 @@
     "feedback": "反馈意见",
     "privacy": "隐私政策",
     "terms": "服务条款",
-    "copyright": "© 2025 成分透视 版权所有"
+    "copyright": "© 2025 护肤黄金眼 版权所有"
   },
   "errors": {
     "page_not_found": "页面未找到",

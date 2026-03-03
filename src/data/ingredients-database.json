@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "version": "1.0",
-    "last_updated": "2025-02-01",
-    "total_ingredients": 20,
+    "version": "2.0",
+    "last_updated": "2025-03-02",
+    "total_ingredients": 100,
     "sources": [
       "Paula's Choice Ingredient Dictionary",
       "Cosmetic Ingredient Review (CIR) Safety Assessments",
@@ -87,6 +87,41 @@
       "name_zh": "溶剂",
       "description_en": "Ingredients that dissolve other ingredients",
       "description_zh": "溶解其他成分的成分"
+    },
+    {
+      "id": "emulsifier",
+      "name_en": "Emulsifiers",
+      "name_zh": "乳化剂",
+      "description_en": "Ingredients that help oil and water mix together",
+      "description_zh": "帮助油和水混合在一起的成分"
+    },
+    {
+      "id": "thickener",
+      "name_en": "Thickeners",
+      "name_zh": "增稠剂",
+      "description_en": "Ingredients that increase viscosity of formulations",
+      "description_zh": "增加配方粘稠度的成分"
+    },
+    {
+      "id": "ph_adjuster",
+      "name_en": "pH Adjusters",
+      "name_zh": "pH调节剂",
+      "description_en": "Ingredients that adjust product acidity or alkalinity",
+      "description_zh": "调节产品酸碱度的成分"
+    },
+    {
+      "id": "botanical",
+      "name_en": "Botanical Extracts",
+      "name_zh": "植物提取物",
+      "description_en": "Plant-derived ingredients with various skin benefits",
+      "description_zh": "具有各种皮肤功效的植物来源成分"
+    },
+    {
+      "id": "peptide",
+      "name_en": "Peptides",
+      "name_zh": "多肽",
+      "description_en": "Short chains of amino acids that signal skin processes",
+      "description_zh": "信号传导促进皮肤修复的短链氨基酸"
     }
   ],
   "ingredients": [
@@ -94,13 +129,31 @@
       "id": "niacinamide",
       "inci_name": "Niacinamide",
       "chinese_name": "烟酰胺",
-      "aliases_en": ["Vitamin B3", "Nicotinamide"],
-      "aliases_zh": ["维生素B3", "尼克酰胺"],
+      "aliases_en": [
+        "Vitamin B3",
+        "Nicotinamide"
+      ],
+      "aliases_zh": [
+        "维生素B3",
+        "尼克酰胺"
+      ],
       "category": "active",
       "subcategory": "vitamin",
       "functions": {
-        "en": ["Brightening and evening skin tone", "Reducing sebum production and pore appearance", "Strengthening skin barrier function", "Anti-inflammatory effects", "Improving skin texture"],
-        "zh": ["美白和均匀肤色", "减少皮脂分泌和毛孔外观", "增强皮肤屏障功能", "消炎作用", "改善皮肤质地"]
+        "en": [
+          "Brightening and evening skin tone",
+          "Reducing sebum production and pore appearance",
+          "Strengthening skin barrier function",
+          "Anti-inflammatory effects",
+          "Improving skin texture"
+        ],
+        "zh": [
+          "美白和均匀肤色",
+          "减少皮脂分泌和毛孔外观",
+          "增强皮肤屏障功能",
+          "消炎作用",
+          "改善皮肤质地"
+        ]
       },
       "effective_concentration": {
         "minimum": "2%",
@@ -113,12 +166,23 @@
       "evidence_notes_en": "Extensively studied with multiple RCTs supporting efficacy for hyperpigmentation, oil control, and barrier repair.",
       "evidence_notes_zh": "经过广泛研究，多项随机对照试验支持其对色素沉着、控油和屏障修复的功效。",
       "skin_types": {
-        "suited": ["oily", "combination", "normal", "dry"],
+        "suited": [
+          "oily",
+          "combination",
+          "normal",
+          "dry"
+        ],
         "caution": [],
         "notes_en": "Well-tolerated by most skin types including sensitive skin.",
         "notes_zh": "大多数肤质（包括敏感肌）都能良好耐受。"
       },
-      "concerns_addressed": ["hyperpigmentation", "acne", "aging", "dullness", "large_pores"],
+      "concerns_addressed": [
+        "hyperpigmentation",
+        "acne",
+        "aging",
+        "dullness",
+        "large_pores"
+      ],
       "interactions": [
         {
           "ingredient": "L-Ascorbic Acid",
@@ -134,7 +198,11 @@
       "pregnancy_notes_en": "Considered safe during pregnancy.",
       "pregnancy_notes_zh": "孕期使用被认为是安全的。",
       "vegan": true,
-      "common_in": ["serums", "moisturizers", "toners"],
+      "common_in": [
+        "serums",
+        "moisturizers",
+        "toners"
+      ],
       "price_indicator": "affordable",
       "notes_en": "One of the most versatile and well-researched skincare actives. Great for beginners.",
       "notes_zh": "最多功能且研究充分的护肤活性成分之一。非常适合新手。"
@@ -143,13 +211,30 @@
       "id": "retinol",
       "inci_name": "Retinol",
       "chinese_name": "视黄醇",
-      "aliases_en": ["Vitamin A"],
-      "aliases_zh": ["维生素A醇", "A醇"],
+      "aliases_en": [
+        "Vitamin A"
+      ],
+      "aliases_zh": [
+        "维生素A醇",
+        "A醇"
+      ],
       "category": "active",
       "subcategory": "retinoid",
       "functions": {
-        "en": ["Accelerates cell turnover", "Stimulates collagen production", "Reduces fine lines and wrinkles", "Helps with acne", "Fades hyperpigmentation"],
-        "zh": ["加速细胞更新", "刺激胶原蛋白生成", "减少细纹和皱纹", "帮助改善痤疮", "淡化色素沉着"]
+        "en": [
+          "Accelerates cell turnover",
+          "Stimulates collagen production",
+          "Reduces fine lines and wrinkles",
+          "Helps with acne",
+          "Fades hyperpigmentation"
+        ],
+        "zh": [
+          "加速细胞更新",
+          "刺激胶原蛋白生成",
+          "减少细纹和皱纹",
+          "帮助改善痤疮",
+          "淡化色素沉着"
+        ]
       },
       "effective_concentration": {
         "beginner": "0.25-0.3%",
@@ -162,12 +247,27 @@
       "evidence_notes_en": "Gold standard anti-aging ingredient with decades of research.",
       "evidence_notes_zh": "具有数十年研究历史的抗衰老黄金标准成分。",
       "skin_types": {
-        "suited": ["normal", "oily", "combination"],
-        "caution": ["sensitive", "dry", "rosacea", "eczema"],
+        "suited": [
+          "normal",
+          "oily",
+          "combination"
+        ],
+        "caution": [
+          "sensitive",
+          "dry",
+          "rosacea",
+          "eczema"
+        ],
         "notes_en": "Requires careful introduction. Use sunscreen during the day.",
         "notes_zh": "需要谨慎引入。白天必须使用防晒霜。"
       },
-      "concerns_addressed": ["aging", "fine_lines", "wrinkles", "acne", "hyperpigmentation"],
+      "concerns_addressed": [
+        "aging",
+        "fine_lines",
+        "wrinkles",
+        "acne",
+        "hyperpigmentation"
+      ],
       "interactions": [
         {
           "ingredient": "AHAs/BHAs",
@@ -190,7 +290,10 @@
       "pregnancy_notes_en": "AVOID during pregnancy. Use bakuchiol or azelaic acid instead.",
       "pregnancy_notes_zh": "孕期应避免使用。可使用补骨脂酚或壬二酸替代。",
       "vegan": false,
-      "common_in": ["serums", "night_creams"],
+      "common_in": [
+        "serums",
+        "night_creams"
+      ],
       "price_indicator": "moderate_to_expensive",
       "notes_en": "Most proven anti-aging ingredient. Results take 3-6 months. Always use SPF.",
       "notes_zh": "最有效的抗衰老成分。需要3-6个月见效。必须配合防晒。"
@@ -199,12 +302,26 @@
       "id": "hyaluronic_acid",
       "inci_name": "Sodium Hyaluronate",
       "chinese_name": "透明质酸钠",
-      "aliases_en": ["Hyaluronic Acid", "HA"],
-      "aliases_zh": ["玻尿酸", "透明质酸"],
+      "aliases_en": [
+        "Hyaluronic Acid",
+        "HA"
+      ],
+      "aliases_zh": [
+        "玻尿酸",
+        "透明质酸"
+      ],
       "category": "humectant",
       "functions": {
-        "en": ["Attracts and holds moisture", "Plumps skin temporarily", "Improves hydration levels"],
-        "zh": ["吸引并保持水分", "暂时使皮肤饱满", "改善水合水平"]
+        "en": [
+          "Attracts and holds moisture",
+          "Plumps skin temporarily",
+          "Improves hydration levels"
+        ],
+        "zh": [
+          "吸引并保持水分",
+          "暂时使皮肤饱满",
+          "改善水合水平"
+        ]
       },
       "effective_concentration": {
         "typical": "0.1-2%",
@@ -213,18 +330,28 @@
       },
       "evidence_level": "strong",
       "skin_types": {
-        "suited": ["all"],
+        "suited": [
+          "all"
+        ],
         "caution": [],
         "notes_en": "In very dry climates, seal with moisturizer to prevent reverse osmosis.",
         "notes_zh": "在非常干燥的环境中，需涂抹保湿霜锁住水分。"
       },
-      "concerns_addressed": ["dehydration", "dryness", "fine_lines"],
+      "concerns_addressed": [
+        "dehydration",
+        "dryness",
+        "fine_lines"
+      ],
       "interactions": [],
       "irritation_potential": "very_low",
       "comedogenic_rating": 0,
       "pregnancy_safe": true,
       "vegan": true,
-      "common_in": ["serums", "toners", "moisturizers"],
+      "common_in": [
+        "serums",
+        "toners",
+        "moisturizers"
+      ],
       "price_indicator": "affordable",
       "notes_en": "A hydration staple. Sodium Hyaluronate is the salt form with smaller molecules.",
       "notes_zh": "保湿必备成分。透明质酸钠是盐形式，分子更小。"
@@ -233,12 +360,25 @@
       "id": "glycerin",
       "inci_name": "Glycerin",
       "chinese_name": "甘油",
-      "aliases_en": ["Glycerol", "Vegetable Glycerin"],
-      "aliases_zh": ["丙三醇"],
+      "aliases_en": [
+        "Glycerol",
+        "Vegetable Glycerin"
+      ],
+      "aliases_zh": [
+        "丙三醇"
+      ],
       "category": "humectant",
       "functions": {
-        "en": ["Attracts moisture to skin", "Strengthens skin barrier", "Softens and smooths skin"],
-        "zh": ["吸引水分到皮肤", "增强皮肤屏障", "软化和平滑皮肤"]
+        "en": [
+          "Attracts moisture to skin",
+          "Strengthens skin barrier",
+          "Softens and smooths skin"
+        ],
+        "zh": [
+          "吸引水分到皮肤",
+          "增强皮肤屏障",
+          "软化和平滑皮肤"
+        ]
       },
       "effective_concentration": {
         "typical": "1-10%",
@@ -246,16 +386,23 @@
       },
       "evidence_level": "strong",
       "skin_types": {
-        "suited": ["all"],
+        "suited": [
+          "all"
+        ],
         "caution": []
       },
-      "concerns_addressed": ["dryness", "dehydration"],
+      "concerns_addressed": [
+        "dryness",
+        "dehydration"
+      ],
       "interactions": [],
       "irritation_potential": "very_low",
       "comedogenic_rating": 0,
       "pregnancy_safe": true,
       "vegan": true,
-      "common_in": ["all_skincare"],
+      "common_in": [
+        "all_skincare"
+      ],
       "price_indicator": "very_affordable",
       "notes_en": "Gold standard humectant. Often outperforms trendy alternatives in studies.",
       "notes_zh": "保湿黄金标准。在研究中通常优于时髦的替代品。"
@@ -264,13 +411,28 @@
       "id": "salicylic_acid",
       "inci_name": "Salicylic Acid",
       "chinese_name": "水杨酸",
-      "aliases_en": ["BHA", "Beta Hydroxy Acid"],
-      "aliases_zh": ["β-羟基酸"],
+      "aliases_en": [
+        "BHA",
+        "Beta Hydroxy Acid"
+      ],
+      "aliases_zh": [
+        "β-羟基酸"
+      ],
       "category": "active",
       "subcategory": "exfoliant",
       "functions": {
-        "en": ["Chemical exfoliation", "Unclogs pores (oil-soluble)", "Anti-inflammatory", "Controls oil"],
-        "zh": ["化学去角质", "疏通毛孔（脂溶性）", "消炎", "控油"]
+        "en": [
+          "Chemical exfoliation",
+          "Unclogs pores (oil-soluble)",
+          "Anti-inflammatory",
+          "Controls oil"
+        ],
+        "zh": [
+          "化学去角质",
+          "疏通毛孔（脂溶性）",
+          "消炎",
+          "控油"
+        ]
       },
       "effective_concentration": {
         "otc_max": "2%",
@@ -278,10 +440,22 @@
       },
       "evidence_level": "strong",
       "skin_types": {
-        "suited": ["oily", "combination", "acne_prone"],
-        "caution": ["dry", "sensitive"]
+        "suited": [
+          "oily",
+          "combination",
+          "acne_prone"
+        ],
+        "caution": [
+          "dry",
+          "sensitive"
+        ]
       },
-      "concerns_addressed": ["acne", "blackheads", "oily_skin", "clogged_pores"],
+      "concerns_addressed": [
+        "acne",
+        "blackheads",
+        "oily_skin",
+        "clogged_pores"
+      ],
       "interactions": [
         {
           "ingredient": "Retinoids",
@@ -295,7 +469,11 @@
       "pregnancy_safe": false,
       "pregnancy_notes_en": "Avoid leave-on products. Wash-off cleansers are lower risk.",
       "vegan": true,
-      "common_in": ["cleansers", "toners", "spot_treatments"],
+      "common_in": [
+        "cleansers",
+        "toners",
+        "spot_treatments"
+      ],
       "price_indicator": "affordable",
       "notes_en": "Oil-soluble BHA penetrates pores unlike water-soluble AHAs.",
       "notes_zh": "脂溶性BHA能渗透毛孔，不同于水溶性AHA。"
@@ -304,13 +482,29 @@
       "id": "ascorbic_acid",
       "inci_name": "Ascorbic Acid",
       "chinese_name": "抗坏血酸",
-      "aliases_en": ["Vitamin C", "L-Ascorbic Acid"],
-      "aliases_zh": ["维生素C", "左旋维生素C"],
+      "aliases_en": [
+        "Vitamin C",
+        "L-Ascorbic Acid"
+      ],
+      "aliases_zh": [
+        "维生素C",
+        "左旋维生素C"
+      ],
       "category": "active",
       "subcategory": "antioxidant",
       "functions": {
-        "en": ["Antioxidant protection", "Brightens skin", "Stimulates collagen", "Enhances sun protection"],
-        "zh": ["抗氧化保护", "美白皮肤", "刺激胶原蛋白", "增强防晒保护"]
+        "en": [
+          "Antioxidant protection",
+          "Brightens skin",
+          "Stimulates collagen",
+          "Enhances sun protection"
+        ],
+        "zh": [
+          "抗氧化保护",
+          "美白皮肤",
+          "刺激胶原蛋白",
+          "增强防晒保护"
+        ]
       },
       "effective_concentration": {
         "minimum": "8%",
@@ -319,16 +513,30 @@
       },
       "evidence_level": "strong",
       "skin_types": {
-        "suited": ["normal", "oily", "combination"],
-        "caution": ["sensitive", "rosacea"]
+        "suited": [
+          "normal",
+          "oily",
+          "combination"
+        ],
+        "caution": [
+          "sensitive",
+          "rosacea"
+        ]
       },
-      "concerns_addressed": ["hyperpigmentation", "dullness", "aging", "sun_damage"],
+      "concerns_addressed": [
+        "hyperpigmentation",
+        "dullness",
+        "aging",
+        "sun_damage"
+      ],
       "interactions": [],
       "irritation_potential": "medium",
       "comedogenic_rating": 0,
       "pregnancy_safe": true,
       "vegan": true,
-      "common_in": ["serums"],
+      "common_in": [
+        "serums"
+      ],
       "price_indicator": "moderate_to_expensive",
       "notes_en": "Unstable—oxidizes with light/air. Look for opaque, airless packaging.",
       "notes_zh": "不稳定——接触光/空气会氧化。选择不透光、真空包装。"
@@ -337,26 +545,49 @@
       "id": "sodium_lauryl_sulfate",
       "inci_name": "Sodium Lauryl Sulfate",
       "chinese_name": "月桂基硫酸钠",
-      "aliases_en": ["SLS"],
-      "aliases_zh": ["十二烷基硫酸钠"],
+      "aliases_en": [
+        "SLS"
+      ],
+      "aliases_zh": [
+        "十二烷基硫酸钠"
+      ],
       "category": "surfactant",
       "functions": {
-        "en": ["Strong cleansing", "Foaming agent"],
-        "zh": ["强效清洁", "起泡剂"]
+        "en": [
+          "Strong cleansing",
+          "Foaming agent"
+        ],
+        "zh": [
+          "强效清洁",
+          "起泡剂"
+        ]
       },
       "evidence_level": "strong",
       "skin_types": {
-        "suited": ["oily", "normal"],
-        "caution": ["dry", "sensitive", "eczema", "rosacea"],
+        "suited": [
+          "oily",
+          "normal"
+        ],
+        "caution": [
+          "dry",
+          "sensitive",
+          "eczema",
+          "rosacea"
+        ],
         "notes_en": "Can strip natural oils and compromise barrier with frequent use."
       },
-      "concerns_addressed": ["cleansing"],
+      "concerns_addressed": [
+        "cleansing"
+      ],
       "interactions": [],
       "irritation_potential": "high",
       "comedogenic_rating": 0,
       "pregnancy_safe": true,
       "vegan": true,
-      "common_in": ["cleansers", "shampoos"],
+      "common_in": [
+        "cleansers",
+        "shampoos"
+      ],
       "price_indicator": "very_affordable",
       "notes_en": "Not inherently bad but can be harsh. Dry/sensitive skin may prefer amino acid surfactants.",
       "notes_zh": "并非本质上不好但可能刺激。干性/敏感肌可能更适合氨基酸表面活性剂。"
@@ -365,17 +596,35 @@
       "id": "fragrance",
       "inci_name": "Fragrance",
       "chinese_name": "香精",
-      "aliases_en": ["Parfum"],
-      "aliases_zh": ["香料"],
+      "aliases_en": [
+        "Parfum"
+      ],
+      "aliases_zh": [
+        "香料"
+      ],
       "category": "fragrance",
       "functions": {
-        "en": ["Provides scent", "Masks other ingredient odors"],
-        "zh": ["提供香味", "掩盖其他成分气味"]
+        "en": [
+          "Provides scent",
+          "Masks other ingredient odors"
+        ],
+        "zh": [
+          "提供香味",
+          "掩盖其他成分气味"
+        ]
       },
       "evidence_level": "n/a",
       "skin_types": {
-        "suited": ["normal", "oily"],
-        "caution": ["sensitive", "eczema", "rosacea", "allergy_prone"],
+        "suited": [
+          "normal",
+          "oily"
+        ],
+        "caution": [
+          "sensitive",
+          "eczema",
+          "rosacea",
+          "allergy_prone"
+        ],
         "notes_en": "One of the most common causes of skin reactions."
       },
       "concerns_addressed": [],
@@ -384,9 +633,12 @@
       "comedogenic_rating": 0,
       "pregnancy_safe": true,
       "vegan": "varies",
-      "common_in": ["most_cosmetics"],
+      "common_in": [
+        "most_cosmetics"
+      ],
       "notes_en": "'Fragrance' can mean 3000+ chemicals. 'Fragrance-free' ≠ 'unscented'.",
-      "notes_zh": "'香精'可代表3000多种化学物质。'无香料'≠'无香味'。"
+      "notes_zh": "'香精'可代表3000多种化学物质。'无香料'≠'无香味'。",
+      "price_indicator": "varies"
     },
     {
       "id": "phenoxyethanol",
@@ -396,8 +648,14 @@
       "aliases_zh": [],
       "category": "preservative",
       "functions": {
-        "en": ["Prevents microbial growth", "Extends shelf life"],
-        "zh": ["防止微生物生长", "延长保质期"]
+        "en": [
+          "Prevents microbial growth",
+          "Extends shelf life"
+        ],
+        "zh": [
+          "防止微生物生长",
+          "延长保质期"
+        ]
       },
       "effective_concentration": {
         "typical": "0.5-1%",
@@ -405,32 +663,53 @@
       },
       "evidence_level": "strong",
       "skin_types": {
-        "suited": ["most"],
-        "caution": ["extremely_sensitive"]
+        "suited": [
+          "most"
+        ],
+        "caution": [
+          "extremely_sensitive"
+        ]
       },
       "interactions": [],
       "irritation_potential": "low",
       "comedogenic_rating": 0,
       "pregnancy_safe": true,
       "vegan": true,
-      "common_in": ["most_skincare"],
+      "common_in": [
+        "most_skincare"
+      ],
       "notes_en": "Common paraben alternative. Preservatives are necessary for product safety.",
-      "notes_zh": "常见的对羟基苯甲酸酯替代品。防腐剂对产品安全是必要的。"
+      "notes_zh": "常见的对羟基苯甲酸酯替代品。防腐剂对产品安全是必要的。",
+      "price_indicator": "affordable"
     },
     {
       "id": "dimethicone",
       "inci_name": "Dimethicone",
       "chinese_name": "聚二甲基硅氧烷",
-      "aliases_en": ["Silicone"],
-      "aliases_zh": ["硅油"],
+      "aliases_en": [
+        "Silicone"
+      ],
+      "aliases_zh": [
+        "硅油"
+      ],
       "category": "emollient",
       "functions": {
-        "en": ["Smooths skin", "Creates protective barrier", "Silky texture"],
-        "zh": ["平滑皮肤", "形成保护屏障", "丝滑质感"]
+        "en": [
+          "Smooths skin",
+          "Creates protective barrier",
+          "Silky texture"
+        ],
+        "zh": [
+          "平滑皮肤",
+          "形成保护屏障",
+          "丝滑质感"
+        ]
       },
       "evidence_level": "strong",
       "skin_types": {
-        "suited": ["all"],
+        "suited": [
+          "all"
+        ],
         "notes_en": "Non-comedogenic despite myths. Doesn't suffocate skin."
       },
       "interactions": [],
@@ -438,68 +717,134 @@
       "comedogenic_rating": 0,
       "pregnancy_safe": true,
       "vegan": true,
-      "common_in": ["primers", "moisturizers", "serums"],
+      "common_in": [
+        "primers",
+        "moisturizers",
+        "serums"
+      ],
       "notes_en": "Silicones are misunderstood. They don't clog pores or prevent absorption.",
-      "notes_zh": "硅油被误解了。它们不会堵塞毛孔或阻止吸收。"
+      "notes_zh": "硅油被误解了。它们不会堵塞毛孔或阻止吸收。",
+      "price_indicator": "affordable"
     },
     {
       "id": "ceramides",
       "inci_name": "Ceramide NP",
       "chinese_name": "神经酰胺NP",
-      "aliases_en": ["Ceramide 3", "Ceramides"],
-      "aliases_zh": ["神经酰胺3"],
+      "aliases_en": [
+        "Ceramide 3",
+        "Ceramides"
+      ],
+      "aliases_zh": [
+        "神经酰胺3"
+      ],
       "category": "emollient",
       "functions": {
-        "en": ["Repairs skin barrier", "Retains moisture", "Soothes irritation"],
-        "zh": ["修复皮肤屏障", "保持水分", "舒缓刺激"]
+        "en": [
+          "Repairs skin barrier",
+          "Retains moisture",
+          "Soothes irritation"
+        ],
+        "zh": [
+          "修复皮肤屏障",
+          "保持水分",
+          "舒缓刺激"
+        ]
       },
       "evidence_level": "strong",
       "skin_types": {
-        "suited": ["all", "especially_dry", "eczema", "sensitive"]
+        "suited": [
+          "all",
+          "especially_dry",
+          "eczema",
+          "sensitive"
+        ]
       },
       "interactions": [],
       "irritation_potential": "very_low",
       "comedogenic_rating": 0,
       "pregnancy_safe": true,
       "vegan": true,
-      "common_in": ["moisturizers", "barrier_repair"],
+      "common_in": [
+        "moisturizers",
+        "barrier_repair"
+      ],
       "notes_en": "Already 50% of your skin barrier. Products replenish what's lost.",
-      "notes_zh": "已经占你皮肤屏障的50%。产品补充流失的部分。"
+      "notes_zh": "已经占你皮肤屏障的50%。产品补充流失的部分。",
+      "price_indicator": "moderate"
     },
     {
       "id": "centella_asiatica",
       "inci_name": "Centella Asiatica Extract",
       "chinese_name": "积雪草提取物",
-      "aliases_en": ["Cica", "Gotu Kola", "Tiger Grass"],
-      "aliases_zh": ["积雪草", "老虎草"],
+      "aliases_en": [
+        "Cica",
+        "Gotu Kola",
+        "Tiger Grass"
+      ],
+      "aliases_zh": [
+        "积雪草",
+        "老虎草"
+      ],
       "category": "active",
       "functions": {
-        "en": ["Soothes and calms", "Supports healing", "Anti-inflammatory"],
-        "zh": ["舒缓和镇静", "支持愈合", "消炎"]
+        "en": [
+          "Soothes and calms",
+          "Supports healing",
+          "Anti-inflammatory"
+        ],
+        "zh": [
+          "舒缓和镇静",
+          "支持愈合",
+          "消炎"
+        ]
       },
       "evidence_level": "moderate",
       "skin_types": {
-        "suited": ["all", "especially_sensitive", "irritated"]
+        "suited": [
+          "all",
+          "especially_sensitive",
+          "irritated"
+        ]
       },
       "interactions": [],
       "irritation_potential": "very_low",
       "comedogenic_rating": 0,
       "pregnancy_safe": true,
       "vegan": true,
-      "common_in": ["soothing_products", "barrier_repair"],
+      "common_in": [
+        "soothing_products",
+        "barrier_repair"
+      ],
       "notes_en": "K-beauty favorite. Look for TECA or specific compounds (madecassoside).",
-      "notes_zh": "韩国护肤品最爱。选择含TECA或特定化合物（羟基积雪草苷）的产品。"
+      "notes_zh": "韩国护肤品最爱。选择含TECA或特定化合物（羟基积雪草苷）的产品。",
+      "price_indicator": "moderate"
     },
     {
       "id": "glycolic_acid",
       "inci_name": "Glycolic Acid",
       "chinese_name": "乙醇酸",
-      "aliases_en": ["AHA", "Alpha Hydroxy Acid"],
-      "aliases_zh": ["果酸", "甘醇酸"],
+      "aliases_en": [
+        "AHA",
+        "Alpha Hydroxy Acid"
+      ],
+      "aliases_zh": [
+        "果酸",
+        "甘醇酸"
+      ],
       "category": "exfoliant",
       "functions": {
-        "en": ["Chemical exfoliation", "Improves texture", "Brightens", "Stimulates collagen"],
-        "zh": ["化学去角质", "改善肤质", "亮肤", "刺激胶原蛋白"]
+        "en": [
+          "Chemical exfoliation",
+          "Improves texture",
+          "Brightens",
+          "Stimulates collagen"
+        ],
+        "zh": [
+          "化学去角质",
+          "改善肤质",
+          "亮肤",
+          "刺激胶原蛋白"
+        ]
       },
       "effective_concentration": {
         "daily_use": "5-10%",
@@ -507,8 +852,16 @@
       },
       "evidence_level": "strong",
       "skin_types": {
-        "suited": ["normal", "oily", "combination"],
-        "caution": ["sensitive", "dry", "rosacea"]
+        "suited": [
+          "normal",
+          "oily",
+          "combination"
+        ],
+        "caution": [
+          "sensitive",
+          "dry",
+          "rosacea"
+        ]
       },
       "interactions": [
         {
@@ -521,20 +874,39 @@
       "comedogenic_rating": 0,
       "pregnancy_safe": true,
       "vegan": true,
-      "common_in": ["toners", "serums", "peels"],
+      "common_in": [
+        "toners",
+        "serums",
+        "peels"
+      ],
       "notes_en": "Smallest AHA = deepest penetration. MUST use sunscreen.",
-      "notes_zh": "最小的AHA = 最深的渗透。必须使用防晒霜。"
+      "notes_zh": "最小的AHA = 最深的渗透。必须使用防晒霜。",
+      "price_indicator": "affordable"
     },
     {
       "id": "azelaic_acid",
       "inci_name": "Azelaic Acid",
       "chinese_name": "壬二酸",
-      "aliases_en": ["AzA"],
-      "aliases_zh": ["杜鹃花酸"],
+      "aliases_en": [
+        "AzA"
+      ],
+      "aliases_zh": [
+        "杜鹃花酸"
+      ],
       "category": "active",
       "functions": {
-        "en": ["Treats acne", "Reduces hyperpigmentation", "Reduces rosacea", "Anti-inflammatory"],
-        "zh": ["治疗痤疮", "减少色素沉着", "减轻玫瑰痤疮", "消炎"]
+        "en": [
+          "Treats acne",
+          "Reduces hyperpigmentation",
+          "Reduces rosacea",
+          "Anti-inflammatory"
+        ],
+        "zh": [
+          "治疗痤疮",
+          "减少色素沉着",
+          "减轻玫瑰痤疮",
+          "消炎"
+        ]
       },
       "effective_concentration": {
         "otc": "10%",
@@ -542,7 +914,12 @@
       },
       "evidence_level": "strong",
       "skin_types": {
-        "suited": ["all", "sensitive", "rosacea", "acne_prone"]
+        "suited": [
+          "all",
+          "sensitive",
+          "rosacea",
+          "acne_prone"
+        ]
       },
       "interactions": [],
       "irritation_potential": "low",
@@ -550,9 +927,13 @@
       "pregnancy_safe": true,
       "pregnancy_notes_en": "One of the safest actives during pregnancy.",
       "vegan": true,
-      "common_in": ["serums", "treatments"],
+      "common_in": [
+        "serums",
+        "treatments"
+      ],
       "notes_en": "Underrated multitasker. Works for acne, rosacea, AND hyperpigmentation.",
-      "notes_zh": "被低估的多效成分。对痤疮、玫瑰痤疮和色素沉着都有效。"
+      "notes_zh": "被低估的多效成分。对痤疮、玫瑰痤疮和色素沉着都有效。",
+      "price_indicator": "affordable"
     },
     {
       "id": "zinc_oxide",
@@ -562,12 +943,24 @@
       "aliases_zh": [],
       "category": "sunscreen",
       "functions": {
-        "en": ["Broad-spectrum UV protection", "Physical/mineral filter", "Anti-inflammatory"],
-        "zh": ["广谱紫外线防护", "物理/矿物过滤剂", "消炎"]
+        "en": [
+          "Broad-spectrum UV protection",
+          "Physical/mineral filter",
+          "Anti-inflammatory"
+        ],
+        "zh": [
+          "广谱紫外线防护",
+          "物理/矿物过滤剂",
+          "消炎"
+        ]
       },
       "evidence_level": "strong",
       "skin_types": {
-        "suited": ["all", "sensitive", "acne_prone"],
+        "suited": [
+          "all",
+          "sensitive",
+          "acne_prone"
+        ],
         "notes_en": "May leave white cast, especially on darker skin tones."
       },
       "interactions": [],
@@ -576,20 +969,34 @@
       "pregnancy_safe": true,
       "pregnancy_notes_en": "Safest sunscreen option during pregnancy (stays on skin surface).",
       "vegan": true,
-      "common_in": ["sunscreens", "mineral_sunscreens"],
+      "common_in": [
+        "sunscreens",
+        "mineral_sunscreens"
+      ],
       "notes_en": "Broadest spectrum of any single sunscreen ingredient. Gentle for sensitive skin.",
-      "notes_zh": "单一防晒成分中最广谱的。对敏感肌温和。"
+      "notes_zh": "单一防晒成分中最广谱的。对敏感肌温和。",
+      "price_indicator": "affordable"
     },
     {
       "id": "benzoyl_peroxide",
       "inci_name": "Benzoyl Peroxide",
       "chinese_name": "过氧化苯甲酰",
-      "aliases_en": ["BPO"],
+      "aliases_en": [
+        "BPO"
+      ],
       "aliases_zh": [],
       "category": "active",
       "functions": {
-        "en": ["Kills acne bacteria", "Reduces inflammation", "Unclogs pores"],
-        "zh": ["杀死痤疮细菌", "减轻炎症", "疏通毛孔"]
+        "en": [
+          "Kills acne bacteria",
+          "Reduces inflammation",
+          "Unclogs pores"
+        ],
+        "zh": [
+          "杀死痤疮细菌",
+          "减轻炎症",
+          "疏通毛孔"
+        ]
       },
       "effective_concentration": {
         "typical": "2.5-10%",
@@ -597,8 +1004,14 @@
       },
       "evidence_level": "strong",
       "skin_types": {
-        "suited": ["oily", "acne_prone"],
-        "caution": ["dry", "sensitive"]
+        "suited": [
+          "oily",
+          "acne_prone"
+        ],
+        "caution": [
+          "dry",
+          "sensitive"
+        ]
       },
       "interactions": [
         {
@@ -611,24 +1024,41 @@
       "comedogenic_rating": 0,
       "pregnancy_safe": true,
       "vegan": true,
-      "common_in": ["spot_treatments", "cleansers"],
+      "common_in": [
+        "spot_treatments",
+        "cleansers"
+      ],
       "notes_en": "Very effective but drying. Will bleach fabrics. Start with 2.5%.",
-      "notes_zh": "非常有效但干燥。会漂白织物。从2.5%开始。"
+      "notes_zh": "非常有效但干燥。会漂白织物。从2.5%开始。",
+      "price_indicator": "affordable"
     },
     {
       "id": "squalane",
       "inci_name": "Squalane",
       "chinese_name": "角鲨烷",
       "aliases_en": [],
-      "aliases_zh": ["鲨烷"],
+      "aliases_zh": [
+        "鲨烷"
+      ],
       "category": "emollient",
       "functions": {
-        "en": ["Lightweight moisturizing", "Mimics natural sebum", "Non-comedogenic oil"],
-        "zh": ["轻薄保湿", "模拟天然皮脂", "不致粉刺的油"]
+        "en": [
+          "Lightweight moisturizing",
+          "Mimics natural sebum",
+          "Non-comedogenic oil"
+        ],
+        "zh": [
+          "轻薄保湿",
+          "模拟天然皮脂",
+          "不致粉刺的油"
+        ]
       },
       "evidence_level": "moderate",
       "skin_types": {
-        "suited": ["all", "including_oily"],
+        "suited": [
+          "all",
+          "including_oily"
+        ],
         "notes_en": "One of the few oils suitable for oily skin."
       },
       "interactions": [],
@@ -637,60 +1067,4722 @@
       "pregnancy_safe": true,
       "vegan": true,
       "vegan_notes_en": "Modern squalane is from olives/sugarcane, not sharks.",
-      "common_in": ["facial_oils", "moisturizers"],
+      "common_in": [
+        "facial_oils",
+        "moisturizers"
+      ],
       "notes_en": "Found naturally in human sebum. Absorbs quickly without greasiness.",
-      "notes_zh": "天然存在于人体皮脂中。吸收快，不油腻。"
+      "notes_zh": "天然存在于人体皮脂中。吸收快，不油腻。",
+      "price_indicator": "affordable"
     },
     {
       "id": "panthenol",
       "inci_name": "Panthenol",
       "chinese_name": "泛醇",
-      "aliases_en": ["Pro-Vitamin B5"],
-      "aliases_zh": ["维生素B5前体"],
+      "aliases_en": [
+        "Pro-Vitamin B5"
+      ],
+      "aliases_zh": [
+        "维生素B5前体"
+      ],
       "category": "humectant",
       "functions": {
-        "en": ["Moisturizes", "Supports healing", "Soothes irritation"],
-        "zh": ["保湿", "支持愈合", "舒缓刺激"]
+        "en": [
+          "Moisturizes",
+          "Supports healing",
+          "Soothes irritation"
+        ],
+        "zh": [
+          "保湿",
+          "支持愈合",
+          "舒缓刺激"
+        ]
       },
       "evidence_level": "moderate",
       "skin_types": {
-        "suited": ["all"]
+        "suited": [
+          "all"
+        ]
       },
       "interactions": [],
       "irritation_potential": "very_low",
       "comedogenic_rating": 0,
       "pregnancy_safe": true,
       "vegan": true,
-      "common_in": ["moisturizers", "wound_healing"],
+      "common_in": [
+        "moisturizers",
+        "wound_healing"
+      ],
       "notes_en": "Known for wound healing. Very well-tolerated.",
-      "notes_zh": "以伤口愈合闻名。耐受性非常好。"
+      "notes_zh": "以伤口愈合闻名。耐受性非常好。",
+      "price_indicator": "affordable"
     },
     {
       "id": "alpha_arbutin",
       "inci_name": "Alpha-Arbutin",
       "chinese_name": "α-熊果苷",
-      "aliases_en": ["Arbutin"],
-      "aliases_zh": ["熊果苷"],
+      "aliases_en": [
+        "Arbutin"
+      ],
+      "aliases_zh": [
+        "熊果苷"
+      ],
       "category": "active",
       "functions": {
-        "en": ["Inhibits melanin", "Fades dark spots", "Evens skin tone"],
-        "zh": ["抑制黑色素", "淡化色斑", "均匀肤色"]
+        "en": [
+          "Inhibits melanin",
+          "Fades dark spots",
+          "Evens skin tone"
+        ],
+        "zh": [
+          "抑制黑色素",
+          "淡化色斑",
+          "均匀肤色"
+        ]
       },
       "effective_concentration": {
         "typical": "1-2%"
       },
       "evidence_level": "moderate",
       "skin_types": {
-        "suited": ["all"]
+        "suited": [
+          "all"
+        ]
       },
       "interactions": [],
       "irritation_potential": "low",
       "comedogenic_rating": 0,
       "pregnancy_safe": true,
       "vegan": true,
-      "common_in": ["serums", "brightening_products"],
+      "common_in": [
+        "serums",
+        "brightening_products"
+      ],
       "notes_en": "Gentler, safer alternative to hydroquinone. Results take 8-12 weeks.",
-      "notes_zh": "比对苯二酚更温和、更安全的替代品。8-12周见效。"
+      "notes_zh": "比对苯二酚更温和、更安全的替代品。8-12周见效。",
+      "price_indicator": "affordable"
+    },
+    {
+      "id": "methylparaben",
+      "inci_name": "Methylparaben",
+      "chinese_name": "对羟基苯甲酸甲酯",
+      "aliases_en": [
+        "Methyl 4-hydroxybenzoate"
+      ],
+      "aliases_zh": [
+        "尼泊金甲酯"
+      ],
+      "category": "preservative",
+      "functions": {
+        "en": [
+          "Prevents bacterial growth",
+          "Extends product shelf life"
+        ],
+        "zh": [
+          "防止细菌生长",
+          "延长产品保质期"
+        ]
+      },
+      "evidence_level": "strong",
+      "evidence_notes_en": "CIR and EU SCCS confirm safe at permitted levels (0.4% individual, 0.8% total parabens).",
+      "evidence_notes_zh": "CIR和欧盟SCCS确认在允许浓度下安全（单一0.4%，总量0.8%）。",
+      "skin_types": {
+        "suited": [
+          "all"
+        ],
+        "caution": [],
+        "notes_en": "Generally well-tolerated.",
+        "notes_zh": "通常耐受性良好。"
+      },
+      "concerns_addressed": [],
+      "interactions": [],
+      "irritation_potential": "low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Considered safe at cosmetic concentrations.",
+      "pregnancy_notes_zh": "化妆品浓度下被认为是安全的。",
+      "vegan": true,
+      "common_in": [
+        "lotions",
+        "creams",
+        "shampoos"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Most studied preservative. Controversial but supported as safe by regulatory bodies.",
+      "notes_zh": "研究最多的防腐剂。虽有争议但各监管机构认定安全。"
+    },
+    {
+      "id": "propylparaben",
+      "inci_name": "Propylparaben",
+      "chinese_name": "对羟基苯甲酸丙酯",
+      "aliases_en": [
+        "Propyl 4-hydroxybenzoate"
+      ],
+      "aliases_zh": [
+        "尼泊金丙酯"
+      ],
+      "category": "preservative",
+      "functions": {
+        "en": [
+          "Prevents fungal and bacterial growth",
+          "Broadens preservative spectrum"
+        ],
+        "zh": [
+          "防止真菌和细菌生长",
+          "扩大防腐谱"
+        ]
+      },
+      "evidence_level": "strong",
+      "evidence_notes_en": "Safe at up to 0.14% per EU SCCS 2013 opinion. Often paired with methylparaben.",
+      "evidence_notes_zh": "根据欧盟SCCS 2013意见，0.14%以下安全。常与对羟基苯甲酸甲酯搭配。",
+      "skin_types": {
+        "suited": [
+          "all"
+        ],
+        "caution": [],
+        "notes_en": "Low irritation potential.",
+        "notes_zh": "低刺激可能性。"
+      },
+      "concerns_addressed": [],
+      "interactions": [],
+      "irritation_potential": "low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Considered safe at cosmetic concentrations.",
+      "pregnancy_notes_zh": "化妆品浓度下被认为是安全的。",
+      "vegan": true,
+      "common_in": [
+        "lotions",
+        "creams"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Often used with methylparaben for broader preservation.",
+      "notes_zh": "常与对羟基苯甲酸甲酯配合使用以获得更广的防腐效果。"
+    },
+    {
+      "id": "methylisothiazolinone",
+      "inci_name": "Methylisothiazolinone",
+      "chinese_name": "甲基异噻唑啉酮",
+      "aliases_en": [
+        "MIT",
+        "MI"
+      ],
+      "aliases_zh": [],
+      "category": "preservative",
+      "functions": {
+        "en": [
+          "Strong antimicrobial preservative"
+        ],
+        "zh": [
+          "强效抗菌防腐剂"
+        ]
+      },
+      "evidence_level": "strong",
+      "evidence_notes_en": "Banned in EU leave-on products since 2016 due to sensitization risk. Allowed in rinse-off at ≤15ppm.",
+      "evidence_notes_zh": "2016年起在欧盟驻留产品中被禁用，因有致敏风险。冲洗型产品中允许≤15ppm。",
+      "skin_types": {
+        "suited": [],
+        "caution": [
+          "sensitive",
+          "eczema",
+          "all"
+        ],
+        "notes_en": "High allergen risk. One of the most common contact allergens.",
+        "notes_zh": "高致敏风险。最常见的接触性过敏原之一。"
+      },
+      "concerns_addressed": [],
+      "interactions": [],
+      "irritation_potential": "high",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "No specific pregnancy concerns, but high sensitization risk for everyone.",
+      "pregnancy_notes_zh": "无特定孕期问题，但对所有人有高致敏风险。",
+      "vegan": true,
+      "common_in": [
+        "shampoos",
+        "conditioners",
+        "household_cleaners"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Avoid in leave-on products. Named Allergen of the Year 2013 by ACDS.",
+      "notes_zh": "避免在驻留产品中使用。2013年被美国接触性皮炎学会评为年度过敏原。"
+    },
+    {
+      "id": "sodium_benzoate",
+      "inci_name": "Sodium Benzoate",
+      "chinese_name": "苯甲酸钠",
+      "aliases_en": [],
+      "aliases_zh": [],
+      "category": "preservative",
+      "functions": {
+        "en": [
+          "Prevents yeast, bacteria, and mold growth",
+          "Works best at low pH"
+        ],
+        "zh": [
+          "防止酵母、细菌和霉菌生长",
+          "在低pH下效果最佳"
+        ]
+      },
+      "evidence_level": "strong",
+      "evidence_notes_en": "Safe up to 2.5% per CIR. Most effective below pH 5.",
+      "evidence_notes_zh": "CIR确认2.5%以下安全。pH低于5时最有效。",
+      "skin_types": {
+        "suited": [
+          "all"
+        ],
+        "caution": [],
+        "notes_en": "Generally well-tolerated.",
+        "notes_zh": "通常耐受性良好。"
+      },
+      "concerns_addressed": [],
+      "interactions": [
+        {
+          "ingredient": "Ascorbic Acid",
+          "ingredient_zh": "抗坏血酸",
+          "type": "caution",
+          "details_en": "Can form trace benzene when combined with Vitamin C and exposed to heat/light. Modern formulations minimize this.",
+          "details_zh": "与维生素C结合在高温/光照下可能形成微量苯。现代配方已最小化此风险。"
+        }
+      ],
+      "irritation_potential": "low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe at cosmetic concentrations.",
+      "pregnancy_notes_zh": "化妆品浓度下安全。",
+      "vegan": true,
+      "common_in": [
+        "toners",
+        "serums",
+        "cleansers"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Popular paraben alternative. Often paired with potassium sorbate.",
+      "notes_zh": "常见的对羟基苯甲酸酯替代品。常与山梨酸钾配合使用。"
+    },
+    {
+      "id": "potassium_sorbate",
+      "inci_name": "Potassium Sorbate",
+      "chinese_name": "山梨酸钾",
+      "aliases_en": [],
+      "aliases_zh": [],
+      "category": "preservative",
+      "functions": {
+        "en": [
+          "Inhibits yeast and mold",
+          "Gentle preservative"
+        ],
+        "zh": [
+          "抑制酵母和霉菌",
+          "温和防腐剂"
+        ]
+      },
+      "evidence_level": "strong",
+      "evidence_notes_en": "CIR assessed safe. Works best at pH below 6.",
+      "evidence_notes_zh": "CIR评估安全。pH低于6时效果最佳。",
+      "skin_types": {
+        "suited": [
+          "all"
+        ],
+        "caution": [],
+        "notes_en": "Very well-tolerated.",
+        "notes_zh": "耐受性非常好。"
+      },
+      "concerns_addressed": [],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe.",
+      "pregnancy_notes_zh": "安全。",
+      "vegan": true,
+      "common_in": [
+        "natural_skincare",
+        "organic_products"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Popular in 'clean beauty' formulations. Often paired with sodium benzoate.",
+      "notes_zh": "在'纯净美容'配方中很受欢迎。常与苯甲酸钠配合。"
+    },
+    {
+      "id": "ethylhexylglycerin",
+      "inci_name": "Ethylhexylglycerin",
+      "chinese_name": "乙基己基甘油",
+      "aliases_en": [
+        "Octoxyglycerin"
+      ],
+      "aliases_zh": [],
+      "category": "preservative",
+      "functions": {
+        "en": [
+          "Preservative booster",
+          "Skin-conditioning agent",
+          "Deodorant active"
+        ],
+        "zh": [
+          "防腐增效剂",
+          "皮肤调理剂",
+          "除臭活性成分"
+        ]
+      },
+      "evidence_level": "moderate",
+      "evidence_notes_en": "Enhances efficacy of phenoxyethanol. CIR assessed safe.",
+      "evidence_notes_zh": "增强苯氧乙醇的效力。CIR评估安全。",
+      "skin_types": {
+        "suited": [
+          "all"
+        ],
+        "caution": [
+          "sensitive"
+        ],
+        "notes_en": "Generally well-tolerated but may sting on broken skin.",
+        "notes_zh": "通常耐受性好但可能刺激受损皮肤。"
+      },
+      "concerns_addressed": [],
+      "interactions": [],
+      "irritation_potential": "low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe.",
+      "pregnancy_notes_zh": "安全。",
+      "vegan": true,
+      "common_in": [
+        "serums",
+        "moisturizers",
+        "deodorants"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Commonly paired with phenoxyethanol as a paraben-free preservation system.",
+      "notes_zh": "非常常见地与苯氧乙醇搭配作为无对羟基苯甲酸酯的防腐系统。"
+    },
+    {
+      "id": "bakuchiol",
+      "inci_name": "Bakuchiol",
+      "chinese_name": "补骨脂酚",
+      "aliases_en": [],
+      "aliases_zh": [],
+      "category": "active",
+      "subcategory": "retinoid_alternative",
+      "functions": {
+        "en": [
+          "Anti-aging without retinoid side effects",
+          "Antioxidant",
+          "Stimulates collagen"
+        ],
+        "zh": [
+          "无视黄醇类副作用的抗衰老",
+          "抗氧化",
+          "刺激胶原蛋白"
+        ]
+      },
+      "effective_concentration": {
+        "minimum": "0.5%",
+        "optimal": "1-2%",
+        "notes_en": "Can be used AM and PM. No photosensitivity.",
+        "notes_zh": "可早晚使用。无光敏性。"
+      },
+      "evidence_level": "moderate",
+      "evidence_notes_en": "2019 British Journal of Dermatology study showed comparable results to 0.5% retinol for wrinkles and pigmentation.",
+      "evidence_notes_zh": "2019年英国皮肤病学杂志研究显示，其对皱纹和色素沉着的效果与0.5%视黄醇相当。",
+      "skin_types": {
+        "suited": [
+          "all",
+          "sensitive"
+        ],
+        "caution": [],
+        "notes_en": "Excellent retinol alternative for sensitive skin and pregnancy.",
+        "notes_zh": "敏感肌和孕期的优秀视黄醇替代品。"
+      },
+      "concerns_addressed": [
+        "aging",
+        "fine_lines",
+        "wrinkles",
+        "hyperpigmentation"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Plant-derived, considered safe during pregnancy.",
+      "pregnancy_notes_zh": "植物来源，孕期被认为安全。",
+      "vegan": true,
+      "common_in": [
+        "serums",
+        "oils",
+        "night_creams"
+      ],
+      "price_indicator": "moderate",
+      "notes_en": "Best retinol alternative. Gentler with no purging period. Can be combined with retinol for enhanced results.",
+      "notes_zh": "最佳视黄醇替代品。更温和无爆痘期。可与视黄醇联用增强效果。"
+    },
+    {
+      "id": "tranexamic_acid",
+      "inci_name": "Tranexamic Acid",
+      "chinese_name": "传明酸",
+      "aliases_en": [
+        "TXA",
+        "t-AMCHA"
+      ],
+      "aliases_zh": [
+        "氨甲环酸",
+        "凝血酸"
+      ],
+      "category": "active",
+      "subcategory": "brightening",
+      "functions": {
+        "en": [
+          "Inhibits melanin production",
+          "Reduces post-inflammatory hyperpigmentation",
+          "Brightens skin tone"
+        ],
+        "zh": [
+          "抑制黑色素生成",
+          "减轻炎症后色素沉着",
+          "提亮肤色"
+        ]
+      },
+      "effective_concentration": {
+        "minimum": "2%",
+        "optimal": "3-5%",
+        "notes_en": "Effective at relatively low concentrations.",
+        "notes_zh": "在较低浓度下即可有效。"
+      },
+      "evidence_level": "strong",
+      "evidence_notes_en": "Multiple clinical trials show efficacy for melasma and PIH. Originally used orally for melasma in Asia.",
+      "evidence_notes_zh": "多项临床试验证明对黄褐斑和炎症后色素沉着有效。最初在亚洲口服治疗黄褐斑。",
+      "skin_types": {
+        "suited": [
+          "all"
+        ],
+        "caution": [],
+        "notes_en": "Very well-tolerated. Good for all skin types.",
+        "notes_zh": "耐受性非常好。适合所有肤质。"
+      },
+      "concerns_addressed": [
+        "hyperpigmentation",
+        "melasma",
+        "dark_spots",
+        "dullness"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": false,
+      "pregnancy_notes_en": "Insufficient data for topical use in pregnancy. Consult dermatologist.",
+      "pregnancy_notes_zh": "孕期外用数据不足。请咨询皮肤科医生。",
+      "vegan": true,
+      "common_in": [
+        "serums",
+        "toners",
+        "essences"
+      ],
+      "price_indicator": "moderate",
+      "notes_en": "Rising star for hyperpigmentation. Very popular in Asian skincare. Works well with niacinamide and vitamin C.",
+      "notes_zh": "美白淡斑新星。在亚洲护肤中非常受欢迎。与烟酰胺和维C搭配效果好。"
+    },
+    {
+      "id": "kojic_acid",
+      "inci_name": "Kojic Acid",
+      "chinese_name": "曲酸",
+      "aliases_en": [],
+      "aliases_zh": [],
+      "category": "active",
+      "subcategory": "brightening",
+      "functions": {
+        "en": [
+          "Inhibits tyrosinase",
+          "Lightens hyperpigmentation",
+          "Antioxidant"
+        ],
+        "zh": [
+          "抑制酪氨酸酶",
+          "淡化色素沉着",
+          "抗氧化"
+        ]
+      },
+      "effective_concentration": {
+        "minimum": "1%",
+        "optimal": "1-4%",
+        "notes_en": "Unstable—often formulated as kojic dipalmitate for better stability.",
+        "notes_zh": "不稳定——常配制为曲酸双棕榈酸酯以提高稳定性。"
+      },
+      "evidence_level": "moderate",
+      "evidence_notes_en": "Good evidence for tyrosinase inhibition. Less stable than alternatives.",
+      "evidence_notes_zh": "对酪氨酸酶抑制有良好证据。稳定性不如替代品。",
+      "skin_types": {
+        "suited": [
+          "normal",
+          "oily",
+          "combination"
+        ],
+        "caution": [
+          "sensitive"
+        ],
+        "notes_en": "Can cause contact dermatitis in some individuals.",
+        "notes_zh": "某些人可能出现接触性皮炎。"
+      },
+      "concerns_addressed": [
+        "hyperpigmentation",
+        "dark_spots",
+        "melasma"
+      ],
+      "interactions": [],
+      "irritation_potential": "medium",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Topical use generally considered safe in pregnancy.",
+      "pregnancy_notes_zh": "外用在孕期一般被认为安全。",
+      "vegan": true,
+      "common_in": [
+        "serums",
+        "soaps",
+        "treatments"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Derived from fungi. Effective brightener but less stable than arbutin or tranexamic acid.",
+      "notes_zh": "来源于真菌。有效的美白成分但稳定性不如熊果苷或传明酸。"
+    },
+    {
+      "id": "adapalene",
+      "inci_name": "Adapalene",
+      "chinese_name": "阿达帕林",
+      "aliases_en": [
+        "Differin"
+      ],
+      "aliases_zh": [
+        "达芙文"
+      ],
+      "category": "active",
+      "subcategory": "retinoid",
+      "functions": {
+        "en": [
+          "Treats acne",
+          "Normalizes cell turnover",
+          "Anti-inflammatory",
+          "Prevents clogged pores"
+        ],
+        "zh": [
+          "治疗痤疮",
+          "正常化细胞更新",
+          "消炎",
+          "预防毛孔堵塞"
+        ]
+      },
+      "effective_concentration": {
+        "minimum": "0.1%",
+        "optimal": "0.1-0.3%",
+        "notes_en": "0.1% is OTC in many countries. 0.3% requires prescription.",
+        "notes_zh": "0.1%在很多国家为非处方药。0.3%需要处方。"
+      },
+      "evidence_level": "strong",
+      "evidence_notes_en": "FDA-approved for acne. More stable and less irritating than tretinoin.",
+      "evidence_notes_zh": "FDA批准用于痤疮。比维A酸更稳定且刺激性更低。",
+      "skin_types": {
+        "suited": [
+          "oily",
+          "acne_prone"
+        ],
+        "caution": [
+          "sensitive",
+          "dry",
+          "eczema"
+        ],
+        "notes_en": "Less irritating than tretinoin but still requires gradual introduction.",
+        "notes_zh": "比维A酸刺激性小但仍需逐渐引入。"
+      },
+      "concerns_addressed": [
+        "acne",
+        "clogged_pores",
+        "texture"
+      ],
+      "interactions": [
+        {
+          "ingredient": "Benzoyl Peroxide",
+          "ingredient_zh": "过氧化苯甲酰",
+          "type": "synergy",
+          "details_en": "Effective combination for acne (Epiduo). Can be used together.",
+          "details_zh": "治疗痤疮的有效组合（Epiduo）。可以同时使用。"
+        }
+      ],
+      "irritation_potential": "medium",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": false,
+      "pregnancy_notes_en": "Retinoid—avoid during pregnancy.",
+      "pregnancy_notes_zh": "视黄醇类——孕期避免使用。",
+      "vegan": true,
+      "common_in": [
+        "gels",
+        "creams",
+        "treatments"
+      ],
+      "price_indicator": "moderate",
+      "notes_en": "Most well-tolerated retinoid for acne. Available OTC as Differin in US/Canada/AU.",
+      "notes_zh": "痤疮治疗中耐受性最好的视黄醇类。在美国/加拿大/澳大利亚以Differin为OTC产品。"
+    },
+    {
+      "id": "palmitoyl_pentapeptide_4",
+      "inci_name": "Palmitoyl Pentapeptide-4",
+      "chinese_name": "棕榈酰五肽-4",
+      "aliases_en": [
+        "Matrixyl"
+      ],
+      "aliases_zh": [
+        "基质肽"
+      ],
+      "category": "active",
+      "subcategory": "peptide",
+      "functions": {
+        "en": [
+          "Stimulates collagen synthesis",
+          "Reduces wrinkle depth",
+          "Improves skin firmness"
+        ],
+        "zh": [
+          "刺激胶原蛋白合成",
+          "减少皱纹深度",
+          "改善皮肤紧致度"
+        ]
+      },
+      "effective_concentration": {
+        "minimum": "4ppm",
+        "optimal": "100-300ppm",
+        "notes_en": "Effective at very low concentrations.",
+        "notes_zh": "在极低浓度下即可有效。"
+      },
+      "evidence_level": "moderate",
+      "evidence_notes_en": "In vitro studies show collagen stimulation. Clinical studies suggest wrinkle reduction.",
+      "evidence_notes_zh": "体外研究显示刺激胶原蛋白。临床研究提示可减少皱纹。",
+      "skin_types": {
+        "suited": [
+          "all"
+        ],
+        "caution": [],
+        "notes_en": "Extremely well-tolerated.",
+        "notes_zh": "耐受性极好。"
+      },
+      "concerns_addressed": [
+        "aging",
+        "fine_lines",
+        "wrinkles",
+        "firmness"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Considered safe during pregnancy.",
+      "pregnancy_notes_zh": "孕期使用被认为安全。",
+      "vegan": true,
+      "common_in": [
+        "serums",
+        "eye_creams",
+        "moisturizers"
+      ],
+      "price_indicator": "moderate_to_expensive",
+      "notes_en": "One of the most studied peptides in skincare. Gentle alternative to retinol for anti-aging.",
+      "notes_zh": "护肤中研究最多的多肽之一。抗衰老方面是视黄醇的温和替代品。"
+    },
+    {
+      "id": "palmitoyl_tripeptide_1",
+      "inci_name": "Palmitoyl Tripeptide-1",
+      "chinese_name": "棕榈酰三肽-1",
+      "aliases_en": [
+        "Matrixyl 3000 (component)"
+      ],
+      "aliases_zh": [],
+      "category": "active",
+      "subcategory": "peptide",
+      "functions": {
+        "en": [
+          "Promotes collagen production",
+          "Skin repair signaling",
+          "Anti-wrinkle"
+        ],
+        "zh": [
+          "促进胶原蛋白生成",
+          "皮肤修复信号传导",
+          "抗皱"
+        ]
+      },
+      "evidence_level": "moderate",
+      "evidence_notes_en": "Often used with Palmitoyl Tetrapeptide-7 as Matrixyl 3000.",
+      "evidence_notes_zh": "常与棕榈酰四肽-7组合为Matrixyl 3000。",
+      "skin_types": {
+        "suited": [
+          "all"
+        ],
+        "caution": [],
+        "notes_en": "Non-irritating.",
+        "notes_zh": "无刺激性。"
+      },
+      "concerns_addressed": [
+        "aging",
+        "wrinkles"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Considered safe.",
+      "pregnancy_notes_zh": "被认为安全。",
+      "vegan": true,
+      "common_in": [
+        "serums",
+        "anti_aging_creams"
+      ],
+      "price_indicator": "moderate_to_expensive",
+      "notes_en": "Key component of Matrixyl 3000 when paired with Palmitoyl Tetrapeptide-7.",
+      "notes_zh": "与棕榈酰四肽-7配合时为Matrixyl 3000的关键成分。"
+    },
+    {
+      "id": "copper_peptide",
+      "inci_name": "Copper Tripeptide-1",
+      "chinese_name": "铜肽",
+      "aliases_en": [
+        "GHK-Cu",
+        "Copper Peptide"
+      ],
+      "aliases_zh": [
+        "蓝铜胜肽",
+        "蓝铜肽"
+      ],
+      "category": "active",
+      "subcategory": "peptide",
+      "functions": {
+        "en": [
+          "Wound healing",
+          "Collagen stimulation",
+          "Anti-inflammatory",
+          "Antioxidant"
+        ],
+        "zh": [
+          "促进伤口愈合",
+          "刺激胶原蛋白",
+          "消炎",
+          "抗氧化"
+        ]
+      },
+      "evidence_level": "moderate",
+      "evidence_notes_en": "Demonstrated wound healing and anti-aging benefits in multiple studies.",
+      "evidence_notes_zh": "多项研究证明具有促进愈合和抗衰老功效。",
+      "skin_types": {
+        "suited": [
+          "all"
+        ],
+        "caution": [],
+        "notes_en": "Well-tolerated at standard concentrations.",
+        "notes_zh": "标准浓度下耐受性好。"
+      },
+      "concerns_addressed": [
+        "aging",
+        "fine_lines",
+        "skin_repair",
+        "scarring"
+      ],
+      "interactions": [
+        {
+          "ingredient": "Vitamin C",
+          "ingredient_zh": "维生素C",
+          "type": "caution",
+          "details_en": "L-ascorbic acid may reduce copper peptide efficacy. Use at different times.",
+          "details_zh": "左旋维C可能降低铜肽效力。应在不同时间使用。"
+        },
+        {
+          "ingredient": "AHAs/BHAs",
+          "ingredient_zh": "果酸/水杨酸",
+          "type": "caution",
+          "details_en": "Low pH products may destabilize copper peptides.",
+          "details_zh": "低pH产品可能使铜肽不稳定。"
+        }
+      ],
+      "irritation_potential": "low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Limited data but generally considered safe topically.",
+      "pregnancy_notes_zh": "数据有限但外用一般被认为安全。",
+      "vegan": true,
+      "common_in": [
+        "serums",
+        "treatments"
+      ],
+      "price_indicator": "expensive",
+      "notes_en": "Distinctive blue color. Don't use with strong acids or vitamin C. Best alone or with gentle products.",
+      "notes_zh": "独特的蓝色。不要与强酸或维C同用。最好单独使用或与温和产品搭配。"
+    },
+    {
+      "id": "acetyl_hexapeptide_8",
+      "inci_name": "Acetyl Hexapeptide-8",
+      "chinese_name": "乙酰基六肽-8",
+      "aliases_en": [
+        "Argireline"
+      ],
+      "aliases_zh": [
+        "类蛇毒肽",
+        "六胜肽"
+      ],
+      "category": "active",
+      "subcategory": "peptide",
+      "functions": {
+        "en": [
+          "Reduces expression line appearance",
+          "Relaxes facial muscles topically"
+        ],
+        "zh": [
+          "减少表情纹外观",
+          "外用放松面部肌肉"
+        ]
+      },
+      "effective_concentration": {
+        "minimum": "5%",
+        "optimal": "10%",
+        "notes_en": "Percentage refers to the solution (typically 0.005% active peptide).",
+        "notes_zh": "百分比指溶液浓度（通常含0.005%活性肽）。"
+      },
+      "evidence_level": "limited",
+      "evidence_notes_en": "Some studies show modest wrinkle reduction. Often called 'topical Botox' but effect is much milder.",
+      "evidence_notes_zh": "部分研究显示适度减少皱纹。常被称为'外用肉毒素'但效果温和得多。",
+      "skin_types": {
+        "suited": [
+          "all"
+        ],
+        "caution": [],
+        "notes_en": "Very gentle.",
+        "notes_zh": "非常温和。"
+      },
+      "concerns_addressed": [
+        "expression_lines",
+        "fine_lines",
+        "wrinkles"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Considered safe.",
+      "pregnancy_notes_zh": "被认为安全。",
+      "vegan": true,
+      "common_in": [
+        "serums",
+        "eye_creams"
+      ],
+      "price_indicator": "moderate_to_expensive",
+      "notes_en": "Marketed as 'Botox in a bottle' but evidence is modest. Gentle, no downside to trying.",
+      "notes_zh": "被宣传为'瓶中肉毒素'但证据有限。温和无副作用，可以尝试。"
+    },
+    {
+      "id": "lactic_acid",
+      "inci_name": "Lactic Acid",
+      "chinese_name": "乳酸",
+      "aliases_en": [
+        "AHA"
+      ],
+      "aliases_zh": [
+        "果酸"
+      ],
+      "category": "exfoliant",
+      "functions": {
+        "en": [
+          "Gentle chemical exfoliation",
+          "Hydrating while exfoliating",
+          "Brightening"
+        ],
+        "zh": [
+          "温和化学去角质",
+          "去角质同时保湿",
+          "提亮"
+        ]
+      },
+      "effective_concentration": {
+        "minimum": "5%",
+        "optimal": "10%",
+        "maximum_beneficial": "30% (professional)",
+        "notes_en": "Gentler than glycolic. Good entry-level AHA.",
+        "notes_zh": "比乙醇酸更温和。适合入门AHA。"
+      },
+      "evidence_level": "strong",
+      "evidence_notes_en": "Well-established AHA with humectant properties.",
+      "evidence_notes_zh": "功效确切的AHA，同时具有保湿特性。",
+      "skin_types": {
+        "suited": [
+          "dry",
+          "sensitive",
+          "normal"
+        ],
+        "caution": [
+          "very_sensitive"
+        ],
+        "notes_en": "Gentlest AHA, good for dry/sensitive skin.",
+        "notes_zh": "最温和的AHA，适合干性/敏感肌肤。"
+      },
+      "concerns_addressed": [
+        "dullness",
+        "texture",
+        "hyperpigmentation",
+        "dryness"
+      ],
+      "interactions": [
+        {
+          "ingredient": "Retinol",
+          "ingredient_zh": "视黄醇",
+          "type": "caution",
+          "details_en": "Using together increases irritation risk. Alternate nights.",
+          "details_zh": "同时使用增加刺激风险。建议隔夜交替。"
+        }
+      ],
+      "irritation_potential": "low_to_medium",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Low concentrations (under 10%) generally considered safe.",
+      "pregnancy_notes_zh": "低浓度（10%以下）通常被认为安全。",
+      "vegan": true,
+      "common_in": [
+        "serums",
+        "toners",
+        "peels"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Best AHA for sensitive/dry skin due to humectant properties. Always use SPF.",
+      "notes_zh": "因其保湿特性，是敏感/干性皮肤的最佳AHA。必须使用防晒。"
+    },
+    {
+      "id": "mandelic_acid",
+      "inci_name": "Mandelic Acid",
+      "chinese_name": "扁桃酸",
+      "aliases_en": [
+        "AHA"
+      ],
+      "aliases_zh": [
+        "杏仁酸"
+      ],
+      "category": "exfoliant",
+      "functions": {
+        "en": [
+          "Gentle exfoliation",
+          "Antibacterial",
+          "Brightening",
+          "Suitable for darker skin tones"
+        ],
+        "zh": [
+          "温和去角质",
+          "抗菌",
+          "提亮",
+          "适合深肤色"
+        ]
+      },
+      "effective_concentration": {
+        "minimum": "5%",
+        "optimal": "10%",
+        "notes_en": "Larger molecular size means slower penetration and less irritation.",
+        "notes_zh": "较大的分子量意味着渗透更慢、刺激更小。"
+      },
+      "evidence_level": "moderate",
+      "evidence_notes_en": "Studies support use for acne, melasma, and photoaging, especially in darker skin tones.",
+      "evidence_notes_zh": "研究支持用于痤疮、黄褐斑和光老化，尤其适合深肤色。",
+      "skin_types": {
+        "suited": [
+          "sensitive",
+          "all",
+          "darker_skin_tones"
+        ],
+        "caution": [],
+        "notes_en": "Gentlest AHA due to large molecular weight.",
+        "notes_zh": "因分子量大而成为最温和的AHA。"
+      },
+      "concerns_addressed": [
+        "acne",
+        "hyperpigmentation",
+        "texture",
+        "dullness"
+      ],
+      "interactions": [],
+      "irritation_potential": "low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Generally considered safe at low concentrations.",
+      "pregnancy_notes_zh": "低浓度一般被认为安全。",
+      "vegan": true,
+      "common_in": [
+        "serums",
+        "toners",
+        "peels"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Best AHA for beginners and those with darker skin tones (lower PIH risk). Always use SPF.",
+      "notes_zh": "初学者和深肤色的最佳AHA（炎症后色素沉着风险低）。必须使用防晒。"
+    },
+    {
+      "id": "polyhydroxy_acid",
+      "inci_name": "Gluconolactone",
+      "chinese_name": "葡萄糖酸内酯",
+      "aliases_en": [
+        "PHA",
+        "Polyhydroxy Acid"
+      ],
+      "aliases_zh": [
+        "聚羟基酸"
+      ],
+      "category": "exfoliant",
+      "functions": {
+        "en": [
+          "Ultra-gentle exfoliation",
+          "Humectant",
+          "Antioxidant",
+          "Strengthens barrier"
+        ],
+        "zh": [
+          "超温和去角质",
+          "保湿",
+          "抗氧化",
+          "增强屏障"
+        ]
+      },
+      "evidence_level": "moderate",
+      "evidence_notes_en": "Comparable exfoliation to AHAs with less irritation. Good for sensitive skin.",
+      "evidence_notes_zh": "与AHA相当的去角质效果但刺激更少。适合敏感肌。",
+      "skin_types": {
+        "suited": [
+          "sensitive",
+          "dry",
+          "rosacea",
+          "all"
+        ],
+        "caution": [],
+        "notes_en": "One of the gentlest chemical exfoliants available.",
+        "notes_zh": "现有最温和的化学去角质剂之一。"
+      },
+      "concerns_addressed": [
+        "dullness",
+        "texture",
+        "sensitivity"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Considered safe during pregnancy.",
+      "pregnancy_notes_zh": "孕期使用被认为安全。",
+      "vegan": true,
+      "common_in": [
+        "toners",
+        "serums"
+      ],
+      "price_indicator": "moderate",
+      "notes_en": "Best exfoliant for very sensitive skin, eczema, and rosacea. Does not increase sun sensitivity as much as AHAs.",
+      "notes_zh": "极度敏感肌、湿疹和玫瑰痤疮的最佳去角质剂。不像AHA那样增加光敏性。"
+    },
+    {
+      "id": "polysorbate_80",
+      "inci_name": "Polysorbate 80",
+      "chinese_name": "聚山梨酯80",
+      "aliases_en": [
+        "Tween 80"
+      ],
+      "aliases_zh": [
+        "吐温80"
+      ],
+      "category": "emulsifier",
+      "functions": {
+        "en": [
+          "Emulsifier",
+          "Solubilizer for essential oils",
+          "Surfactant"
+        ],
+        "zh": [
+          "乳化剂",
+          "精油增溶剂",
+          "表面活性剂"
+        ]
+      },
+      "evidence_level": "strong",
+      "evidence_notes_en": "Long safety record. CIR assessed as safe.",
+      "evidence_notes_zh": "使用安全记录悠久。CIR评估安全。",
+      "skin_types": {
+        "suited": [
+          "all"
+        ],
+        "caution": [],
+        "notes_en": "Generally non-irritating.",
+        "notes_zh": "通常无刺激性。"
+      },
+      "concerns_addressed": [],
+      "interactions": [],
+      "irritation_potential": "low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe.",
+      "pregnancy_notes_zh": "安全。",
+      "vegan": true,
+      "common_in": [
+        "cleansers",
+        "micellar_water",
+        "toners"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Common emulsifier used to blend oil and water phases.",
+      "notes_zh": "常见的乳化剂，用于混合油相和水相。"
+    },
+    {
+      "id": "cetearyl_glucoside",
+      "inci_name": "Cetearyl Glucoside",
+      "chinese_name": "鲸蜡硬脂基葡糖苷",
+      "aliases_en": [],
+      "aliases_zh": [],
+      "category": "emulsifier",
+      "functions": {
+        "en": [
+          "Gentle emulsifier",
+          "Stabilizes oil-in-water emulsions"
+        ],
+        "zh": [
+          "温和乳化剂",
+          "稳定水包油乳液"
+        ]
+      },
+      "evidence_level": "moderate",
+      "evidence_notes_en": "Sugar-based emulsifier with good tolerability.",
+      "evidence_notes_zh": "基于糖类的乳化剂，耐受性好。",
+      "skin_types": {
+        "suited": [
+          "all",
+          "sensitive"
+        ],
+        "caution": [],
+        "notes_en": "One of the gentlest emulsifiers.",
+        "notes_zh": "最温和的乳化剂之一。"
+      },
+      "concerns_addressed": [],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe.",
+      "pregnancy_notes_zh": "安全。",
+      "vegan": true,
+      "common_in": [
+        "moisturizers",
+        "lotions",
+        "natural_skincare"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Popular in natural/sensitive skin formulations. Often paired with cetearyl alcohol.",
+      "notes_zh": "在天然/敏感肌配方中很受欢迎。常与鲸蜡硬脂醇搭配。"
+    },
+    {
+      "id": "cocamidopropyl_betaine",
+      "inci_name": "Cocamidopropyl Betaine",
+      "chinese_name": "椰油酰胺丙基甜菜碱",
+      "aliases_en": [
+        "CAPB",
+        "Coco-Betaine"
+      ],
+      "aliases_zh": [],
+      "category": "surfactant",
+      "functions": {
+        "en": [
+          "Gentle cleansing",
+          "Foam boosting",
+          "Viscosity building"
+        ],
+        "zh": [
+          "温和清洁",
+          "增强泡沫",
+          "增稠"
+        ]
+      },
+      "evidence_level": "strong",
+      "evidence_notes_en": "CIR safe. One of the mildest surfactants available.",
+      "evidence_notes_zh": "CIR评估安全。现有最温和的表面活性剂之一。",
+      "skin_types": {
+        "suited": [
+          "all",
+          "sensitive"
+        ],
+        "caution": [],
+        "notes_en": "Very gentle. Preferred for sensitive skin cleansers.",
+        "notes_zh": "非常温和。敏感肌洁面的首选。"
+      },
+      "concerns_addressed": [],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe.",
+      "pregnancy_notes_zh": "安全。",
+      "vegan": true,
+      "common_in": [
+        "cleansers",
+        "shampoos",
+        "body_wash"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Derived from coconut oil. Excellent gentle surfactant for all skin types.",
+      "notes_zh": "来源于椰子油。适合所有肤质的优秀温和表面活性剂。"
+    },
+    {
+      "id": "sodium_cocoyl_isethionate",
+      "inci_name": "Sodium Cocoyl Isethionate",
+      "chinese_name": "椰油基羟乙基磺酸钠",
+      "aliases_en": [
+        "SCI",
+        "Baby foam"
+      ],
+      "aliases_zh": [],
+      "category": "surfactant",
+      "functions": {
+        "en": [
+          "Gentle cleansing",
+          "Rich lather",
+          "Mild on skin"
+        ],
+        "zh": [
+          "温和清洁",
+          "丰富泡沫",
+          "对皮肤温和"
+        ]
+      },
+      "evidence_level": "strong",
+      "evidence_notes_en": "Known as one of the mildest synthetic surfactants.",
+      "evidence_notes_zh": "被认为是最温和的合成表面活性剂之一。",
+      "skin_types": {
+        "suited": [
+          "all",
+          "sensitive",
+          "dry"
+        ],
+        "caution": [],
+        "notes_en": "Extremely mild. Common in baby products.",
+        "notes_zh": "极其温和。常用于婴儿产品。"
+      },
+      "concerns_addressed": [],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe.",
+      "pregnancy_notes_zh": "安全。",
+      "vegan": true,
+      "common_in": [
+        "syndet_bars",
+        "cleansers",
+        "baby_products"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Found in Dove Beauty Bar. Excellent for those who find SLS too harsh.",
+      "notes_zh": "用于多芬美容皂。适合觉得SLS太刺激的人。"
+    },
+    {
+      "id": "sodium_laureth_sulfate",
+      "inci_name": "Sodium Laureth Sulfate",
+      "chinese_name": "月桂醇聚醚硫酸酯钠",
+      "aliases_en": [
+        "SLES"
+      ],
+      "aliases_zh": [],
+      "category": "surfactant",
+      "functions": {
+        "en": [
+          "Effective cleansing",
+          "Good foaming",
+          "Less irritating than SLS"
+        ],
+        "zh": [
+          "有效清洁",
+          "良好起泡",
+          "比SLS刺激性小"
+        ]
+      },
+      "evidence_level": "strong",
+      "evidence_notes_en": "CIR safe. Milder than SLS due to ethoxylation.",
+      "evidence_notes_zh": "CIR评估安全。因乙氧基化比SLS更温和。",
+      "skin_types": {
+        "suited": [
+          "normal",
+          "oily",
+          "combination"
+        ],
+        "caution": [
+          "sensitive",
+          "dry"
+        ],
+        "notes_en": "Milder than SLS but may still irritate very sensitive skin.",
+        "notes_zh": "比SLS温和但仍可能刺激非常敏感的皮肤。"
+      },
+      "concerns_addressed": [],
+      "interactions": [],
+      "irritation_potential": "low_to_medium",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe.",
+      "pregnancy_notes_zh": "安全。",
+      "vegan": true,
+      "common_in": [
+        "shampoos",
+        "body_wash",
+        "cleansers"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Milder cousin of SLS. Most common surfactant in personal care.",
+      "notes_zh": "SLS的温和亲戚。个人护理中最常见的表面活性剂。"
+    },
+    {
+      "id": "decyl_glucoside",
+      "inci_name": "Decyl Glucoside",
+      "chinese_name": "癸基葡糖苷",
+      "aliases_en": [],
+      "aliases_zh": [],
+      "category": "surfactant",
+      "functions": {
+        "en": [
+          "Ultra-gentle cleansing",
+          "Mild foaming",
+          "Plant-derived"
+        ],
+        "zh": [
+          "超温和清洁",
+          "温和起泡",
+          "植物来源"
+        ]
+      },
+      "evidence_level": "moderate",
+      "evidence_notes_en": "Considered one of the mildest surfactants. Sugar-based.",
+      "evidence_notes_zh": "被认为是最温和的表面活性剂之一。糖基。",
+      "skin_types": {
+        "suited": [
+          "all",
+          "sensitive",
+          "baby"
+        ],
+        "caution": [],
+        "notes_en": "Extremely gentle. Popular in natural formulations.",
+        "notes_zh": "极其温和。在天然配方中很受欢迎。"
+      },
+      "concerns_addressed": [],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe.",
+      "pregnancy_notes_zh": "安全。",
+      "vegan": true,
+      "common_in": [
+        "baby_products",
+        "sensitive_skin_cleansers"
+      ],
+      "price_indicator": "moderate",
+      "notes_en": "Derived from coconut and corn. Excellent for natural and baby formulations.",
+      "notes_zh": "来源于椰子和玉米。适合天然和婴儿配方。"
+    },
+    {
+      "id": "butylene_glycol",
+      "inci_name": "Butylene Glycol",
+      "chinese_name": "丁二醇",
+      "aliases_en": [
+        "1,3-Butanediol"
+      ],
+      "aliases_zh": [],
+      "category": "humectant",
+      "functions": {
+        "en": [
+          "Humectant",
+          "Solvent",
+          "Penetration enhancer",
+          "Texture improver"
+        ],
+        "zh": [
+          "保湿剂",
+          "溶剂",
+          "渗透促进剂",
+          "质地改良剂"
+        ]
+      },
+      "evidence_level": "strong",
+      "evidence_notes_en": "Very common, well-studied ingredient. CIR safe.",
+      "evidence_notes_zh": "非常常见、研究充分的成分。CIR评估安全。",
+      "skin_types": {
+        "suited": [
+          "all"
+        ],
+        "caution": [],
+        "notes_en": "Extremely common. Well-tolerated.",
+        "notes_zh": "极其常见。耐受性好。"
+      },
+      "concerns_addressed": [
+        "dryness"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 1,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe.",
+      "pregnancy_notes_zh": "安全。",
+      "vegan": true,
+      "common_in": [
+        "serums",
+        "toners",
+        "essences",
+        "most_products"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "One of the most common cosmetic ingredients. Helps other ingredients absorb better.",
+      "notes_zh": "最常见的化妆品成分之一。帮助其他成分更好地吸收。"
+    },
+    {
+      "id": "propanediol",
+      "inci_name": "Propanediol",
+      "chinese_name": "丙二醇",
+      "aliases_en": [
+        "1,3-Propanediol",
+        "Zemea"
+      ],
+      "aliases_zh": [],
+      "category": "humectant",
+      "functions": {
+        "en": [
+          "Humectant",
+          "Solvent",
+          "Improves product feel",
+          "Natural alternative to butylene glycol"
+        ],
+        "zh": [
+          "保湿剂",
+          "溶剂",
+          "改善产品肤感",
+          "丁二醇的天然替代品"
+        ]
+      },
+      "evidence_level": "moderate",
+      "evidence_notes_en": "Bio-based alternative to petroleum-derived glycols.",
+      "evidence_notes_zh": "石油来源乙二醇的生物基替代品。",
+      "skin_types": {
+        "suited": [
+          "all"
+        ],
+        "caution": [],
+        "notes_en": "Very well-tolerated.",
+        "notes_zh": "耐受性非常好。"
+      },
+      "concerns_addressed": [
+        "dryness"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe.",
+      "pregnancy_notes_zh": "安全。",
+      "vegan": true,
+      "common_in": [
+        "natural_skincare",
+        "serums"
+      ],
+      "price_indicator": "moderate",
+      "notes_en": "Corn-derived. Popular in 'clean beauty' as a natural humectant.",
+      "notes_zh": "玉米来源。在'纯净美容'中作为天然保湿剂很受欢迎。"
+    },
+    {
+      "id": "urea",
+      "inci_name": "Urea",
+      "chinese_name": "尿素",
+      "aliases_en": [
+        "Carbamide"
+      ],
+      "aliases_zh": [],
+      "category": "humectant",
+      "functions": {
+        "en": [
+          "Powerful humectant",
+          "Keratolytic at higher concentrations",
+          "Enhances penetration"
+        ],
+        "zh": [
+          "强效保湿剂",
+          "高浓度下具有角质溶解作用",
+          "增强渗透"
+        ]
+      },
+      "effective_concentration": {
+        "minimum": "2%",
+        "optimal": "5-10%",
+        "maximum_beneficial": "40% (foot creams)",
+        "notes_en": "2-10% moisturizing. 10-30% keratolytic. 40%+ nail conditions.",
+        "notes_zh": "2-10%保湿。10-30%角质溶解。40%以上用于指甲问题。"
+      },
+      "evidence_level": "strong",
+      "evidence_notes_en": "Extensively studied. Naturally present in skin as part of NMF.",
+      "evidence_notes_zh": "研究广泛。作为天然保湿因子(NMF)的一部分天然存在于皮肤中。",
+      "skin_types": {
+        "suited": [
+          "dry",
+          "very_dry",
+          "keratosis_pilaris"
+        ],
+        "caution": [
+          "sensitive",
+          "broken_skin"
+        ],
+        "notes_en": "Excellent for very dry skin. May sting on broken skin.",
+        "notes_zh": "非常适合极干性皮肤。可能刺激受损皮肤。"
+      },
+      "concerns_addressed": [
+        "dryness",
+        "rough_texture",
+        "keratosis_pilaris",
+        "cracked_skin"
+      ],
+      "interactions": [],
+      "irritation_potential": "low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe.",
+      "pregnancy_notes_zh": "安全。",
+      "vegan": true,
+      "common_in": [
+        "body_lotions",
+        "foot_creams",
+        "moisturizers"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Dermatologist favorite for very dry skin. Part of skin's natural moisturizing system.",
+      "notes_zh": "皮肤科医生推荐给极干性皮肤。是皮肤天然保湿系统的一部分。"
+    },
+    {
+      "id": "sodium_pca",
+      "inci_name": "Sodium PCA",
+      "chinese_name": "吡咯烷酮羧酸钠",
+      "aliases_en": [
+        "NaPCA"
+      ],
+      "aliases_zh": [],
+      "category": "humectant",
+      "functions": {
+        "en": [
+          "Natural moisturizing factor component",
+          "Powerful humectant"
+        ],
+        "zh": [
+          "天然保湿因子成分",
+          "强效保湿剂"
+        ]
+      },
+      "evidence_level": "moderate",
+      "evidence_notes_en": "Component of skin's NMF. Good humectant properties.",
+      "evidence_notes_zh": "皮肤天然保湿因子的成分。良好的保湿特性。",
+      "skin_types": {
+        "suited": [
+          "all"
+        ],
+        "caution": [],
+        "notes_en": "Well-tolerated.",
+        "notes_zh": "耐受性好。"
+      },
+      "concerns_addressed": [
+        "dryness",
+        "dehydration"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe.",
+      "pregnancy_notes_zh": "安全。",
+      "vegan": true,
+      "common_in": [
+        "moisturizers",
+        "serums",
+        "toners"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Naturally found in skin. More hygroscopic than glycerin.",
+      "notes_zh": "天然存在于皮肤中。比甘油吸湿性更强。"
+    },
+    {
+      "id": "cetearyl_alcohol",
+      "inci_name": "Cetearyl Alcohol",
+      "chinese_name": "鲸蜡硬脂醇",
+      "aliases_en": [
+        "Cetostearyl Alcohol"
+      ],
+      "aliases_zh": [],
+      "category": "emollient",
+      "functions": {
+        "en": [
+          "Emollient",
+          "Emulsion stabilizer",
+          "Thickener",
+          "Opacifier"
+        ],
+        "zh": [
+          "润肤剂",
+          "乳液稳定剂",
+          "增稠剂",
+          "遮光剂"
+        ]
+      },
+      "evidence_level": "strong",
+      "evidence_notes_en": "CIR safe. Long history of use.",
+      "evidence_notes_zh": "CIR评估安全。使用历史悠久。",
+      "skin_types": {
+        "suited": [
+          "all"
+        ],
+        "caution": [],
+        "notes_en": "Fatty alcohol—not drying like simple alcohols (ethanol).",
+        "notes_zh": "脂肪醇——不像简单醇类（乙醇）那样干燥。"
+      },
+      "concerns_addressed": [],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 2,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe.",
+      "pregnancy_notes_zh": "安全。",
+      "vegan": true,
+      "common_in": [
+        "creams",
+        "lotions",
+        "conditioners"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Don't confuse with drying alcohols. This is a fatty alcohol that softens and conditions.",
+      "notes_zh": "不要与干燥性醇类混淆。这是一种软化和调理皮肤的脂肪醇。"
+    },
+    {
+      "id": "shea_butter",
+      "inci_name": "Butyrospermum Parkii Butter",
+      "chinese_name": "乳木果油",
+      "aliases_en": [
+        "Shea Butter"
+      ],
+      "aliases_zh": [],
+      "category": "emollient",
+      "functions": {
+        "en": [
+          "Rich moisturizing",
+          "Anti-inflammatory",
+          "Barrier repair"
+        ],
+        "zh": [
+          "丰润保湿",
+          "消炎",
+          "屏障修复"
+        ]
+      },
+      "evidence_level": "moderate",
+      "evidence_notes_en": "Contains lupeol cinnamate with anti-inflammatory properties.",
+      "evidence_notes_zh": "含有具有消炎特性的羽扇豆醇肉桂酸酯。",
+      "skin_types": {
+        "suited": [
+          "dry",
+          "very_dry",
+          "normal"
+        ],
+        "caution": [
+          "oily"
+        ],
+        "notes_en": "May be too heavy for oily/acne-prone skin.",
+        "notes_zh": "对油性/痤疮易发皮肤可能太厚重。"
+      },
+      "concerns_addressed": [
+        "dryness",
+        "eczema",
+        "barrier_damage"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe. Good for preventing stretch marks.",
+      "pregnancy_notes_zh": "安全。有助于预防妊娠纹。",
+      "vegan": true,
+      "common_in": [
+        "body_butters",
+        "creams",
+        "lip_balms"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Surprisingly low comedogenic rating despite rich texture. Great for body care.",
+      "notes_zh": "尽管质地丰润但致粉刺指数出奇地低。非常适合身体护理。"
+    },
+    {
+      "id": "jojoba_oil",
+      "inci_name": "Simmondsia Chinensis Seed Oil",
+      "chinese_name": "荷荷巴油",
+      "aliases_en": [
+        "Jojoba Oil"
+      ],
+      "aliases_zh": [
+        "霍霍巴油"
+      ],
+      "category": "emollient",
+      "functions": {
+        "en": [
+          "Moisturizing",
+          "Mimics skin sebum",
+          "Non-comedogenic oil"
+        ],
+        "zh": [
+          "保湿",
+          "模拟皮肤皮脂",
+          "不致粉刺的油"
+        ]
+      },
+      "evidence_level": "moderate",
+      "evidence_notes_en": "Technically a wax ester, not an oil. Very similar to skin's own sebum.",
+      "evidence_notes_zh": "严格来说是蜡酯而非油。与皮肤自身皮脂非常相似。",
+      "skin_types": {
+        "suited": [
+          "all",
+          "oily",
+          "acne_prone"
+        ],
+        "caution": [],
+        "notes_en": "One of the few oils suitable for oily skin.",
+        "notes_zh": "少数适合油性皮肤的油之一。"
+      },
+      "concerns_addressed": [
+        "dryness",
+        "barrier_damage"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 2,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe.",
+      "pregnancy_notes_zh": "安全。",
+      "vegan": true,
+      "common_in": [
+        "facial_oils",
+        "moisturizers",
+        "cleansing_oils"
+      ],
+      "price_indicator": "moderate",
+      "notes_en": "Can actually help regulate oil production in oily skin. Wax ester structure closest to human sebum.",
+      "notes_zh": "实际上可以帮助调节油性皮肤的油脂分泌。蜡酯结构最接近人类皮脂。"
+    },
+    {
+      "id": "rosehip_oil",
+      "inci_name": "Rosa Canina Seed Oil",
+      "chinese_name": "玫瑰果油",
+      "aliases_en": [
+        "Rosehip Seed Oil",
+        "Rosa Mosqueta Oil"
+      ],
+      "aliases_zh": [],
+      "category": "emollient",
+      "functions": {
+        "en": [
+          "Rich in vitamins A and C",
+          "Helps with scarring",
+          "Moisturizing",
+          "Anti-aging"
+        ],
+        "zh": [
+          "富含维生素A和C",
+          "帮助淡化疤痕",
+          "保湿",
+          "抗衰老"
+        ]
+      },
+      "evidence_level": "limited",
+      "evidence_notes_en": "Some clinical evidence for scar improvement and skin aging. Rich in essential fatty acids.",
+      "evidence_notes_zh": "部分临床证据支持改善疤痕和皮肤老化。富含必需脂肪酸。",
+      "skin_types": {
+        "suited": [
+          "dry",
+          "normal",
+          "mature"
+        ],
+        "caution": [
+          "oily",
+          "acne_prone"
+        ],
+        "notes_en": "May be too heavy for oily skin.",
+        "notes_zh": "对油性皮肤可能太厚重。"
+      },
+      "concerns_addressed": [
+        "scarring",
+        "dryness",
+        "aging",
+        "hyperpigmentation"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 1,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe. Contains natural retinoids but in negligible amounts.",
+      "pregnancy_notes_zh": "安全。含天然视黄醇类但含量可忽略。",
+      "vegan": true,
+      "common_in": [
+        "facial_oils",
+        "serums"
+      ],
+      "price_indicator": "moderate",
+      "notes_en": "Contains natural trans-retinoic acid in trace amounts. Popular for post-acne scarring.",
+      "notes_zh": "含微量天然反式视黄酸。用于痘疤修复很受欢迎。"
+    },
+    {
+      "id": "petrolatum",
+      "inci_name": "Petrolatum",
+      "chinese_name": "凡士林",
+      "aliases_en": [
+        "Petroleum Jelly",
+        "Vaseline"
+      ],
+      "aliases_zh": [
+        "石油冻"
+      ],
+      "category": "occlusive",
+      "functions": {
+        "en": [
+          "Most effective occlusive",
+          "Seals in moisture",
+          "Protects barrier",
+          "Wound healing support"
+        ],
+        "zh": [
+          "最有效的封闭剂",
+          "锁住水分",
+          "保护屏障",
+          "辅助伤口愈合"
+        ]
+      },
+      "evidence_level": "strong",
+      "evidence_notes_en": "Reduces TEWL by 98%. Gold standard occlusive per dermatological research.",
+      "evidence_notes_zh": "减少98%的经皮水分流失。皮肤科研究中的黄金标准封闭剂。",
+      "skin_types": {
+        "suited": [
+          "dry",
+          "very_dry",
+          "eczema",
+          "all"
+        ],
+        "caution": [],
+        "notes_en": "Non-comedogenic despite heavy feel. May feel greasy.",
+        "notes_zh": "尽管质感厚重但不致粉刺。可能感觉油腻。"
+      },
+      "concerns_addressed": [
+        "dryness",
+        "eczema",
+        "barrier_damage",
+        "wound_healing"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe.",
+      "pregnancy_notes_zh": "安全。",
+      "vegan": false,
+      "common_in": [
+        "ointments",
+        "lip_balms",
+        "body_care"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Dermatologist favorite. Non-comedogenic despite myths. Best applied over damp skin.",
+      "notes_zh": "皮肤科医生的最爱。虽然有误解但不致粉刺。最好涂在湿润的皮肤上。"
+    },
+    {
+      "id": "mineral_oil",
+      "inci_name": "Mineral Oil",
+      "chinese_name": "矿物油",
+      "aliases_en": [
+        "Paraffinum Liquidum",
+        "Liquid Paraffin"
+      ],
+      "aliases_zh": [
+        "液体石蜡"
+      ],
+      "category": "occlusive",
+      "functions": {
+        "en": [
+          "Occlusive moisturizer",
+          "Barrier protection",
+          "Emollient"
+        ],
+        "zh": [
+          "封闭型保湿剂",
+          "屏障保护",
+          "润肤剂"
+        ]
+      },
+      "evidence_level": "strong",
+      "evidence_notes_en": "Cosmetic-grade mineral oil is highly purified and non-comedogenic per CIR.",
+      "evidence_notes_zh": "化妆品级矿物油经高度纯化，CIR评估不致粉刺。",
+      "skin_types": {
+        "suited": [
+          "dry",
+          "all"
+        ],
+        "caution": [],
+        "notes_en": "Cosmetic-grade is safe and non-comedogenic despite negative perception.",
+        "notes_zh": "化妆品级安全且不致粉刺，尽管存在负面认知。"
+      },
+      "concerns_addressed": [
+        "dryness",
+        "barrier_damage"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe.",
+      "pregnancy_notes_zh": "安全。",
+      "vegan": false,
+      "common_in": [
+        "baby_oil",
+        "moisturizers",
+        "cleansing_oils"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Unfairly maligned. Cosmetic-grade is one of the most inert, non-allergenic ingredients.",
+      "notes_zh": "被不公正地诋毁。化妆品级是最惰性、最不致敏的成分之一。"
+    },
+    {
+      "id": "titanium_dioxide",
+      "inci_name": "Titanium Dioxide",
+      "chinese_name": "二氧化钛",
+      "aliases_en": [
+        "TiO2",
+        "CI 77891"
+      ],
+      "aliases_zh": [],
+      "category": "sunscreen",
+      "functions": {
+        "en": [
+          "Physical UV filter",
+          "Mainly UVB protection",
+          "Colorant"
+        ],
+        "zh": [
+          "物理紫外线过滤剂",
+          "主要防UVB",
+          "着色剂"
+        ]
+      },
+      "evidence_level": "strong",
+      "evidence_notes_en": "FDA Category I sunscreen agent. Best for UVB; combine with ZnO for broad spectrum.",
+      "evidence_notes_zh": "FDA第一类防晒剂。UVB防护最佳；与氧化锌组合获得广谱防护。",
+      "skin_types": {
+        "suited": [
+          "all",
+          "sensitive"
+        ],
+        "caution": [],
+        "notes_en": "Very gentle mineral filter. May leave white cast on darker skin.",
+        "notes_zh": "非常温和的矿物过滤剂。在深肤色上可能留白。"
+      },
+      "concerns_addressed": [
+        "sun_protection"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe. Preferred during pregnancy as a physical filter.",
+      "pregnancy_notes_zh": "安全。作为物理过滤剂在孕期更受推荐。",
+      "vegan": true,
+      "common_in": [
+        "sunscreens",
+        "tinted_moisturizers",
+        "makeup"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Often used with zinc oxide for full spectrum coverage. Nano forms reduce white cast.",
+      "notes_zh": "常与氧化锌组合获得全光谱防护。纳米形式可减少泛白。"
+    },
+    {
+      "id": "avobenzone",
+      "inci_name": "Avobenzone",
+      "chinese_name": "阿伏苯宗",
+      "aliases_en": [
+        "Butyl Methoxydibenzoylmethane",
+        "Parsol 1789"
+      ],
+      "aliases_zh": [],
+      "category": "sunscreen",
+      "functions": {
+        "en": [
+          "Chemical UVA filter",
+          "Broad-spectrum UVA1 protection"
+        ],
+        "zh": [
+          "化学UVA过滤剂",
+          "广谱UVA1防护"
+        ]
+      },
+      "evidence_level": "strong",
+      "evidence_notes_en": "FDA-approved. Best chemical UVA filter available in US market.",
+      "evidence_notes_zh": "FDA批准。美国市场上最好的化学UVA过滤剂。",
+      "skin_types": {
+        "suited": [
+          "all"
+        ],
+        "caution": [
+          "sensitive"
+        ],
+        "notes_en": "Can be irritating for some. Degrades in sunlight without stabilization.",
+        "notes_zh": "对部分人可能有刺激。未经稳定化处理时会在阳光下降解。"
+      },
+      "concerns_addressed": [
+        "sun_protection"
+      ],
+      "interactions": [
+        {
+          "ingredient": "Octinoxate",
+          "ingredient_zh": "甲氧基肉桂酸乙基己酯",
+          "type": "caution",
+          "details_en": "Can destabilize avobenzone. Needs proper formulation.",
+          "details_zh": "可能使阿伏苯宗不稳定。需要合理配方。"
+        },
+        {
+          "ingredient": "Octocrylene",
+          "ingredient_zh": "奥克立林",
+          "type": "synergy",
+          "details_en": "Octocrylene stabilizes avobenzone. Common combination.",
+          "details_zh": "奥克立林稳定阿伏苯宗。常见组合。"
+        }
+      ],
+      "irritation_potential": "low_to_medium",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "FDA approved. Some prefer mineral filters during pregnancy but avobenzone is considered safe.",
+      "pregnancy_notes_zh": "FDA批准。部分人孕期偏好矿物过滤剂但阿伏苯宗被认为安全。",
+      "vegan": true,
+      "common_in": [
+        "sunscreens"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Best UVA protection in US sunscreens. Needs to be stabilized (with octocrylene or mexoryl).",
+      "notes_zh": "美国防晒产品中最好的UVA防护。需要被稳定化（用奥克立林或麦色滤）。"
+    },
+    {
+      "id": "octinoxate",
+      "inci_name": "Ethylhexyl Methoxycinnamate",
+      "chinese_name": "甲氧基肉桂酸乙基己酯",
+      "aliases_en": [
+        "Octinoxate",
+        "OMC"
+      ],
+      "aliases_zh": [],
+      "category": "sunscreen",
+      "functions": {
+        "en": [
+          "Chemical UVB filter",
+          "Light texture"
+        ],
+        "zh": [
+          "化学UVB过滤剂",
+          "质地轻薄"
+        ]
+      },
+      "evidence_level": "strong",
+      "evidence_notes_en": "FDA approved. Banned in Hawaii and Palau for coral reef concerns.",
+      "evidence_notes_zh": "FDA批准。因珊瑚礁问题在夏威夷和帕劳被禁止。",
+      "skin_types": {
+        "suited": [
+          "all"
+        ],
+        "caution": [
+          "sensitive"
+        ],
+        "notes_en": "Some concern about endocrine disruption at very high exposure.",
+        "notes_zh": "在极高暴露下有内分泌干扰的担忧。"
+      },
+      "concerns_addressed": [
+        "sun_protection"
+      ],
+      "interactions": [],
+      "irritation_potential": "low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": false,
+      "pregnancy_notes_en": "Potential endocrine disruptor. Many dermatologists recommend avoiding during pregnancy.",
+      "pregnancy_notes_zh": "潜在内分泌干扰物。许多皮肤科医生建议孕期避免。",
+      "vegan": true,
+      "common_in": [
+        "sunscreens",
+        "daily_moisturizers"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Effective UVB filter but environmental and hormonal concerns have reduced popularity.",
+      "notes_zh": "有效的UVB过滤剂但环境和激素方面的担忧降低了其受欢迎程度。"
+    },
+    {
+      "id": "homosalate",
+      "inci_name": "Homosalate",
+      "chinese_name": "胡莫柳酯",
+      "aliases_en": [],
+      "aliases_zh": [],
+      "category": "sunscreen",
+      "functions": {
+        "en": [
+          "Chemical UVB filter",
+          "Stabilizes avobenzone"
+        ],
+        "zh": [
+          "化学UVB过滤剂",
+          "稳定阿伏苯宗"
+        ]
+      },
+      "evidence_level": "moderate",
+      "evidence_notes_en": "EU SCCS recommends max 10% (down from 15%). Under further review.",
+      "evidence_notes_zh": "欧盟SCCS建议最高10%（从15%下调）。仍在进一步审查中。",
+      "skin_types": {
+        "suited": [
+          "all"
+        ],
+        "caution": [
+          "sensitive"
+        ],
+        "notes_en": "Under regulatory scrutiny.",
+        "notes_zh": "正在受到监管审查。"
+      },
+      "concerns_addressed": [
+        "sun_protection"
+      ],
+      "interactions": [],
+      "irritation_potential": "low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": false,
+      "pregnancy_notes_en": "Some endocrine disruption concerns. Consider mineral alternatives during pregnancy.",
+      "pregnancy_notes_zh": "有内分泌干扰方面的担忧。孕期建议考虑矿物替代品。",
+      "vegan": true,
+      "common_in": [
+        "sunscreens"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Commonly used but under increasing scrutiny for potential hormonal effects.",
+      "notes_zh": "常用但因潜在激素影响受到越来越多的审查。"
+    },
+    {
+      "id": "tocopherol",
+      "inci_name": "Tocopherol",
+      "chinese_name": "生育酚",
+      "aliases_en": [
+        "Vitamin E",
+        "d-Alpha-Tocopherol"
+      ],
+      "aliases_zh": [
+        "维生素E"
+      ],
+      "category": "antioxidant",
+      "functions": {
+        "en": [
+          "Antioxidant",
+          "Moisturizing",
+          "Formula stabilizer",
+          "Anti-inflammatory"
+        ],
+        "zh": [
+          "抗氧化",
+          "保湿",
+          "配方稳定剂",
+          "消炎"
+        ]
+      },
+      "evidence_level": "strong",
+      "evidence_notes_en": "Well-established antioxidant. Synergistic with Vitamin C.",
+      "evidence_notes_zh": "功效确切的抗氧化剂。与维生素C有协同作用。",
+      "skin_types": {
+        "suited": [
+          "all"
+        ],
+        "caution": [
+          "acne_prone"
+        ],
+        "notes_en": "Some people with acne-prone skin find pure tocopherol breaks them out.",
+        "notes_zh": "部分痤疮易发皮肤的人发现纯生育酚可能导致爆痘。"
+      },
+      "concerns_addressed": [
+        "aging",
+        "dryness",
+        "sun_damage"
+      ],
+      "interactions": [
+        {
+          "ingredient": "Ascorbic Acid",
+          "ingredient_zh": "抗坏血酸",
+          "type": "synergy",
+          "details_en": "Vitamin E regenerates oxidized Vitamin C. Powerful combination.",
+          "details_zh": "维生素E能再生被氧化的维生素C。强效组合。"
+        }
+      ],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 2,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe.",
+      "pregnancy_notes_zh": "安全。",
+      "vegan": true,
+      "common_in": [
+        "serums",
+        "moisturizers",
+        "sunscreens",
+        "most_products"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Almost ubiquitous in skincare. Stabilizes vitamin C formulas. Look for d-alpha tocopherol (natural form).",
+      "notes_zh": "几乎所有护肤品中都有。稳定维C配方。寻找d-α-生育酚（天然形式）。"
+    },
+    {
+      "id": "resveratrol",
+      "inci_name": "Resveratrol",
+      "chinese_name": "白藜芦醇",
+      "aliases_en": [],
+      "aliases_zh": [],
+      "category": "antioxidant",
+      "functions": {
+        "en": [
+          "Potent antioxidant",
+          "Anti-inflammatory",
+          "Anti-aging"
+        ],
+        "zh": [
+          "强效抗氧化",
+          "消炎",
+          "抗衰老"
+        ]
+      },
+      "evidence_level": "moderate",
+      "evidence_notes_en": "Strong in vitro data. Clinical topical studies still emerging.",
+      "evidence_notes_zh": "体外数据充分。外用临床研究仍在发展中。",
+      "skin_types": {
+        "suited": [
+          "all"
+        ],
+        "caution": [],
+        "notes_en": "Well-tolerated.",
+        "notes_zh": "耐受性好。"
+      },
+      "concerns_addressed": [
+        "aging",
+        "sun_damage",
+        "dullness"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Topical use considered safe.",
+      "pregnancy_notes_zh": "外用被认为安全。",
+      "vegan": true,
+      "common_in": [
+        "serums",
+        "treatments"
+      ],
+      "price_indicator": "moderate_to_expensive",
+      "notes_en": "Found in grape skins and red wine. Unstable—needs good packaging.",
+      "notes_zh": "存在于葡萄皮和红酒中。不稳定——需要良好的包装。"
+    },
+    {
+      "id": "ferulic_acid",
+      "inci_name": "Ferulic Acid",
+      "chinese_name": "阿魏酸",
+      "aliases_en": [],
+      "aliases_zh": [],
+      "category": "antioxidant",
+      "functions": {
+        "en": [
+          "Antioxidant booster",
+          "Stabilizes Vitamins C and E",
+          "UV protection enhancement"
+        ],
+        "zh": [
+          "抗氧化增效剂",
+          "稳定维生素C和E",
+          "增强紫外线防护"
+        ]
+      },
+      "evidence_level": "strong",
+      "evidence_notes_en": "Landmark Duke University study (2005) showed doubling of Vit C+E photoprotection when ferulic acid added.",
+      "evidence_notes_zh": "杜克大学2005年里程碑研究显示加入阿魏酸后维C+E的光防护效果翻倍。",
+      "skin_types": {
+        "suited": [
+          "all"
+        ],
+        "caution": [],
+        "notes_en": "Well-tolerated.",
+        "notes_zh": "耐受性好。"
+      },
+      "concerns_addressed": [
+        "aging",
+        "sun_damage",
+        "hyperpigmentation"
+      ],
+      "interactions": [
+        {
+          "ingredient": "Ascorbic Acid",
+          "ingredient_zh": "抗坏血酸",
+          "type": "synergy",
+          "details_en": "C+E+Ferulic is the gold standard antioxidant combination.",
+          "details_zh": "维C+维E+阿魏酸是黄金标准抗氧化组合。"
+        },
+        {
+          "ingredient": "Tocopherol",
+          "ingredient_zh": "生育酚",
+          "type": "synergy",
+          "details_en": "Works synergistically. The famous CE Ferulic combination.",
+          "details_zh": "协同作用。著名的CE Ferulic组合。"
+        }
+      ],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe.",
+      "pregnancy_notes_zh": "安全。",
+      "vegan": true,
+      "common_in": [
+        "serums",
+        "vitamin_c_products"
+      ],
+      "price_indicator": "moderate_to_expensive",
+      "notes_en": "Essential companion to Vitamin C serums. The SkinCeuticals CE Ferulic set the standard.",
+      "notes_zh": "维C精华的必备搭档。修丽可CE Ferulic树立了标准。"
+    },
+    {
+      "id": "green_tea_extract",
+      "inci_name": "Camellia Sinensis Leaf Extract",
+      "chinese_name": "绿茶提取物",
+      "aliases_en": [
+        "Green Tea Extract",
+        "EGCG"
+      ],
+      "aliases_zh": [
+        "茶叶提取物"
+      ],
+      "category": "antioxidant",
+      "functions": {
+        "en": [
+          "Antioxidant (EGCG)",
+          "Anti-inflammatory",
+          "Soothing",
+          "UV damage protection"
+        ],
+        "zh": [
+          "抗氧化(EGCG)",
+          "消炎",
+          "舒缓",
+          "紫外线损伤防护"
+        ]
+      },
+      "evidence_level": "moderate",
+      "evidence_notes_en": "EGCG is well-studied. Topical efficacy depends on formulation stability.",
+      "evidence_notes_zh": "EGCG研究充分。外用效果取决于配方稳定性。",
+      "skin_types": {
+        "suited": [
+          "all"
+        ],
+        "caution": [],
+        "notes_en": "Very well-tolerated.",
+        "notes_zh": "耐受性非常好。"
+      },
+      "concerns_addressed": [
+        "aging",
+        "sun_damage",
+        "inflammation",
+        "redness"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Topical use safe.",
+      "pregnancy_notes_zh": "外用安全。",
+      "vegan": true,
+      "common_in": [
+        "serums",
+        "moisturizers",
+        "toners"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Rich in polyphenols (EGCG). Look for products with opaque packaging as green tea oxidizes.",
+      "notes_zh": "富含多酚(EGCG)。选择不透明包装的产品，因为绿茶会氧化。"
+    },
+    {
+      "id": "licorice_root",
+      "inci_name": "Glycyrrhiza Glabra Root Extract",
+      "chinese_name": "甘草根提取物",
+      "aliases_en": [
+        "Licorice Root Extract",
+        "Glabridin"
+      ],
+      "aliases_zh": [
+        "光甘草定"
+      ],
+      "category": "botanical",
+      "functions": {
+        "en": [
+          "Brightening",
+          "Anti-inflammatory",
+          "Soothing",
+          "Antioxidant"
+        ],
+        "zh": [
+          "美白",
+          "消炎",
+          "舒缓",
+          "抗氧化"
+        ]
+      },
+      "evidence_level": "moderate",
+      "evidence_notes_en": "Glabridin inhibits tyrosinase. Good evidence for brightening and soothing.",
+      "evidence_notes_zh": "光甘草定抑制酪氨酸酶。美白和舒缓方面有良好证据。",
+      "skin_types": {
+        "suited": [
+          "all",
+          "sensitive"
+        ],
+        "caution": [],
+        "notes_en": "Very gentle brightener.",
+        "notes_zh": "非常温和的美白成分。"
+      },
+      "concerns_addressed": [
+        "hyperpigmentation",
+        "redness",
+        "sensitivity"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Topical use safe.",
+      "pregnancy_notes_zh": "外用安全。",
+      "vegan": true,
+      "common_in": [
+        "serums",
+        "essences",
+        "brightening_products"
+      ],
+      "price_indicator": "moderate",
+      "notes_en": "Excellent gentle brightener. Popular in K-beauty and J-beauty.",
+      "notes_zh": "优秀的温和美白成分。在韩国和日本护肤中很受欢迎。"
+    },
+    {
+      "id": "tea_tree_oil",
+      "inci_name": "Melaleuca Alternifolia Leaf Oil",
+      "chinese_name": "茶树油",
+      "aliases_en": [
+        "Tea Tree Oil"
+      ],
+      "aliases_zh": [],
+      "category": "botanical",
+      "functions": {
+        "en": [
+          "Antimicrobial",
+          "Anti-inflammatory",
+          "Acne treatment"
+        ],
+        "zh": [
+          "抗菌",
+          "消炎",
+          "痤疮治疗"
+        ]
+      },
+      "effective_concentration": {
+        "minimum": "2.5%",
+        "optimal": "5%",
+        "notes_en": "5% tea tree oil comparable to 5% benzoyl peroxide for acne (slower onset, less irritation).",
+        "notes_zh": "5%茶树油对痤疮的效果与5%过氧化苯甲酰相当（起效较慢但刺激更小）。"
+      },
+      "evidence_level": "moderate",
+      "evidence_notes_en": "Clinical trials show efficacy against mild-moderate acne.",
+      "evidence_notes_zh": "临床试验显示对轻中度痤疮有效。",
+      "skin_types": {
+        "suited": [
+          "oily",
+          "acne_prone"
+        ],
+        "caution": [
+          "sensitive",
+          "dry"
+        ],
+        "notes_en": "Can be irritating if used undiluted. Always dilute.",
+        "notes_zh": "未稀释使用可能刺激。务必稀释使用。"
+      },
+      "concerns_addressed": [
+        "acne",
+        "fungal_acne"
+      ],
+      "interactions": [],
+      "irritation_potential": "medium",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Topical use in diluted form considered safe.",
+      "pregnancy_notes_zh": "稀释后外用被认为安全。",
+      "vegan": true,
+      "common_in": [
+        "spot_treatments",
+        "cleansers",
+        "toners"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Natural acne fighter. Never apply undiluted. Can cause contact dermatitis in sensitive individuals.",
+      "notes_zh": "天然抗痘成分。切勿原液使用。敏感个体可能出现接触性皮炎。"
+    },
+    {
+      "id": "chamomile_extract",
+      "inci_name": "Chamomilla Recutita Extract",
+      "chinese_name": "洋甘菊提取物",
+      "aliases_en": [
+        "Chamomile Extract",
+        "Bisabolol source"
+      ],
+      "aliases_zh": [
+        "母菊提取物"
+      ],
+      "category": "botanical",
+      "functions": {
+        "en": [
+          "Soothing",
+          "Anti-inflammatory",
+          "Calming redness"
+        ],
+        "zh": [
+          "舒缓",
+          "消炎",
+          "减少泛红"
+        ]
+      },
+      "evidence_level": "moderate",
+      "evidence_notes_en": "Contains bisabolol and chamazulene with anti-inflammatory properties.",
+      "evidence_notes_zh": "含有具有消炎特性的没药醇和甘菊环烃。",
+      "skin_types": {
+        "suited": [
+          "sensitive",
+          "rosacea",
+          "all"
+        ],
+        "caution": [
+          "ragweed_allergy"
+        ],
+        "notes_en": "Avoid if allergic to plants in the Asteraceae family.",
+        "notes_zh": "如果对菊科植物过敏则应避免。"
+      },
+      "concerns_addressed": [
+        "redness",
+        "sensitivity",
+        "irritation"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Topical use safe.",
+      "pregnancy_notes_zh": "外用安全。",
+      "vegan": true,
+      "common_in": [
+        "toners",
+        "moisturizers",
+        "soothing_products"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Classic soothing ingredient. Note: people with ragweed allergies may react to chamomile.",
+      "notes_zh": "经典舒缓成分。注意：对豚草过敏的人可能对洋甘菊有反应。"
+    },
+    {
+      "id": "aloe_vera",
+      "inci_name": "Aloe Barbadensis Leaf Juice",
+      "chinese_name": "芦荟叶汁",
+      "aliases_en": [
+        "Aloe Vera"
+      ],
+      "aliases_zh": [
+        "芦荟"
+      ],
+      "category": "botanical",
+      "functions": {
+        "en": [
+          "Soothing",
+          "Hydrating",
+          "Wound healing",
+          "Anti-inflammatory"
+        ],
+        "zh": [
+          "舒缓",
+          "保湿",
+          "促进愈合",
+          "消炎"
+        ]
+      },
+      "evidence_level": "moderate",
+      "evidence_notes_en": "Well-established for burns and wound healing. Contains acemannan.",
+      "evidence_notes_zh": "用于烧伤和伤口愈合已有充分验证。含乙酰甘露聚糖。",
+      "skin_types": {
+        "suited": [
+          "all"
+        ],
+        "caution": [],
+        "notes_en": "Very well-tolerated.",
+        "notes_zh": "耐受性非常好。"
+      },
+      "concerns_addressed": [
+        "sunburn",
+        "irritation",
+        "dryness"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Topical use safe.",
+      "pregnancy_notes_zh": "外用安全。",
+      "vegan": true,
+      "common_in": [
+        "gels",
+        "moisturizers",
+        "after_sun"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Classic soothing ingredient. Often the base of gel products.",
+      "notes_zh": "经典舒缓成分。常作为凝胶产品的基底。"
+    },
+    {
+      "id": "rice_extract",
+      "inci_name": "Oryza Sativa Bran Extract",
+      "chinese_name": "大米提取物",
+      "aliases_en": [
+        "Rice Bran Extract",
+        "Rice Extract"
+      ],
+      "aliases_zh": [
+        "米糠提取物"
+      ],
+      "category": "botanical",
+      "functions": {
+        "en": [
+          "Brightening",
+          "Antioxidant",
+          "Moisturizing",
+          "Soothing"
+        ],
+        "zh": [
+          "美白",
+          "抗氧化",
+          "保湿",
+          "舒缓"
+        ]
+      },
+      "evidence_level": "limited",
+      "evidence_notes_en": "Contains ferulic acid and phytic acid. Traditional Asian skincare ingredient.",
+      "evidence_notes_zh": "含阿魏酸和植酸。传统亚洲护肤成分。",
+      "skin_types": {
+        "suited": [
+          "all"
+        ],
+        "caution": [],
+        "notes_en": "Very gentle.",
+        "notes_zh": "非常温和。"
+      },
+      "concerns_addressed": [
+        "dullness",
+        "dryness"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Topical use safe.",
+      "pregnancy_notes_zh": "外用安全。",
+      "vegan": true,
+      "common_in": [
+        "essences",
+        "toners",
+        "masks"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Staple in Japanese skincare (sake lees). Contains natural brightening compounds.",
+      "notes_zh": "日本护肤中的主力成分（酒粕）。含天然美白化合物。"
+    },
+    {
+      "id": "allantoin",
+      "inci_name": "Allantoin",
+      "chinese_name": "尿囊素",
+      "aliases_en": [],
+      "aliases_zh": [],
+      "category": "active",
+      "functions": {
+        "en": [
+          "Soothing",
+          "Promotes wound healing",
+          "Moisturizing",
+          "Anti-irritant"
+        ],
+        "zh": [
+          "舒缓",
+          "促进伤口愈合",
+          "保湿",
+          "抗刺激"
+        ]
+      },
+      "evidence_level": "moderate",
+      "evidence_notes_en": "Long history of use. Recognized as a skin protectant by FDA.",
+      "evidence_notes_zh": "使用历史悠久。被FDA认定为皮肤保护剂。",
+      "skin_types": {
+        "suited": [
+          "all",
+          "sensitive"
+        ],
+        "caution": [],
+        "notes_en": "One of the gentlest active ingredients.",
+        "notes_zh": "最温和的活性成分之一。"
+      },
+      "concerns_addressed": [
+        "sensitivity",
+        "irritation",
+        "dryness"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe.",
+      "pregnancy_notes_zh": "安全。",
+      "vegan": true,
+      "common_in": [
+        "soothing_products",
+        "moisturizers",
+        "post_procedure"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Found in comfrey plant. Excellent in post-procedure and sensitive skin products.",
+      "notes_zh": "存在于紫草植物中。非常适合术后和敏感肌产品。"
+    },
+    {
+      "id": "alcohol_denat",
+      "inci_name": "Alcohol Denat.",
+      "chinese_name": "变性乙醇",
+      "aliases_en": [
+        "Denatured Alcohol",
+        "SD Alcohol"
+      ],
+      "aliases_zh": [
+        "变性酒精"
+      ],
+      "category": "solvent",
+      "functions": {
+        "en": [
+          "Solvent",
+          "Quick-drying agent",
+          "Penetration enhancer",
+          "Astringent feel"
+        ],
+        "zh": [
+          "溶剂",
+          "快干剂",
+          "渗透促进剂",
+          "收敛感"
+        ]
+      },
+      "evidence_level": "strong",
+      "evidence_notes_en": "Can be drying and irritating in high concentrations. Disrupts barrier with prolonged use.",
+      "evidence_notes_zh": "高浓度可能导致干燥和刺激。长期使用可损害屏障功能。",
+      "skin_types": {
+        "suited": [
+          "oily"
+        ],
+        "caution": [
+          "dry",
+          "sensitive",
+          "eczema",
+          "rosacea"
+        ],
+        "notes_en": "Avoid if dry, sensitive, or barrier-compromised.",
+        "notes_zh": "干性、敏感或屏障受损的皮肤应避免。"
+      },
+      "concerns_addressed": [],
+      "interactions": [],
+      "irritation_potential": "medium_to_high",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Topical use safe but may be drying.",
+      "pregnancy_notes_zh": "外用安全但可能导致干燥。",
+      "vegan": true,
+      "common_in": [
+        "toners",
+        "sunscreens",
+        "hair_products"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Controversial. High on ingredient list = potentially drying. Small amounts as solvent are fine. Different from fatty alcohols.",
+      "notes_zh": "有争议。在成分表中排名靠前=可能导致干燥。少量作为溶剂没问题。与脂肪醇不同。"
+    },
+    {
+      "id": "aqua",
+      "inci_name": "Aqua",
+      "chinese_name": "水",
+      "aliases_en": [
+        "Water",
+        "Purified Water",
+        "Eau"
+      ],
+      "aliases_zh": [
+        "纯净水"
+      ],
+      "category": "solvent",
+      "functions": {
+        "en": [
+          "Base solvent",
+          "Vehicle for other ingredients"
+        ],
+        "zh": [
+          "基础溶剂",
+          "其他成分的载体"
+        ]
+      },
+      "evidence_level": "strong",
+      "evidence_notes_en": "Universal solvent. Almost always first ingredient in water-based products.",
+      "evidence_notes_zh": "通用溶剂。在水基产品中几乎总是排在第一位。",
+      "skin_types": {
+        "suited": [
+          "all"
+        ],
+        "caution": [],
+        "notes_en": "Universal.",
+        "notes_zh": "通用。"
+      },
+      "concerns_addressed": [],
+      "interactions": [],
+      "irritation_potential": "none",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe.",
+      "pregnancy_notes_zh": "安全。",
+      "vegan": true,
+      "common_in": [
+        "everything"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "If it's first on the list, the product is water-based. Anhydrous products don't contain it.",
+      "notes_zh": "如果排在成分表第一位说明产品是水基的。无水产品不含水。"
+    },
+    {
+      "id": "hydroquinone",
+      "inci_name": "Hydroquinone",
+      "chinese_name": "对苯二酚",
+      "aliases_en": [
+        "HQ"
+      ],
+      "aliases_zh": [],
+      "category": "active",
+      "subcategory": "brightening",
+      "functions": {
+        "en": [
+          "Most potent skin lightener",
+          "Inhibits melanin production",
+          "Treats melasma"
+        ],
+        "zh": [
+          "最强效的美白剂",
+          "抑制黑色素生成",
+          "治疗黄褐斑"
+        ]
+      },
+      "effective_concentration": {
+        "minimum": "2%",
+        "optimal": "4% (Rx)",
+        "notes_en": "OTC 2% in many countries. 4% requires prescription. Use max 3-5 months then break.",
+        "notes_zh": "许多国家OTC浓度为2%。4%需处方。最多使用3-5个月后需休息。"
+      },
+      "evidence_level": "strong",
+      "evidence_notes_en": "Gold standard for hyperpigmentation treatment. Must be used under medical supervision.",
+      "evidence_notes_zh": "色素沉着治疗的黄金标准。需在医学监督下使用。",
+      "skin_types": {
+        "suited": [
+          "all"
+        ],
+        "caution": [
+          "sensitive",
+          "darker_skin_tones"
+        ],
+        "notes_en": "Can cause ochronosis with prolonged use. Must use sunscreen.",
+        "notes_zh": "长期使用可能导致褐黄病。必须使用防晒。"
+      },
+      "concerns_addressed": [
+        "hyperpigmentation",
+        "melasma",
+        "dark_spots"
+      ],
+      "interactions": [
+        {
+          "ingredient": "Benzoyl Peroxide",
+          "ingredient_zh": "过氧化苯甲酰",
+          "type": "caution",
+          "details_en": "Can temporarily stain skin dark. Avoid using simultaneously.",
+          "details_zh": "可能暂时使皮肤变色。避免同时使用。"
+        },
+        {
+          "ingredient": "Retinol",
+          "ingredient_zh": "视黄醇",
+          "type": "synergy",
+          "details_en": "Retinoids enhance hydroquinone efficacy. Common in Kligman formula.",
+          "details_zh": "视黄醇类增强对苯二酚效果。常见于三合一配方。"
+        }
+      ],
+      "irritation_potential": "medium",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": false,
+      "pregnancy_notes_en": "Avoid during pregnancy. Significant systemic absorption.",
+      "pregnancy_notes_zh": "孕期避免。有显著的系统性吸收。",
+      "vegan": true,
+      "common_in": [
+        "prescription_products",
+        "brightening_treatments"
+      ],
+      "price_indicator": "affordable_to_moderate",
+      "notes_en": "Most effective brightening agent but requires medical guidance. Banned OTC in some countries. Cycle on/off.",
+      "notes_zh": "最有效的美白剂但需要医学指导。在某些国家OTC被禁。需要间歇性使用。"
+    },
+    {
+      "id": "tretinoin",
+      "inci_name": "Tretinoin",
+      "chinese_name": "维A酸",
+      "aliases_en": [
+        "Retinoic Acid",
+        "Retin-A"
+      ],
+      "aliases_zh": [
+        "全反式维甲酸"
+      ],
+      "category": "active",
+      "subcategory": "retinoid",
+      "functions": {
+        "en": [
+          "Most potent topical retinoid",
+          "Anti-aging",
+          "Acne treatment",
+          "Cell turnover"
+        ],
+        "zh": [
+          "最强效的外用维甲酸",
+          "抗衰老",
+          "痤疮治疗",
+          "细胞更新"
+        ]
+      },
+      "effective_concentration": {
+        "beginner": "0.025%",
+        "intermediate": "0.05%",
+        "advanced": "0.1%",
+        "notes_en": "Prescription only. Start low, increase gradually.",
+        "notes_zh": "仅限处方。从低浓度开始逐渐增加。"
+      },
+      "evidence_level": "strong",
+      "evidence_notes_en": "Most studied retinoid with decades of research. FDA approved for acne and photoaging.",
+      "evidence_notes_zh": "研究最多的维甲酸，数十年研究历史。FDA批准用于痤疮和光老化。",
+      "skin_types": {
+        "suited": [
+          "normal",
+          "oily"
+        ],
+        "caution": [
+          "sensitive",
+          "dry",
+          "rosacea",
+          "eczema"
+        ],
+        "notes_en": "Significant adjustment period. Peeling, redness, dryness common initially.",
+        "notes_zh": "需要显著的适应期。初期常见脱皮、泛红、干燥。"
+      },
+      "concerns_addressed": [
+        "acne",
+        "aging",
+        "fine_lines",
+        "wrinkles",
+        "hyperpigmentation",
+        "texture"
+      ],
+      "interactions": [
+        {
+          "ingredient": "AHAs/BHAs",
+          "ingredient_zh": "果酸/水杨酸",
+          "type": "caution",
+          "details_en": "Increased irritation risk. Introduce slowly.",
+          "details_zh": "增加刺激风险。缓慢引入。"
+        },
+        {
+          "ingredient": "Benzoyl Peroxide",
+          "ingredient_zh": "过氧化苯甲酰",
+          "type": "caution",
+          "details_en": "Can degrade tretinoin. Use at different times.",
+          "details_zh": "可能降解维A酸。应在不同时间使用。"
+        }
+      ],
+      "irritation_potential": "high",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": false,
+      "pregnancy_notes_en": "STRICTLY AVOID during pregnancy. Known teratogen.",
+      "pregnancy_notes_zh": "孕期严格避免。已知致畸剂。",
+      "vegan": true,
+      "common_in": [
+        "prescription_creams",
+        "prescription_gels"
+      ],
+      "price_indicator": "moderate",
+      "notes_en": "Prescription-strength retinoid. The gold standard for anti-aging. Requires sunscreen.",
+      "notes_zh": "处方级维甲酸。抗衰老的黄金标准。必须配合防晒。"
+    },
+    {
+      "id": "retinal",
+      "inci_name": "Retinal",
+      "chinese_name": "视黄醛",
+      "aliases_en": [
+        "Retinaldehyde"
+      ],
+      "aliases_zh": [
+        "A醛"
+      ],
+      "category": "active",
+      "subcategory": "retinoid",
+      "functions": {
+        "en": [
+          "Anti-aging",
+          "Antibacterial",
+          "One step from retinoic acid"
+        ],
+        "zh": [
+          "抗衰老",
+          "抗菌",
+          "距视黄酸仅一步转化"
+        ]
+      },
+      "effective_concentration": {
+        "minimum": "0.025%",
+        "optimal": "0.05-0.1%",
+        "notes_en": "Stronger than retinol, gentler than tretinoin.",
+        "notes_zh": "比视黄醇强，比维A酸温和。"
+      },
+      "evidence_level": "moderate",
+      "evidence_notes_en": "One conversion step from retinoic acid. Also has direct antibacterial activity.",
+      "evidence_notes_zh": "距视黄酸仅一步转化。还具有直接抗菌活性。",
+      "skin_types": {
+        "suited": [
+          "normal",
+          "oily",
+          "combination"
+        ],
+        "caution": [
+          "sensitive",
+          "dry"
+        ],
+        "notes_en": "Better tolerated than tretinoin but stronger than retinol.",
+        "notes_zh": "比维A酸耐受性好但比视黄醇强。"
+      },
+      "concerns_addressed": [
+        "aging",
+        "acne",
+        "fine_lines",
+        "wrinkles"
+      ],
+      "interactions": [
+        {
+          "ingredient": "AHAs/BHAs",
+          "ingredient_zh": "果酸/水杨酸",
+          "type": "caution",
+          "details_en": "May increase irritation. Alternate use.",
+          "details_zh": "可能增加刺激。交替使用。"
+        }
+      ],
+      "irritation_potential": "medium",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": false,
+      "pregnancy_notes_en": "Retinoid—avoid during pregnancy.",
+      "pregnancy_notes_zh": "视黄醇类——孕期避免。",
+      "vegan": true,
+      "common_in": [
+        "serums",
+        "treatments"
+      ],
+      "price_indicator": "expensive",
+      "notes_en": "The 'middle ground' retinoid. More effective than retinol, better tolerated than tretinoin.",
+      "notes_zh": "'中间地带'的维甲酸类。比视黄醇更有效，比维A酸更耐受。"
+    },
+    {
+      "id": "retinyl_palmitate",
+      "inci_name": "Retinyl Palmitate",
+      "chinese_name": "棕榈酸视黄酯",
+      "aliases_en": [
+        "Vitamin A Palmitate"
+      ],
+      "aliases_zh": [
+        "维A棕榈酸酯"
+      ],
+      "category": "active",
+      "subcategory": "retinoid",
+      "functions": {
+        "en": [
+          "Mild anti-aging",
+          "Antioxidant",
+          "Gentlest retinoid"
+        ],
+        "zh": [
+          "温和抗衰老",
+          "抗氧化",
+          "最温和的维甲酸类"
+        ]
+      },
+      "evidence_level": "limited",
+      "evidence_notes_en": "Weakest retinoid. Needs multiple conversions to become retinoic acid.",
+      "evidence_notes_zh": "最弱的维甲酸类。需要多次转化才能成为视黄酸。",
+      "skin_types": {
+        "suited": [
+          "all",
+          "sensitive"
+        ],
+        "caution": [],
+        "notes_en": "Very gentle but also less effective.",
+        "notes_zh": "非常温和但效果也较弱。"
+      },
+      "concerns_addressed": [
+        "aging"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": false,
+      "pregnancy_notes_en": "Still a retinoid—avoid during pregnancy as a precaution.",
+      "pregnancy_notes_zh": "仍属维甲酸类——作为预防措施孕期应避免。",
+      "vegan": false,
+      "common_in": [
+        "moisturizers",
+        "eye_creams",
+        "sunscreens"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Often a marketing ingredient. Very mild—good for absolute beginners only.",
+      "notes_zh": "常在产品中作为宣传成分。非常温和——仅适合完全的新手。"
+    },
+    {
+      "id": "vitamin_c_ethyl",
+      "inci_name": "3-O-Ethyl Ascorbic Acid",
+      "chinese_name": "乙基抗坏血酸",
+      "aliases_en": [
+        "Ethyl Ascorbic Acid"
+      ],
+      "aliases_zh": [
+        "维C乙基醚"
+      ],
+      "category": "active",
+      "subcategory": "vitamin",
+      "functions": {
+        "en": [
+          "Stable Vitamin C derivative",
+          "Brightening",
+          "Antioxidant"
+        ],
+        "zh": [
+          "稳定的维C衍生物",
+          "美白",
+          "抗氧化"
+        ]
+      },
+      "evidence_level": "moderate",
+      "evidence_notes_en": "More stable than L-ascorbic acid. Good penetration.",
+      "evidence_notes_zh": "比左旋维C更稳定。渗透性好。",
+      "skin_types": {
+        "suited": [
+          "all",
+          "sensitive"
+        ],
+        "caution": [],
+        "notes_en": "Better tolerated than L-ascorbic acid.",
+        "notes_zh": "比左旋维C耐受性更好。"
+      },
+      "concerns_addressed": [
+        "hyperpigmentation",
+        "dullness",
+        "aging"
+      ],
+      "interactions": [],
+      "irritation_potential": "low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe.",
+      "pregnancy_notes_zh": "安全。",
+      "vegan": true,
+      "common_in": [
+        "serums",
+        "essences"
+      ],
+      "price_indicator": "moderate",
+      "notes_en": "Good option for those who find L-ascorbic acid too irritating.",
+      "notes_zh": "对觉得左旋维C太刺激的人来说是好选择。"
+    },
+    {
+      "id": "ascorbyl_glucoside",
+      "inci_name": "Ascorbyl Glucoside",
+      "chinese_name": "抗坏血酸葡糖苷",
+      "aliases_en": [
+        "AA-2G"
+      ],
+      "aliases_zh": [
+        "维C糖苷"
+      ],
+      "category": "active",
+      "subcategory": "vitamin",
+      "functions": {
+        "en": [
+          "Stable Vitamin C derivative",
+          "Brightening",
+          "Antioxidant"
+        ],
+        "zh": [
+          "稳定的维C衍生物",
+          "美白",
+          "抗氧化"
+        ]
+      },
+      "evidence_level": "moderate",
+      "evidence_notes_en": "Very stable. Converted to ascorbic acid by enzymes in skin.",
+      "evidence_notes_zh": "非常稳定。在皮肤中由酶转化为抗坏血酸。",
+      "skin_types": {
+        "suited": [
+          "all",
+          "sensitive"
+        ],
+        "caution": [],
+        "notes_en": "Very well-tolerated.",
+        "notes_zh": "耐受性非常好。"
+      },
+      "concerns_addressed": [
+        "hyperpigmentation",
+        "dullness"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe.",
+      "pregnancy_notes_zh": "安全。",
+      "vegan": true,
+      "common_in": [
+        "serums",
+        "toners",
+        "lotions"
+      ],
+      "price_indicator": "moderate",
+      "notes_en": "Good water-soluble Vitamin C derivative. Gentler but slower-acting than L-ascorbic acid.",
+      "notes_zh": "良好的水溶性维C衍生物。比左旋维C温和但起效较慢。"
+    },
+    {
+      "id": "sodium_ascorbyl_phosphate",
+      "inci_name": "Sodium Ascorbyl Phosphate",
+      "chinese_name": "抗坏血酸磷酸酯钠",
+      "aliases_en": [
+        "SAP"
+      ],
+      "aliases_zh": [
+        "维C磷酸酯钠"
+      ],
+      "category": "active",
+      "subcategory": "vitamin",
+      "functions": {
+        "en": [
+          "Stable Vitamin C derivative",
+          "Brightening",
+          "Anti-acne"
+        ],
+        "zh": [
+          "稳定的维C衍生物",
+          "美白",
+          "抗痤疮"
+        ]
+      },
+      "evidence_level": "moderate",
+      "evidence_notes_en": "Studies show 5% SAP effective against acne. Good stability at neutral pH.",
+      "evidence_notes_zh": "研究显示5%SAP对痤疮有效。在中性pH下稳定性好。",
+      "skin_types": {
+        "suited": [
+          "all",
+          "sensitive",
+          "acne_prone"
+        ],
+        "caution": [],
+        "notes_en": "Very well-tolerated. Works at neutral pH.",
+        "notes_zh": "耐受性非常好。在中性pH下起效。"
+      },
+      "concerns_addressed": [
+        "hyperpigmentation",
+        "acne",
+        "dullness"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe during pregnancy.",
+      "pregnancy_notes_zh": "孕期安全。",
+      "vegan": true,
+      "common_in": [
+        "serums",
+        "moisturizers"
+      ],
+      "price_indicator": "moderate",
+      "notes_en": "Works at skin-friendly pH 6-7 unlike L-ascorbic acid (pH <3.5). Also has anti-acne properties.",
+      "notes_zh": "在皮肤友好的pH 6-7下起效，不像左旋维C需要pH<3.5。还有抗痤疮特性。"
+    },
+    {
+      "id": "bisabolol",
+      "inci_name": "Bisabolol",
+      "chinese_name": "没药醇",
+      "aliases_en": [
+        "Alpha-Bisabolol",
+        "Levomenol"
+      ],
+      "aliases_zh": [
+        "红没药醇"
+      ],
+      "category": "active",
+      "functions": {
+        "en": [
+          "Anti-inflammatory",
+          "Soothing",
+          "Wound healing",
+          "Enhances absorption of other ingredients"
+        ],
+        "zh": [
+          "消炎",
+          "舒缓",
+          "促进愈合",
+          "增强其他成分的吸收"
+        ]
+      },
+      "evidence_level": "moderate",
+      "evidence_notes_en": "Well-studied anti-inflammatory. Originally from chamomile, now often synthetic.",
+      "evidence_notes_zh": "研究充分的消炎成分。最初来源于洋甘菊，现在通常为合成。",
+      "skin_types": {
+        "suited": [
+          "all",
+          "sensitive",
+          "rosacea"
+        ],
+        "caution": [],
+        "notes_en": "One of the gentlest anti-inflammatories.",
+        "notes_zh": "最温和的消炎成分之一。"
+      },
+      "concerns_addressed": [
+        "redness",
+        "sensitivity",
+        "irritation"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe during pregnancy.",
+      "pregnancy_notes_zh": "孕期安全。",
+      "vegan": true,
+      "common_in": [
+        "soothing_products",
+        "moisturizers",
+        "serums"
+      ],
+      "price_indicator": "moderate",
+      "notes_en": "Derived from chamomile or synthesized. Excellent for calming irritated skin.",
+      "notes_zh": "来源于洋甘菊或合成。用于镇静受刺激的皮肤效果极佳。"
+    },
+    {
+      "id": "madecassoside",
+      "inci_name": "Madecassoside",
+      "chinese_name": "羟基积雪草苷",
+      "aliases_en": [],
+      "aliases_zh": [],
+      "category": "active",
+      "functions": {
+        "en": [
+          "Wound healing",
+          "Anti-inflammatory",
+          "Collagen synthesis",
+          "Barrier repair"
+        ],
+        "zh": [
+          "促进愈合",
+          "消炎",
+          "胶原蛋白合成",
+          "屏障修复"
+        ]
+      },
+      "evidence_level": "moderate",
+      "evidence_notes_en": "Key active triterpenoid from Centella Asiatica. Well-studied for wound healing.",
+      "evidence_notes_zh": "积雪草中的关键活性三萜类化合物。在伤口愈合方面研究充分。",
+      "skin_types": {
+        "suited": [
+          "all",
+          "sensitive"
+        ],
+        "caution": [],
+        "notes_en": "Extremely gentle.",
+        "notes_zh": "极其温和。"
+      },
+      "concerns_addressed": [
+        "sensitivity",
+        "barrier_damage",
+        "redness",
+        "wound_healing"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Topical use safe.",
+      "pregnancy_notes_zh": "外用安全。",
+      "vegan": true,
+      "common_in": [
+        "cica_products",
+        "serums",
+        "moisturizers"
+      ],
+      "price_indicator": "moderate",
+      "notes_en": "One of four key actives in Centella Asiatica (with asiaticoside, asiatic acid, madecassic acid).",
+      "notes_zh": "积雪草四种关键活性成分之一（另有积雪草苷、积雪草酸、羟基积雪草酸）。"
+    },
+    {
+      "id": "snail_mucin",
+      "inci_name": "Snail Secretion Filtrate",
+      "chinese_name": "蜗牛分泌滤液",
+      "aliases_en": [
+        "Snail Mucin"
+      ],
+      "aliases_zh": [
+        "蜗牛原液"
+      ],
+      "category": "active",
+      "functions": {
+        "en": [
+          "Hydrating",
+          "Wound healing",
+          "Anti-aging",
+          "Soothing"
+        ],
+        "zh": [
+          "保湿",
+          "促进愈合",
+          "抗衰老",
+          "舒缓"
+        ]
+      },
+      "evidence_level": "limited",
+      "evidence_notes_en": "Contains glycoproteins, hyaluronic acid, glycolic acid. Limited clinical studies but popular anecdotally.",
+      "evidence_notes_zh": "含糖蛋白、透明质酸、乙醇酸。临床研究有限但经验上很受欢迎。",
+      "skin_types": {
+        "suited": [
+          "all",
+          "dry",
+          "sensitive"
+        ],
+        "caution": [],
+        "notes_en": "Well-tolerated. Very popular in K-beauty.",
+        "notes_zh": "耐受性好。在韩国护肤中非常受欢迎。"
+      },
+      "concerns_addressed": [
+        "dryness",
+        "dullness",
+        "aging",
+        "scarring"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Topical use considered safe.",
+      "pregnancy_notes_zh": "外用被认为安全。",
+      "vegan": false,
+      "common_in": [
+        "essences",
+        "serums",
+        "moisturizers"
+      ],
+      "price_indicator": "moderate",
+      "notes_en": "K-beauty staple (COSRX, Missha). Not vegan. Contains a natural mix of beneficial compounds.",
+      "notes_zh": "韩国护肤品的代表成分（COSRX、谜尚）。非素食。含天然有益化合物混合物。"
+    },
+    {
+      "id": "propolis_extract",
+      "inci_name": "Propolis Extract",
+      "chinese_name": "蜂胶提取物",
+      "aliases_en": [
+        "Bee Propolis"
+      ],
+      "aliases_zh": [
+        "蜂胶"
+      ],
+      "category": "botanical",
+      "functions": {
+        "en": [
+          "Antibacterial",
+          "Anti-inflammatory",
+          "Antioxidant",
+          "Wound healing"
+        ],
+        "zh": [
+          "抗菌",
+          "消炎",
+          "抗氧化",
+          "促进愈合"
+        ]
+      },
+      "evidence_level": "moderate",
+      "evidence_notes_en": "Rich in flavonoids. Studies show antimicrobial and wound healing properties.",
+      "evidence_notes_zh": "富含类黄酮。研究显示抗菌和促进愈合特性。",
+      "skin_types": {
+        "suited": [
+          "oily",
+          "acne_prone",
+          "normal"
+        ],
+        "caution": [
+          "bee_allergy"
+        ],
+        "notes_en": "Avoid if allergic to bee products.",
+        "notes_zh": "对蜂产品过敏者应避免。"
+      },
+      "concerns_addressed": [
+        "acne",
+        "inflammation",
+        "dullness"
+      ],
+      "interactions": [],
+      "irritation_potential": "low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Topical use generally safe.",
+      "pregnancy_notes_zh": "外用一般安全。",
+      "vegan": false,
+      "common_in": [
+        "serums",
+        "essences",
+        "ampoules"
+      ],
+      "price_indicator": "moderate",
+      "notes_en": "Popular in K-beauty for acne-prone skin. Not vegan. Bee allergy is a contraindication.",
+      "notes_zh": "在韩国护肤中用于痤疮易发肌肤很受欢迎。非素食。蜂产品过敏为禁忌。"
+    },
+    {
+      "id": "mugwort_extract",
+      "inci_name": "Artemisia Vulgaris Extract",
+      "chinese_name": "艾草提取物",
+      "aliases_en": [
+        "Mugwort Extract"
+      ],
+      "aliases_zh": [
+        "艾蒿提取物"
+      ],
+      "category": "botanical",
+      "functions": {
+        "en": [
+          "Soothing",
+          "Anti-inflammatory",
+          "Antioxidant",
+          "Calming sensitive skin"
+        ],
+        "zh": [
+          "舒缓",
+          "消炎",
+          "抗氧化",
+          "镇静敏感肌"
+        ]
+      },
+      "evidence_level": "limited",
+      "evidence_notes_en": "Traditional herbal medicine ingredient. Contains flavonoids and tannins.",
+      "evidence_notes_zh": "传统中草药成分。含类黄酮和单宁。",
+      "skin_types": {
+        "suited": [
+          "all",
+          "sensitive"
+        ],
+        "caution": [
+          "asteraceae_allergy"
+        ],
+        "notes_en": "Very soothing. Avoid if allergic to Asteraceae family.",
+        "notes_zh": "非常舒缓。对菊科植物过敏者应避免。"
+      },
+      "concerns_addressed": [
+        "sensitivity",
+        "redness",
+        "irritation"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Topical use safe.",
+      "pregnancy_notes_zh": "外用安全。",
+      "vegan": true,
+      "common_in": [
+        "toners",
+        "essences",
+        "calming_products"
+      ],
+      "price_indicator": "moderate",
+      "notes_en": "Trending K-beauty ingredient. Known in traditional Chinese and Korean medicine.",
+      "notes_zh": "韩国护肤热门成分。在中韩传统医学中有悠久历史。"
+    },
+    {
+      "id": "galactomyces_ferment",
+      "inci_name": "Galactomyces Ferment Filtrate",
+      "chinese_name": "半乳糖酵母样菌发酵产物滤液",
+      "aliases_en": [
+        "Pitera"
+      ],
+      "aliases_zh": [
+        "酵母精华"
+      ],
+      "category": "active",
+      "functions": {
+        "en": [
+          "Brightening",
+          "Hydrating",
+          "Improves skin texture",
+          "Antioxidant"
+        ],
+        "zh": [
+          "美白",
+          "保湿",
+          "改善皮肤质地",
+          "抗氧化"
+        ]
+      },
+      "evidence_level": "limited",
+      "evidence_notes_en": "Proprietary ingredient of SK-II. Contains vitamins, amino acids, minerals. Limited independent studies.",
+      "evidence_notes_zh": "SK-II的专有成分。含维生素、氨基酸、矿物质。独立研究有限。",
+      "skin_types": {
+        "suited": [
+          "all"
+        ],
+        "caution": [],
+        "notes_en": "Well-tolerated.",
+        "notes_zh": "耐受性好。"
+      },
+      "concerns_addressed": [
+        "dullness",
+        "texture",
+        "dryness"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Topical use safe.",
+      "pregnancy_notes_zh": "外用安全。",
+      "vegan": true,
+      "common_in": [
+        "essences",
+        "toners"
+      ],
+      "price_indicator": "expensive",
+      "notes_en": "Made famous by SK-II Facial Treatment Essence. Fermented yeast filtrate. Popular in J-beauty.",
+      "notes_zh": "因SK-II神仙水而闻名。酵母发酵滤液。在日本护肤中很受欢迎。"
+    },
+    {
+      "id": "saccharomyces_ferment",
+      "inci_name": "Saccharomyces Ferment Filtrate",
+      "chinese_name": "酵母菌发酵产物滤液",
+      "aliases_en": [
+        "Yeast Ferment"
+      ],
+      "aliases_zh": [
+        "酵母滤液"
+      ],
+      "category": "active",
+      "functions": {
+        "en": [
+          "Hydrating",
+          "Barrier strengthening",
+          "Brightening"
+        ],
+        "zh": [
+          "保湿",
+          "增强屏障",
+          "美白"
+        ]
+      },
+      "evidence_level": "limited",
+      "evidence_notes_en": "Similar to Galactomyces but different yeast strain. Rich in B vitamins and amino acids.",
+      "evidence_notes_zh": "类似半乳糖酵母样菌但酵母菌株不同。富含B族维生素和氨基酸。",
+      "skin_types": {
+        "suited": [
+          "all"
+        ],
+        "caution": [
+          "fungal_acne"
+        ],
+        "notes_en": "May exacerbate fungal acne in some individuals.",
+        "notes_zh": "在某些人中可能加重真菌性痤疮。"
+      },
+      "concerns_addressed": [
+        "dullness",
+        "dryness"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Topical use safe.",
+      "pregnancy_notes_zh": "外用安全。",
+      "vegan": true,
+      "common_in": [
+        "essences",
+        "serums"
+      ],
+      "price_indicator": "moderate_to_expensive",
+      "notes_en": "Avoid if you have fungal acne (Malassezia-related). Otherwise a good hydrating active.",
+      "notes_zh": "如有真菌性痤疮（马拉色菌相关）应避免。否则是很好的保湿活性成分。"
+    },
+    {
+      "id": "bentonite",
+      "inci_name": "Bentonite",
+      "chinese_name": "膨润土",
+      "aliases_en": [
+        "Bentonite Clay"
+      ],
+      "aliases_zh": [],
+      "category": "thickener",
+      "functions": {
+        "en": [
+          "Oil absorbing",
+          "Pore cleansing",
+          "Thickener"
+        ],
+        "zh": [
+          "吸油",
+          "清洁毛孔",
+          "增稠"
+        ]
+      },
+      "evidence_level": "moderate",
+      "evidence_notes_en": "Effective oil absorber. Common in clay masks.",
+      "evidence_notes_zh": "有效的吸油剂。常见于泥膜中。",
+      "skin_types": {
+        "suited": [
+          "oily"
+        ],
+        "caution": [
+          "dry",
+          "sensitive"
+        ],
+        "notes_en": "Can be drying. Best for oily skin or occasional use.",
+        "notes_zh": "可能导致干燥。最适合油性皮肤或偶尔使用。"
+      },
+      "concerns_addressed": [
+        "oiliness",
+        "clogged_pores"
+      ],
+      "interactions": [],
+      "irritation_potential": "low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe.",
+      "pregnancy_notes_zh": "安全。",
+      "vegan": true,
+      "common_in": [
+        "clay_masks",
+        "cleansers"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Aztec Secret is 100% bentonite. Mix with ACV for a popular DIY mask. Don't overuse.",
+      "notes_zh": "Aztec Secret是100%膨润土。与苹果醋混合制作热门DIY面膜。不要过度使用。"
+    },
+    {
+      "id": "kaolin",
+      "inci_name": "Kaolin",
+      "chinese_name": "高岭土",
+      "aliases_en": [
+        "White Clay",
+        "China Clay"
+      ],
+      "aliases_zh": [
+        "白陶土"
+      ],
+      "category": "thickener",
+      "functions": {
+        "en": [
+          "Gentle oil absorbing",
+          "Mild cleansing",
+          "Mattifying"
+        ],
+        "zh": [
+          "温和吸油",
+          "轻柔清洁",
+          "控油"
+        ]
+      },
+      "evidence_level": "moderate",
+      "evidence_notes_en": "Gentler than bentonite. Suitable for sensitive skin masks.",
+      "evidence_notes_zh": "比膨润土温和。适合敏感肌面膜。",
+      "skin_types": {
+        "suited": [
+          "all",
+          "sensitive",
+          "oily"
+        ],
+        "caution": [],
+        "notes_en": "Gentler clay option.",
+        "notes_zh": "更温和的泥类选择。"
+      },
+      "concerns_addressed": [
+        "oiliness"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe.",
+      "pregnancy_notes_zh": "安全。",
+      "vegan": true,
+      "common_in": [
+        "masks",
+        "powders",
+        "dry_shampoo"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Gentler alternative to bentonite. Good for sensitive skin that still wants oil control.",
+      "notes_zh": "膨润土的温和替代品。适合仍需控油的敏感肌。"
+    },
+    {
+      "id": "xanthan_gum",
+      "inci_name": "Xanthan Gum",
+      "chinese_name": "黄原胶",
+      "aliases_en": [],
+      "aliases_zh": [],
+      "category": "thickener",
+      "functions": {
+        "en": [
+          "Thickener",
+          "Emulsion stabilizer",
+          "Texture modifier"
+        ],
+        "zh": [
+          "增稠剂",
+          "乳液稳定剂",
+          "质地调节剂"
+        ]
+      },
+      "evidence_level": "strong",
+      "evidence_notes_en": "Widely used, long safety record. CIR safe.",
+      "evidence_notes_zh": "广泛使用，安全记录悠久。CIR评估安全。",
+      "skin_types": {
+        "suited": [
+          "all"
+        ],
+        "caution": [],
+        "notes_en": "Non-active. Purely functional.",
+        "notes_zh": "非活性成分。纯粹功能性。"
+      },
+      "concerns_addressed": [],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe.",
+      "pregnancy_notes_zh": "安全。",
+      "vegan": true,
+      "common_in": [
+        "gels",
+        "creams",
+        "lotions"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Purely a texture ingredient. Helps products feel smooth and spread well.",
+      "notes_zh": "纯粹的质地成分。帮助产品更顺滑、更好延展。"
+    },
+    {
+      "id": "carbomer",
+      "inci_name": "Carbomer",
+      "chinese_name": "卡波姆",
+      "aliases_en": [
+        "Carbopol"
+      ],
+      "aliases_zh": [],
+      "category": "thickener",
+      "functions": {
+        "en": [
+          "Thickener",
+          "Gel former",
+          "Emulsion stabilizer"
+        ],
+        "zh": [
+          "增稠剂",
+          "凝胶形成剂",
+          "乳液稳定剂"
+        ]
+      },
+      "evidence_level": "strong",
+      "evidence_notes_en": "Very common in gel formulations. CIR safe.",
+      "evidence_notes_zh": "在凝胶配方中非常常见。CIR评估安全。",
+      "skin_types": {
+        "suited": [
+          "all"
+        ],
+        "caution": [],
+        "notes_en": "Non-active. Purely functional.",
+        "notes_zh": "非活性成分。纯粹功能性。"
+      },
+      "concerns_addressed": [],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe.",
+      "pregnancy_notes_zh": "安全。",
+      "vegan": true,
+      "common_in": [
+        "gels",
+        "serums",
+        "sunscreens"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Creates the gel texture in many products. Needs to be neutralized to thicken properly.",
+      "notes_zh": "在许多产品中形成凝胶质地。需要中和才能正确增稠。"
+    },
+    {
+      "id": "citric_acid",
+      "inci_name": "Citric Acid",
+      "chinese_name": "柠檬酸",
+      "aliases_en": [],
+      "aliases_zh": [],
+      "category": "ph_adjuster",
+      "functions": {
+        "en": [
+          "pH adjuster",
+          "Mild exfoliant at high concentrations",
+          "Chelating agent"
+        ],
+        "zh": [
+          "pH调节剂",
+          "高浓度下温和去角质",
+          "螯合剂"
+        ]
+      },
+      "evidence_level": "strong",
+      "evidence_notes_en": "Universal pH adjuster. AHA properties only at higher concentrations.",
+      "evidence_notes_zh": "通用pH调节剂。仅在较高浓度下有AHA特性。",
+      "skin_types": {
+        "suited": [
+          "all"
+        ],
+        "caution": [],
+        "notes_en": "At standard concentrations, purely a pH adjuster. Not an exfoliant.",
+        "notes_zh": "在标准浓度下纯粹是pH调节剂。不是去角质剂。"
+      },
+      "concerns_addressed": [],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe as pH adjuster.",
+      "pregnancy_notes_zh": "作为pH调节剂安全。",
+      "vegan": true,
+      "common_in": [
+        "most_products"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Almost always used as a pH adjuster, not an active. Don't confuse with a treatment-level AHA.",
+      "notes_zh": "几乎总是用作pH调节剂而非活性成分。不要与治疗级AHA混淆。"
+    },
+    {
+      "id": "sodium_hydroxide",
+      "inci_name": "Sodium Hydroxide",
+      "chinese_name": "氢氧化钠",
+      "aliases_en": [
+        "Lye",
+        "Caustic Soda"
+      ],
+      "aliases_zh": [
+        "烧碱"
+      ],
+      "category": "ph_adjuster",
+      "functions": {
+        "en": [
+          "pH adjuster (raises pH)",
+          "Saponification agent in soap making"
+        ],
+        "zh": [
+          "pH调节剂（升高pH）",
+          "制皂中的皂化剂"
+        ]
+      },
+      "evidence_level": "strong",
+      "evidence_notes_en": "Safe at trace amounts used for pH adjustment. Not an irritant at final product levels.",
+      "evidence_notes_zh": "用于pH调节的微量是安全的。在最终产品中的含量不会造成刺激。",
+      "skin_types": {
+        "suited": [
+          "all"
+        ],
+        "caution": [],
+        "notes_en": "Sounds scary but at product concentrations is completely safe—just a pH adjuster.",
+        "notes_zh": "听起来可怕但在产品浓度下完全安全——只是pH调节剂。"
+      },
+      "concerns_addressed": [],
+      "interactions": [],
+      "irritation_potential": "none",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe at product concentrations.",
+      "pregnancy_notes_zh": "产品浓度下安全。",
+      "vegan": true,
+      "common_in": [
+        "creams",
+        "cleansers",
+        "peels"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Don't be alarmed by this on an ingredient list. It reacts and is consumed during formulation—not present as lye in the final product.",
+      "notes_zh": "不要因为在成分表上看到它而惊慌。它在配方过程中会反应消耗——最终产品中不以烧碱形式存在。"
+    },
+    {
+      "id": "triethanolamine",
+      "inci_name": "Triethanolamine",
+      "chinese_name": "三乙醇胺",
+      "aliases_en": [
+        "TEA"
+      ],
+      "aliases_zh": [],
+      "category": "ph_adjuster",
+      "functions": {
+        "en": [
+          "pH adjuster",
+          "Emulsifier",
+          "Surfactant (with fatty acids)"
+        ],
+        "zh": [
+          "pH调节剂",
+          "乳化剂",
+          "表面活性剂（与脂肪酸结合时）"
+        ]
+      },
+      "evidence_level": "strong",
+      "evidence_notes_en": "CIR safe at concentrations up to 5%. Should not be used in products with nitrosating agents.",
+      "evidence_notes_zh": "CIR评估5%以下浓度安全。不应与亚硝化剂一起使用。",
+      "skin_types": {
+        "suited": [
+          "all"
+        ],
+        "caution": [],
+        "notes_en": "Safe at cosmetic concentrations.",
+        "notes_zh": "化妆品浓度下安全。"
+      },
+      "concerns_addressed": [],
+      "interactions": [],
+      "irritation_potential": "low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe at cosmetic concentrations.",
+      "pregnancy_notes_zh": "化妆品浓度下安全。",
+      "vegan": true,
+      "common_in": [
+        "creams",
+        "lotions",
+        "sunscreens"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Common pH adjuster and emulsifier. Some controversy but CIR confirms safety at standard levels.",
+      "notes_zh": "常见pH调节剂和乳化剂。有些争议但CIR确认标准水平下安全。"
+    },
+    {
+      "id": "edta",
+      "inci_name": "Disodium EDTA",
+      "chinese_name": "乙二胺四乙酸二钠",
+      "aliases_en": [
+        "EDTA"
+      ],
+      "aliases_zh": [],
+      "category": "preservative",
+      "functions": {
+        "en": [
+          "Chelating agent",
+          "Preservative booster",
+          "Stabilizes formulations"
+        ],
+        "zh": [
+          "螯合剂",
+          "防腐增效剂",
+          "稳定配方"
+        ]
+      },
+      "evidence_level": "strong",
+      "evidence_notes_en": "CIR safe. Binds metal ions that could destabilize products.",
+      "evidence_notes_zh": "CIR评估安全。结合可能导致产品不稳定的金属离子。",
+      "skin_types": {
+        "suited": [
+          "all"
+        ],
+        "caution": [],
+        "notes_en": "Non-active. Purely functional.",
+        "notes_zh": "非活性成分。纯粹功能性。"
+      },
+      "concerns_addressed": [],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe at cosmetic concentrations.",
+      "pregnancy_notes_zh": "化妆品浓度下安全。",
+      "vegan": true,
+      "common_in": [
+        "most_products"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Helps preservatives work better by binding metal ions from water. Very common but unexciting ingredient.",
+      "notes_zh": "通过结合水中的金属离子帮助防腐剂更好地工作。非常常见但不起眼的成分。"
+    },
+    {
+      "id": "cyclopentasiloxane",
+      "inci_name": "Cyclopentasiloxane",
+      "chinese_name": "环五聚二甲基硅氧烷",
+      "aliases_en": [
+        "D5",
+        "Cyclomethicone"
+      ],
+      "aliases_zh": [
+        "D5硅油"
+      ],
+      "category": "emollient",
+      "functions": {
+        "en": [
+          "Lightweight silicone",
+          "Slip agent",
+          "Quick-evaporating carrier"
+        ],
+        "zh": [
+          "轻质硅油",
+          "滑顺剂",
+          "快速蒸发的载体"
+        ]
+      },
+      "evidence_level": "strong",
+      "evidence_notes_en": "CIR safe for cosmetic use. EU restricted in wash-off products >0.1% for environmental reasons.",
+      "evidence_notes_zh": "CIR评估化妆品使用安全。欧盟因环境原因限制在冲洗产品中>0.1%。",
+      "skin_types": {
+        "suited": [
+          "all"
+        ],
+        "caution": [],
+        "notes_en": "Evaporates quickly, leaving silky feel.",
+        "notes_zh": "快速蒸发，留下丝滑感。"
+      },
+      "concerns_addressed": [],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe.",
+      "pregnancy_notes_zh": "安全。",
+      "vegan": true,
+      "common_in": [
+        "primers",
+        "serums",
+        "hair_products"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Volatile silicone—evaporates after application. Gives that 'silky' primer feel. Environmental concerns in EU.",
+      "notes_zh": "挥发性硅油——涂抹后蒸发。带来妆前乳的'丝滑'感。在欧盟有环保方面的担忧。"
+    },
+    {
+      "id": "isopropyl_myristate",
+      "inci_name": "Isopropyl Myristate",
+      "chinese_name": "肉豆蔻酸异丙酯",
+      "aliases_en": [
+        "IPM"
+      ],
+      "aliases_zh": [],
+      "category": "emollient",
+      "functions": {
+        "en": [
+          "Emollient",
+          "Penetration enhancer",
+          "Skin conditioning"
+        ],
+        "zh": [
+          "润肤剂",
+          "渗透促进剂",
+          "皮肤调理"
+        ]
+      },
+      "evidence_level": "strong",
+      "evidence_notes_en": "CIR safe. Known to be moderately comedogenic.",
+      "evidence_notes_zh": "CIR评估安全。已知有中度致粉刺性。",
+      "skin_types": {
+        "suited": [
+          "dry",
+          "normal"
+        ],
+        "caution": [
+          "oily",
+          "acne_prone"
+        ],
+        "notes_en": "Moderately comedogenic. Avoid if acne-prone.",
+        "notes_zh": "中度致粉刺。痤疮易发者应避免。"
+      },
+      "concerns_addressed": [
+        "dryness"
+      ],
+      "interactions": [],
+      "irritation_potential": "low",
+      "comedogenic_rating": 3,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe.",
+      "pregnancy_notes_zh": "安全。",
+      "vegan": true,
+      "common_in": [
+        "lotions",
+        "foundations",
+        "cleansing_oils"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Common emollient but comedogenic rating of 3. Acne-prone skin should be cautious.",
+      "notes_zh": "常见润肤剂但致粉刺指数为3。痤疮易发皮肤应谨慎。"
+    },
+    {
+      "id": "cica_complex",
+      "inci_name": "Asiaticoside",
+      "chinese_name": "积雪草苷",
+      "aliases_en": [
+        "Asiaticoside"
+      ],
+      "aliases_zh": [],
+      "category": "active",
+      "functions": {
+        "en": [
+          "Collagen stimulation",
+          "Wound healing",
+          "Anti-aging"
+        ],
+        "zh": [
+          "刺激胶原蛋白",
+          "促进愈合",
+          "抗衰老"
+        ]
+      },
+      "evidence_level": "moderate",
+      "evidence_notes_en": "Active triterpenoid from Centella Asiatica. Stimulates type I collagen synthesis.",
+      "evidence_notes_zh": "积雪草中的活性三萜苷。刺激I型胶原蛋白合成。",
+      "skin_types": {
+        "suited": [
+          "all"
+        ],
+        "caution": [],
+        "notes_en": "Very well-tolerated.",
+        "notes_zh": "耐受性非常好。"
+      },
+      "concerns_addressed": [
+        "aging",
+        "scarring",
+        "wound_healing"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Topical use safe.",
+      "pregnancy_notes_zh": "外用安全。",
+      "vegan": true,
+      "common_in": [
+        "cica_products",
+        "serums"
+      ],
+      "price_indicator": "moderate",
+      "notes_en": "Key component of Centella Asiatica alongside madecassoside. Popular in K-beauty 'cica' products.",
+      "notes_zh": "积雪草的关键成分，与羟基积雪草苷并列。在韩国护肤'积雪草'产品中很受欢迎。"
+    },
+    {
+      "id": "sulfur",
+      "inci_name": "Sulfur",
+      "chinese_name": "硫磺",
+      "aliases_en": [
+        "Colloidal Sulfur"
+      ],
+      "aliases_zh": [],
+      "category": "active",
+      "functions": {
+        "en": [
+          "Antibacterial",
+          "Keratolytic",
+          "Anti-fungal",
+          "Oil reducing"
+        ],
+        "zh": [
+          "抗菌",
+          "角质溶解",
+          "抗真菌",
+          "减少油脂"
+        ]
+      },
+      "effective_concentration": {
+        "minimum": "2%",
+        "optimal": "3-10%",
+        "notes_en": "OTC concentrations up to 10%. Higher may require prescription.",
+        "notes_zh": "OTC浓度最高10%。更高可能需要处方。"
+      },
+      "evidence_level": "strong",
+      "evidence_notes_en": "One of the oldest acne treatments. FDA-approved OTC acne ingredient.",
+      "evidence_notes_zh": "最古老的痤疮治疗之一。FDA批准的OTC痤疮成分。",
+      "skin_types": {
+        "suited": [
+          "oily",
+          "acne_prone"
+        ],
+        "caution": [
+          "sensitive",
+          "dry"
+        ],
+        "notes_en": "Can be drying. Distinctive smell.",
+        "notes_zh": "可能导致干燥。有独特气味。"
+      },
+      "concerns_addressed": [
+        "acne",
+        "fungal_acne",
+        "oiliness"
+      ],
+      "interactions": [],
+      "irritation_potential": "medium",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Considered safe during pregnancy. Good acne treatment option for pregnant women.",
+      "pregnancy_notes_zh": "孕期被认为安全。对孕妇来说是好的痤疮治疗选择。",
+      "vegan": true,
+      "common_in": [
+        "spot_treatments",
+        "masks",
+        "cleansers"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Old-school acne treatment that still works. Good pregnancy-safe option. Smells like eggs.",
+      "notes_zh": "经典痤疮治疗仍然有效。好的孕期安全选择。闻起来像鸡蛋。"
+    },
+    {
+      "id": "colloidal_oatmeal",
+      "inci_name": "Avena Sativa Kernel Flour",
+      "chinese_name": "胶体燕麦",
+      "aliases_en": [
+        "Colloidal Oatmeal"
+      ],
+      "aliases_zh": [
+        "燕麦粉"
+      ],
+      "category": "active",
+      "functions": {
+        "en": [
+          "Skin protectant",
+          "Anti-itch",
+          "Anti-inflammatory",
+          "Moisturizing"
+        ],
+        "zh": [
+          "皮肤保护",
+          "止痒",
+          "消炎",
+          "保湿"
+        ]
+      },
+      "evidence_level": "strong",
+      "evidence_notes_en": "FDA-recognized skin protectant. Effective for eczema and sensitive skin.",
+      "evidence_notes_zh": "FDA认定的皮肤保护剂。对湿疹和敏感肌有效。",
+      "skin_types": {
+        "suited": [
+          "sensitive",
+          "eczema",
+          "dry",
+          "all"
+        ],
+        "caution": [
+          "oat_allergy"
+        ],
+        "notes_en": "Extremely soothing. Avoid if oat-allergic.",
+        "notes_zh": "极其舒缓。燕麦过敏者应避免。"
+      },
+      "concerns_addressed": [
+        "eczema",
+        "itching",
+        "dryness",
+        "sensitivity"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe. Excellent for pregnancy skin changes.",
+      "pregnancy_notes_zh": "安全。非常适合孕期皮肤变化。",
+      "vegan": true,
+      "common_in": [
+        "eczema_products",
+        "lotions",
+        "cleansers"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "Aveeno's key ingredient. FDA skin protectant. One of the best options for eczema.",
+      "notes_zh": "Aveeno的核心成分。FDA皮肤保护剂。湿疹最佳选择之一。"
+    },
+    {
+      "id": "hemp_seed_oil",
+      "inci_name": "Cannabis Sativa Seed Oil",
+      "chinese_name": "大麻籽油",
+      "aliases_en": [
+        "Hemp Seed Oil"
+      ],
+      "aliases_zh": [
+        "火麻仁油"
+      ],
+      "category": "emollient",
+      "functions": {
+        "en": [
+          "Rich in omega fatty acids",
+          "Anti-inflammatory",
+          "Moisturizing",
+          "Non-comedogenic"
+        ],
+        "zh": [
+          "富含omega脂肪酸",
+          "消炎",
+          "保湿",
+          "不致粉刺"
+        ]
+      },
+      "evidence_level": "limited",
+      "evidence_notes_en": "Rich in linoleic and alpha-linolenic acid. Some evidence for eczema support.",
+      "evidence_notes_zh": "富含亚油酸和α-亚麻酸。部分证据支持用于湿疹。",
+      "skin_types": {
+        "suited": [
+          "all",
+          "oily",
+          "acne_prone"
+        ],
+        "caution": [],
+        "notes_en": "Low comedogenic rating despite being an oil.",
+        "notes_zh": "尽管是油但致粉刺指数低。"
+      },
+      "concerns_addressed": [
+        "dryness",
+        "inflammation"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Topical use safe. Contains no THC or CBD.",
+      "pregnancy_notes_zh": "外用安全。不含THC或CBD。",
+      "vegan": true,
+      "common_in": [
+        "facial_oils",
+        "moisturizers"
+      ],
+      "price_indicator": "moderate",
+      "notes_en": "Contains NO THC or CBD. High in linoleic acid, which acne-prone skin tends to be deficient in.",
+      "notes_zh": "不含THC或CBD。富含亚油酸——痤疮易发皮肤往往缺乏这种脂肪酸。"
+    },
+    {
+      "id": "niacinamide_zinc",
+      "inci_name": "Zinc PCA",
+      "chinese_name": "吡咯烷酮羧酸锌",
+      "aliases_en": [
+        "Zinc PCA"
+      ],
+      "aliases_zh": [],
+      "category": "active",
+      "functions": {
+        "en": [
+          "Sebum regulation",
+          "Antimicrobial",
+          "Anti-inflammatory"
+        ],
+        "zh": [
+          "调节皮脂",
+          "抗菌",
+          "消炎"
+        ]
+      },
+      "evidence_level": "moderate",
+      "evidence_notes_en": "Zinc compound with oil-regulating properties. Often paired with niacinamide.",
+      "evidence_notes_zh": "具有调节油脂特性的锌化合物。常与烟酰胺搭配。",
+      "skin_types": {
+        "suited": [
+          "oily",
+          "acne_prone",
+          "combination"
+        ],
+        "caution": [],
+        "notes_en": "Good for oil control.",
+        "notes_zh": "控油效果好。"
+      },
+      "concerns_addressed": [
+        "oiliness",
+        "acne",
+        "large_pores"
+      ],
+      "interactions": [],
+      "irritation_potential": "low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe.",
+      "pregnancy_notes_zh": "安全。",
+      "vegan": true,
+      "common_in": [
+        "serums",
+        "toners"
+      ],
+      "price_indicator": "affordable",
+      "notes_en": "The zinc in The Ordinary's Niacinamide + Zinc serum. Helps with oil control and acne.",
+      "notes_zh": "The Ordinary烟酰胺+锌精华中的锌成分。帮助控油和抗痤疮。"
+    },
+    {
+      "id": "hyaluronic_acid_low_mw",
+      "inci_name": "Hydrolyzed Hyaluronic Acid",
+      "chinese_name": "水解透明质酸",
+      "aliases_en": [
+        "Low Molecular Weight HA",
+        "Hydrolyzed HA"
+      ],
+      "aliases_zh": [
+        "小分子玻尿酸"
+      ],
+      "category": "humectant",
+      "functions": {
+        "en": [
+          "Deeper penetration than standard HA",
+          "Plumps from within",
+          "Intense hydration"
+        ],
+        "zh": [
+          "比标准玻尿酸渗透更深",
+          "由内而外丰盈",
+          "深层保湿"
+        ]
+      },
+      "evidence_level": "moderate",
+      "evidence_notes_en": "Lower molecular weight allows deeper skin penetration. Studies show improved hydration vs high MW alone.",
+      "evidence_notes_zh": "较低分子量允许更深的皮肤渗透。研究显示与高分子量相比改善保湿效果。",
+      "skin_types": {
+        "suited": [
+          "all"
+        ],
+        "caution": [],
+        "notes_en": "Best used in multi-weight HA products.",
+        "notes_zh": "最好在多分子量HA产品中使用。"
+      },
+      "concerns_addressed": [
+        "dryness",
+        "dehydration",
+        "fine_lines"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe.",
+      "pregnancy_notes_zh": "安全。",
+      "vegan": true,
+      "common_in": [
+        "serums",
+        "essences"
+      ],
+      "price_indicator": "moderate",
+      "notes_en": "Penetrates deeper than standard HA. Best products use multi-weight HA (low + medium + high).",
+      "notes_zh": "比标准HA渗透更深。最佳产品使用多分子量HA（低+中+高）。"
+    },
+    {
+      "id": "polyglutamic_acid",
+      "inci_name": "Polyglutamic Acid",
+      "chinese_name": "聚谷氨酸",
+      "aliases_en": [
+        "PGA",
+        "γ-PGA"
+      ],
+      "aliases_zh": [],
+      "category": "humectant",
+      "functions": {
+        "en": [
+          "Holds 4-5x more water than HA",
+          "Prevents HA breakdown",
+          "Forms hydrating film"
+        ],
+        "zh": [
+          "保水力是HA的4-5倍",
+          "防止HA降解",
+          "形成保湿膜"
+        ]
+      },
+      "evidence_level": "moderate",
+      "evidence_notes_en": "Studies show superior water retention compared to HA. Inhibits hyaluronidase.",
+      "evidence_notes_zh": "研究显示保水能力优于HA。抑制透明质酸酶。",
+      "skin_types": {
+        "suited": [
+          "all",
+          "dry",
+          "dehydrated"
+        ],
+        "caution": [],
+        "notes_en": "Excellent humectant. Can be layered with HA.",
+        "notes_zh": "优秀的保湿剂。可以与HA叠加使用。"
+      },
+      "concerns_addressed": [
+        "dryness",
+        "dehydration"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe.",
+      "pregnancy_notes_zh": "安全。",
+      "vegan": true,
+      "common_in": [
+        "serums",
+        "moisturizers"
+      ],
+      "price_indicator": "moderate",
+      "notes_en": "The 'next generation' humectant. Actually inhibits the enzyme that breaks down HA in skin.",
+      "notes_zh": "'下一代'保湿剂。实际上能抑制分解皮肤中HA的酶。"
+    },
+    {
+      "id": "ectoin",
+      "inci_name": "Ectoin",
+      "chinese_name": "依克多因",
+      "aliases_en": [],
+      "aliases_zh": [],
+      "category": "active",
+      "functions": {
+        "en": [
+          "Cell protection",
+          "Anti-aging",
+          "Anti-pollution",
+          "Prevents UV damage"
+        ],
+        "zh": [
+          "细胞保护",
+          "抗衰老",
+          "抗污染",
+          "预防紫外线损伤"
+        ]
+      },
+      "evidence_level": "moderate",
+      "evidence_notes_en": "Extremophile-derived ingredient. Studies show UV protection enhancement and anti-inflammatory effects.",
+      "evidence_notes_zh": "来源于极端微生物的成分。研究显示增强紫外线防护和消炎效果。",
+      "skin_types": {
+        "suited": [
+          "all",
+          "sensitive"
+        ],
+        "caution": [],
+        "notes_en": "Very well-tolerated.",
+        "notes_zh": "耐受性非常好。"
+      },
+      "concerns_addressed": [
+        "aging",
+        "pollution",
+        "sensitivity"
+      ],
+      "interactions": [],
+      "irritation_potential": "very_low",
+      "comedogenic_rating": 0,
+      "pregnancy_safe": true,
+      "pregnancy_notes_en": "Safe.",
+      "pregnancy_notes_zh": "安全。",
+      "vegan": true,
+      "common_in": [
+        "serums",
+        "moisturizers",
+        "sunscreens"
+      ],
+      "price_indicator": "moderate_to_expensive",
+      "notes_en": "Produced by bacteria that survive extreme conditions. Emerging ingredient for anti-pollution skincare.",
+      "notes_zh": "由在极端条件下生存的细菌产生。抗污染护肤的新兴成分。"
     }
   ]
 }

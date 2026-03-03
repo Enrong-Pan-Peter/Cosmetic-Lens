@@ -1,0 +1,1178 @@
+{
+    "metadata": {
+      "version": "1.0",
+      "last_updated": "2025-03-02",
+      "total_pairs": 30
+    },
+    "pairs": [
+      {
+        "id": "la-mer-cream",
+        "original": {
+          "product_name": "Crème de la Mer",
+          "brand": "La Mer",
+          "category": "moisturizer",
+          "price_tier": "luxury",
+          "key_actives": [
+            "Seaweed Extract",
+            "Mineral Oil",
+            "Glycerin",
+            "Petrolatum"
+          ]
+        },
+        "dupes": [
+          {
+            "product_name": "Moisturizing Cream",
+            "brand": "CeraVe",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Ceramides",
+              "Glycerin",
+              "Hyaluronic Acid"
+            ],
+            "notes_en": "Similar barrier-repair focus with ceramides. Lacks seaweed; much simpler formula.",
+            "notes_zh": "相似的屏障修复功效，含神经酰胺。无海藻成分，配方更简单。"
+          },
+          {
+            "product_name": "Creme",
+            "brand": "Nivea",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Petrolatum",
+              "Glycerin",
+              "Mineral Oil"
+            ],
+            "notes_en": "Classic occlusive moisturizer. Similar heavy, protective feel.",
+            "notes_zh": "经典封闭型保湿霜。质地和封闭感相似。"
+          },
+          {
+            "product_name": "Aquaphor Healing Ointment",
+            "brand": "Eucerin",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Petrolatum",
+              "Mineral Oil",
+              "Glycerin"
+            ],
+            "notes_en": "Petrolatum-based occlusive. Great barrier repair without the luxury price.",
+            "notes_zh": "以凡士林为基底的封闭剂。平价的优秀屏障修复。"
+          }
+        ]
+      },
+      {
+        "id": "skinceuticals-ce-ferulic",
+        "original": {
+          "product_name": "C E Ferulic",
+          "brand": "SkinCeuticals",
+          "category": "serum",
+          "price_tier": "luxury",
+          "key_actives": [
+            "Ascorbic Acid",
+            "Tocopherol",
+            "Ferulic Acid"
+          ]
+        },
+        "dupes": [
+          {
+            "product_name": "C15 Super Booster",
+            "brand": "Paula's Choice",
+            "price_tier": "mid",
+            "key_similarities": [
+              "Ascorbic Acid",
+              "Tocopherol",
+              "Ferulic Acid"
+            ],
+            "notes_en": "Same C+E+Ferulic trio at 15% Vit C. Very similar formulation philosophy.",
+            "notes_zh": "相同的维C+维E+阿魏酸三重组合，15%维C。配方理念非常相似。"
+          },
+          {
+            "product_name": "C E Ferulic Serum",
+            "brand": "Timeless",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Ascorbic Acid",
+              "Tocopherol",
+              "Ferulic Acid"
+            ],
+            "notes_en": "Nearly identical active trio at a fraction of the price. 20% Vit C.",
+            "notes_zh": "几乎相同的活性成分组合，价格只是零头。20%维C。"
+          },
+          {
+            "product_name": "Vitamin C Suspension 23% + HA Spheres 2%",
+            "brand": "The Ordinary",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Ascorbic Acid"
+            ],
+            "notes_en": "High-concentration Vit C but different format (suspension). Gritty texture.",
+            "notes_zh": "高浓度维C但不同剂型（悬浮液）。质地有颗粒感。"
+          }
+        ]
+      },
+      {
+        "id": "sk-ii-facial-treatment-essence",
+        "original": {
+          "product_name": "Facial Treatment Essence",
+          "brand": "SK-II",
+          "category": "essence",
+          "price_tier": "luxury",
+          "key_actives": [
+            "Galactomyces Ferment Filtrate"
+          ]
+        },
+        "dupes": [
+          {
+            "product_name": "Galactomyces 95 Tone Balancing Essence",
+            "brand": "COSRX",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Galactomyces Ferment Filtrate"
+            ],
+            "notes_en": "95% galactomyces filtrate. Very similar core ingredient at a much lower price.",
+            "notes_zh": "95%半乳糖酵母样菌滤液。核心成分非常相似，价格低得多。"
+          },
+          {
+            "product_name": "Time Revolution The First Treatment Essence RX",
+            "brand": "Missha",
+            "price_tier": "mid",
+            "key_similarities": [
+              "Saccharomyces Ferment Filtrate"
+            ],
+            "notes_en": "Uses saccharomyces instead of galactomyces. Similar fermented essence concept.",
+            "notes_zh": "使用酵母菌而非半乳糖酵母样菌。类似的发酵精华概念。"
+          }
+        ]
+      },
+      {
+        "id": "drunk-elephant-protini",
+        "original": {
+          "product_name": "Protini Polypeptide Cream",
+          "brand": "Drunk Elephant",
+          "category": "moisturizer",
+          "price_tier": "luxury",
+          "key_actives": [
+            "Peptides",
+            "Squalane",
+            "Glycerin",
+            "Sodium Hyaluronate"
+          ]
+        },
+        "dupes": [
+          {
+            "product_name": "Multi-Peptide + HA Serum (Buffet)",
+            "brand": "The Ordinary",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Peptides",
+              "Hyaluronic Acid"
+            ],
+            "notes_en": "Serum not cream, but packed with similar peptide complex. Pair with a moisturizer.",
+            "notes_zh": "精华而非面霜，但含类似的多肽复合物。需搭配面霜使用。"
+          },
+          {
+            "product_name": "Peptide Moisturizer",
+            "brand": "Naturium",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Peptides",
+              "Squalane",
+              "Sodium Hyaluronate"
+            ],
+            "notes_en": "Similar peptide-focused moisturizer at budget price.",
+            "notes_zh": "类似的以多肽为核心的面霜，平价。"
+          }
+        ]
+      },
+      {
+        "id": "estee-lauder-anr",
+        "original": {
+          "product_name": "Advanced Night Repair Serum",
+          "brand": "Estée Lauder",
+          "category": "serum",
+          "price_tier": "luxury",
+          "key_actives": [
+            "Bifida Ferment Lysate",
+            "Hyaluronic Acid",
+            "Tripeptide-32"
+          ]
+        },
+        "dupes": [
+          {
+            "product_name": "Snail Mucin 96% Power Repairing Essence",
+            "brand": "COSRX",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Snail Secretion Filtrate",
+              "Hyaluronic Acid"
+            ],
+            "notes_en": "Different actives but similar repair and hydration focus. Beloved for texture and results.",
+            "notes_zh": "活性成分不同但修复保湿功效相似。因质地和效果广受好评。"
+          },
+          {
+            "product_name": "Midnight Recovery Concentrate",
+            "brand": "Kiehl's",
+            "price_tier": "mid",
+            "key_similarities": [
+              "Squalane",
+              "Essential Oils"
+            ],
+            "notes_en": "Oil-based night serum. Similar overnight repair concept, different mechanism.",
+            "notes_zh": "油基夜间精华。类似的夜间修复理念，不同的机制。"
+          }
+        ]
+      },
+      {
+        "id": "tatcha-water-cream",
+        "original": {
+          "product_name": "The Water Cream",
+          "brand": "Tatcha",
+          "category": "moisturizer",
+          "price_tier": "luxury",
+          "key_actives": [
+            "Japanese Wild Rose",
+            "Leopard Lily",
+            "Hyaluronic Acid"
+          ]
+        },
+        "dupes": [
+          {
+            "product_name": "Water Drench Hyaluronic Cloud Cream",
+            "brand": "Peter Thomas Roth",
+            "price_tier": "mid",
+            "key_similarities": [
+              "Hyaluronic Acid"
+            ],
+            "notes_en": "Lightweight gel-cream texture with HA focus. Similar water-burst feel.",
+            "notes_zh": "轻薄凝霜质地，以HA为核心。类似的水润爆发感。"
+          },
+          {
+            "product_name": "Dramatically Different Moisturizing Gel",
+            "brand": "Clinique",
+            "price_tier": "mid",
+            "key_similarities": [
+              "Glycerin",
+              "Hyaluronic Acid"
+            ],
+            "notes_en": "Classic lightweight gel moisturizer. Oil-free, similar lightweight feel.",
+            "notes_zh": "经典轻薄凝胶面霜。无油配方，类似的轻薄感。"
+          }
+        ]
+      },
+      {
+        "id": "sunday-riley-good-genes",
+        "original": {
+          "product_name": "Good Genes All-In-One Lactic Acid Treatment",
+          "brand": "Sunday Riley",
+          "category": "treatment",
+          "price_tier": "luxury",
+          "key_actives": [
+            "Lactic Acid",
+            "Licorice Root Extract",
+            "Aloe Vera"
+          ]
+        },
+        "dupes": [
+          {
+            "product_name": "Lactic Acid 10% + HA",
+            "brand": "The Ordinary",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Lactic Acid",
+              "Sodium Hyaluronate"
+            ],
+            "notes_en": "10% lactic acid at a fraction of the price. Simple but effective.",
+            "notes_zh": "10%乳酸，价格只是零头。简单但有效。"
+          },
+          {
+            "product_name": "AHA 30% + BHA 2% Peeling Solution",
+            "brand": "The Ordinary",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Lactic Acid",
+              "Glycolic Acid"
+            ],
+            "notes_en": "Much stronger peel (use weekly). AHA blend including lactic acid.",
+            "notes_zh": "更强效的去角质（每周使用）。包含乳酸在内的AHA混合物。"
+          }
+        ]
+      },
+      {
+        "id": "dr-jart-cicapair",
+        "original": {
+          "product_name": "Cicapair Tiger Grass Color Correcting Treatment",
+          "brand": "Dr. Jart+",
+          "category": "treatment",
+          "price_tier": "mid",
+          "key_actives": [
+            "Centella Asiatica Extract",
+            "Niacinamide"
+          ]
+        },
+        "dupes": [
+          {
+            "product_name": "Centella Unscented Serum",
+            "brand": "PURITO",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Centella Asiatica Extract",
+              "Niacinamide"
+            ],
+            "notes_en": "Fragrance-free cica serum. Similar soothing actives without color correction.",
+            "notes_zh": "无香积雪草精华。类似的舒缓活性成分，无色彩校正功能。"
+          },
+          {
+            "product_name": "Centella Asiatica Calming Toner",
+            "brand": "Skin1004",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Centella Asiatica Extract"
+            ],
+            "notes_en": "100% centella water toner. Great for layering. No color correction.",
+            "notes_zh": "100%积雪草水爽肤水。适合叠加使用。无色彩校正。"
+          }
+        ]
+      },
+      {
+        "id": "charlotte-tilbury-magic-cream",
+        "original": {
+          "product_name": "Charlotte's Magic Cream",
+          "brand": "Charlotte Tilbury",
+          "category": "moisturizer",
+          "price_tier": "luxury",
+          "key_actives": [
+            "Hyaluronic Acid",
+            "Vitamin C",
+            "Vitamin E",
+            "Rosehip Oil"
+          ]
+        },
+        "dupes": [
+          {
+            "product_name": "Ultra Facial Cream",
+            "brand": "Kiehl's",
+            "price_tier": "mid",
+            "key_similarities": [
+              "Glycerin",
+              "Squalane"
+            ],
+            "notes_en": "Rich but non-greasy moisturizer. Similar luxurious feel at a lower price.",
+            "notes_zh": "丰润但不油腻的面霜。类似的奢华感，价格更低。"
+          },
+          {
+            "product_name": "Natural Moisturizing Factors + HA",
+            "brand": "The Ordinary",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Hyaluronic Acid",
+              "Glycerin",
+              "Urea"
+            ],
+            "notes_en": "NMF-based moisturizer. Functional, no frills, great hydration.",
+            "notes_zh": "基于天然保湿因子的面霜。功能性强，无花哨，保湿效果好。"
+          }
+        ]
+      },
+      {
+        "id": "drunk-elephant-tlc-sukari",
+        "original": {
+          "product_name": "T.L.C. Sukari Babyfacial",
+          "brand": "Drunk Elephant",
+          "category": "treatment",
+          "price_tier": "luxury",
+          "key_actives": [
+            "Glycolic Acid",
+            "Tartaric Acid",
+            "Lactic Acid",
+            "Salicylic Acid"
+          ]
+        },
+        "dupes": [
+          {
+            "product_name": "AHA 30% + BHA 2% Peeling Solution",
+            "brand": "The Ordinary",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Glycolic Acid",
+              "Lactic Acid",
+              "Salicylic Acid"
+            ],
+            "notes_en": "Very similar AHA/BHA peel concept at a fraction of the price.",
+            "notes_zh": "非常相似的AHA/BHA去角质理念，价格只是零头。"
+          },
+          {
+            "product_name": "Liquid Exfoliant 2% BHA",
+            "brand": "Paula's Choice",
+            "price_tier": "mid",
+            "key_similarities": [
+              "Salicylic Acid"
+            ],
+            "notes_en": "BHA-focused daily exfoliant. Gentler daily alternative to weekly peel.",
+            "notes_zh": "以BHA为核心的日常去角质。比每周去角质更温和的日常替代。"
+          }
+        ]
+      },
+      {
+        "id": "la-prairie-skin-caviar",
+        "original": {
+          "product_name": "Skin Caviar Luxe Cream",
+          "brand": "La Prairie",
+          "category": "moisturizer",
+          "price_tier": "luxury",
+          "key_actives": [
+            "Caviar Extract",
+            "Glycerin",
+            "Shea Butter"
+          ]
+        },
+        "dupes": [
+          {
+            "product_name": "Moisturizing Cream",
+            "brand": "CeraVe",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Glycerin",
+              "Ceramides"
+            ],
+            "notes_en": "No caviar, but excellent barrier repair. Similar rich texture.",
+            "notes_zh": "无鱼子酱成分，但屏障修复效果优秀。类似的丰润质地。"
+          },
+          {
+            "product_name": "Rich Cream",
+            "brand": "Embryolisse Lait-Crème Concentré",
+            "price_tier": "mid",
+            "key_similarities": [
+              "Shea Butter",
+              "Beeswax",
+              "Glycerin"
+            ],
+            "notes_en": "French pharmacy staple. Rich, nourishing texture similar to luxury creams.",
+            "notes_zh": "法国药妆经典。丰润滋养质地，类似奢华面霜。"
+          }
+        ]
+      },
+      {
+        "id": "skinceuticals-ha-intensifier",
+        "original": {
+          "product_name": "H.A. Intensifier",
+          "brand": "SkinCeuticals",
+          "category": "serum",
+          "price_tier": "luxury",
+          "key_actives": [
+            "Hyaluronic Acid",
+            "Proxylane",
+            "Licorice Root Extract"
+          ]
+        },
+        "dupes": [
+          {
+            "product_name": "Hyaluronic Acid 2% + B5",
+            "brand": "The Ordinary",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Hyaluronic Acid",
+              "Panthenol"
+            ],
+            "notes_en": "Multi-weight HA with B5. Simple but effective hydration serum.",
+            "notes_zh": "多分子量HA配合维B5。简单但有效的保湿精华。"
+          },
+          {
+            "product_name": "Hydro Boost Water Gel",
+            "brand": "Neutrogena",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Hyaluronic Acid",
+              "Glycerin"
+            ],
+            "notes_en": "HA-based gel moisturizer. Lightweight hydration at drugstore price.",
+            "notes_zh": "以HA为基底的凝胶面霜。平价的轻薄保湿。"
+          }
+        ]
+      },
+      {
+        "id": "paula-choice-bha",
+        "original": {
+          "product_name": "Skin Perfecting 2% BHA Liquid Exfoliant",
+          "brand": "Paula's Choice",
+          "category": "treatment",
+          "price_tier": "mid",
+          "key_actives": [
+            "Salicylic Acid",
+            "Green Tea Extract"
+          ]
+        },
+        "dupes": [
+          {
+            "product_name": "BHA Blackhead Power Liquid",
+            "brand": "COSRX",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Betaine Salicylate"
+            ],
+            "notes_en": "Uses betaine salicylate (gentler BHA derivative). Similar pore-clearing concept.",
+            "notes_zh": "使用甜菜碱水杨酸酯（更温和的BHA衍生物）。类似的清洁毛孔理念。"
+          },
+          {
+            "product_name": "Salicylic Acid 2% Masque",
+            "brand": "The Ordinary",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Salicylic Acid"
+            ],
+            "notes_en": "Wash-off mask format instead of leave-on. Same 2% SA concentration.",
+            "notes_zh": "洗去式面膜而非驻留型。同样2%水杨酸浓度。"
+          }
+        ]
+      },
+      {
+        "id": "la-roche-posay-cicaplast",
+        "original": {
+          "product_name": "Cicaplast Baume B5+",
+          "brand": "La Roche-Posay",
+          "category": "moisturizer",
+          "price_tier": "mid",
+          "key_actives": [
+            "Panthenol",
+            "Madecassoside",
+            "Zinc",
+            "Shea Butter"
+          ]
+        },
+        "dupes": [
+          {
+            "product_name": "Cica Balm",
+            "brand": "Dr. Jart+",
+            "price_tier": "mid",
+            "key_similarities": [
+              "Centella Asiatica Extract",
+              "Panthenol"
+            ],
+            "notes_en": "Similar cica + B5 healing concept. Slightly lighter texture.",
+            "notes_zh": "类似的积雪草+B5修复理念。质地稍微轻薄。"
+          },
+          {
+            "product_name": "Centella Recovery Cream",
+            "brand": "PURITO",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Centella Asiatica Extract",
+              "Panthenol",
+              "Shea Butter"
+            ],
+            "notes_en": "K-beauty cica cream with similar actives at lower price.",
+            "notes_zh": "韩国积雪草面霜，活性成分相似，价格更低。"
+          }
+        ]
+      },
+      {
+        "id": "drunk-elephant-c-firma",
+        "original": {
+          "product_name": "C-Firma Fresh Day Serum",
+          "brand": "Drunk Elephant",
+          "category": "serum",
+          "price_tier": "luxury",
+          "key_actives": [
+            "Ascorbic Acid",
+            "Ferulic Acid",
+            "Vitamin E",
+            "Pumpkin Ferment"
+          ]
+        },
+        "dupes": [
+          {
+            "product_name": "C E Ferulic Serum",
+            "brand": "Timeless",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Ascorbic Acid",
+              "Ferulic Acid",
+              "Vitamin E"
+            ],
+            "notes_en": "Same C+E+Ferulic combo. No ferment extract but core actives identical.",
+            "notes_zh": "相同的维C+维E+阿魏酸组合。无发酵提取物但核心活性成分相同。"
+          },
+          {
+            "product_name": "Vitamin C Serum 20%",
+            "brand": "Maelove",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Ascorbic Acid",
+              "Ferulic Acid",
+              "Vitamin E",
+              "Hyaluronic Acid"
+            ],
+            "notes_en": "Affordable SkinCeuticals-inspired formula with added HA.",
+            "notes_zh": "平价的修丽可灵感配方，额外添加HA。"
+          }
+        ]
+      },
+      {
+        "id": "sulwhasoo-first-care",
+        "original": {
+          "product_name": "First Care Activating Serum",
+          "brand": "Sulwhasoo",
+          "category": "serum",
+          "price_tier": "luxury",
+          "key_actives": [
+            "Korean Herbal Extracts",
+            "Glycerin"
+          ]
+        },
+        "dupes": [
+          {
+            "product_name": "Artemisia Calming Essence",
+            "brand": "By Wishtrend",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Artemisia Extract",
+              "Panthenol"
+            ],
+            "notes_en": "Herbal essence with mugwort. Similar traditional Asian botanical approach.",
+            "notes_zh": "艾草草本精华。类似的传统亚洲植物理念。"
+          },
+          {
+            "product_name": "Mugwort Essence",
+            "brand": "I'm From",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Artemisia Extract"
+            ],
+            "notes_en": "100% mugwort extract. Simple, single-ingredient approach to herbal soothing.",
+            "notes_zh": "100%艾草提取物。简单的单一成分草本舒缓。"
+          }
+        ]
+      },
+      {
+        "id": "obagi-retinol",
+        "original": {
+          "product_name": "Retinol 1.0",
+          "brand": "Obagi",
+          "category": "treatment",
+          "price_tier": "luxury",
+          "key_actives": [
+            "Retinol"
+          ]
+        },
+        "dupes": [
+          {
+            "product_name": "Retinol 1% in Squalane",
+            "brand": "The Ordinary",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Retinol",
+              "Squalane"
+            ],
+            "notes_en": "Same 1% retinol concentration in squalane base. Very affordable.",
+            "notes_zh": "相同的1%视黄醇浓度，以角鲨烷为基底。非常平价。"
+          },
+          {
+            "product_name": "1% Retinol Treatment",
+            "brand": "Paula's Choice",
+            "price_tier": "mid",
+            "key_similarities": [
+              "Retinol",
+              "Peptides",
+              "Vitamin C"
+            ],
+            "notes_en": "1% retinol with added antioxidants and peptides. Better formulation.",
+            "notes_zh": "1%视黄醇加抗氧化剂和多肽。配方更优秀。"
+          }
+        ]
+      },
+      {
+        "id": "kiehls-midnight-recovery",
+        "original": {
+          "product_name": "Midnight Recovery Concentrate",
+          "brand": "Kiehl's",
+          "category": "serum",
+          "price_tier": "mid",
+          "key_actives": [
+            "Squalane",
+            "Evening Primrose Oil",
+            "Lavender Oil"
+          ]
+        },
+        "dupes": [
+          {
+            "product_name": "100% Organic Cold-Pressed Rosehip Seed Oil",
+            "brand": "The Ordinary",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Rosehip Oil"
+            ],
+            "notes_en": "Single-ingredient facial oil. Rich in vitamins A and C. Simpler approach.",
+            "notes_zh": "单一成分面部油。富含维A和维C。更简单的方式。"
+          },
+          {
+            "product_name": "Squalane Oil",
+            "brand": "The Ordinary",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Squalane"
+            ],
+            "notes_en": "Pure squalane. Lightweight, non-comedogenic. Pair with rosehip for full dupe.",
+            "notes_zh": "纯角鲨烷。轻薄不致粉刺。搭配玫瑰果油可完全替代。"
+          }
+        ]
+      },
+      {
+        "id": "lancome-genifique",
+        "original": {
+          "product_name": "Advanced Génifique Youth Activating Serum",
+          "brand": "Lancôme",
+          "category": "serum",
+          "price_tier": "luxury",
+          "key_actives": [
+            "Bifida Ferment Lysate",
+            "Hyaluronic Acid",
+            "Vitamin C"
+          ]
+        },
+        "dupes": [
+          {
+            "product_name": "Snail Mucin 96% Power Repairing Essence",
+            "brand": "COSRX",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Snail Secretion Filtrate",
+              "Hyaluronic Acid"
+            ],
+            "notes_en": "Different bio-actives but similar hydrating, repairing concept.",
+            "notes_zh": "不同的生物活性成分但类似的保湿修复理念。"
+          },
+          {
+            "product_name": "Galactomyces 95 Tone Balancing Essence",
+            "brand": "COSRX",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Galactomyces Ferment Filtrate"
+            ],
+            "notes_en": "Fermented filtrate essence. Similar probiotic-inspired approach.",
+            "notes_zh": "发酵滤液精华。类似的益生菌灵感方式。"
+          }
+        ]
+      },
+      {
+        "id": "fresh-soy-cleanser",
+        "original": {
+          "product_name": "Soy Face Cleanser",
+          "brand": "Fresh",
+          "category": "cleanser",
+          "price_tier": "luxury",
+          "key_actives": [
+            "Soy Proteins",
+            "Cucumber Extract",
+            "Rosewater"
+          ]
+        },
+        "dupes": [
+          {
+            "product_name": "Hydrating Facial Cleanser",
+            "brand": "CeraVe",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Glycerin",
+              "Ceramides",
+              "Hyaluronic Acid"
+            ],
+            "notes_en": "Gentle, non-stripping cleanser. Different actives but same hydrating cleanse concept.",
+            "notes_zh": "温和不紧绷的洁面。活性成分不同但同样的保湿洁面理念。"
+          },
+          {
+            "product_name": "Low pH Good Morning Gel Cleanser",
+            "brand": "COSRX",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Tea Tree Oil",
+              "BHA"
+            ],
+            "notes_en": "Low pH gel cleanser. Gentle with slight acne-fighting benefit.",
+            "notes_zh": "低pH凝胶洁面。温和且有轻微抗痘功效。"
+          }
+        ]
+      },
+      {
+        "id": "biologique-recherche-p50",
+        "original": {
+          "product_name": "Lotion P50",
+          "brand": "Biologique Recherche",
+          "category": "treatment",
+          "price_tier": "luxury",
+          "key_actives": [
+            "Lactic Acid",
+            "Salicylic Acid",
+            "Citric Acid",
+            "Niacinamide"
+          ]
+        },
+        "dupes": [
+          {
+            "product_name": "Glycolic Acid 7% Toning Solution",
+            "brand": "The Ordinary",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Glycolic Acid",
+              "Salicylic Acid"
+            ],
+            "notes_en": "Exfoliating toner with AHA/BHA. Simpler formula but similar concept.",
+            "notes_zh": "AHA/BHA去角质化妆水。配方更简单但理念相似。"
+          },
+          {
+            "product_name": "Skin Perfecting 8% AHA Gel",
+            "brand": "Paula's Choice",
+            "price_tier": "mid",
+            "key_similarities": [
+              "Glycolic Acid"
+            ],
+            "notes_en": "AHA exfoliant for daily use. Less complex but well-formulated.",
+            "notes_zh": "日常使用的AHA去角质。不那么复杂但配方优秀。"
+          }
+        ]
+      },
+      {
+        "id": "clinique-moisture-surge",
+        "original": {
+          "product_name": "Moisture Surge 100H Auto-Replenishing Hydrator",
+          "brand": "Clinique",
+          "category": "moisturizer",
+          "price_tier": "mid",
+          "key_actives": [
+            "Hyaluronic Acid",
+            "Aloe Vera",
+            "Caffeine"
+          ]
+        },
+        "dupes": [
+          {
+            "product_name": "Hydro Boost Water Gel",
+            "brand": "Neutrogena",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Hyaluronic Acid",
+              "Glycerin"
+            ],
+            "notes_en": "Lightweight gel moisturizer with HA. Very similar texture and hydration.",
+            "notes_zh": "以HA为核心的轻薄凝胶面霜。质地和保湿效果非常相似。"
+          },
+          {
+            "product_name": "Hyaluronic Acid 2% + B5",
+            "brand": "The Ordinary",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Hyaluronic Acid",
+              "Panthenol"
+            ],
+            "notes_en": "HA serum to layer under any moisturizer. Different format, same hydration.",
+            "notes_zh": "HA精华，可在任何面霜下叠加。不同剂型，同样的保湿。"
+          }
+        ]
+      },
+      {
+        "id": "augustinus-bader-the-cream",
+        "original": {
+          "product_name": "The Cream",
+          "brand": "Augustinus Bader",
+          "category": "moisturizer",
+          "price_tier": "luxury",
+          "key_actives": [
+            "TFC8 Complex",
+            "Squalane",
+            "Vitamin E",
+            "Evening Primrose Oil"
+          ]
+        },
+        "dupes": [
+          {
+            "product_name": "PM Moisturizing Lotion",
+            "brand": "CeraVe",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Ceramides",
+              "Niacinamide",
+              "Hyaluronic Acid"
+            ],
+            "notes_en": "Barrier repair focus. No proprietary complex but excellent basic moisturizer.",
+            "notes_zh": "屏障修复为核心。无专利复合物但是优秀的基础面霜。"
+          },
+          {
+            "product_name": "Multi-Peptide + HA Serum",
+            "brand": "The Ordinary",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Peptides",
+              "Hyaluronic Acid"
+            ],
+            "notes_en": "Peptide serum. Layer with a moisturizer for a budget AB The Cream routine.",
+            "notes_zh": "多肽精华。搭配面霜可模拟平价版AB The Cream护肤步骤。"
+          }
+        ]
+      },
+      {
+        "id": "skii-genoptics-aura",
+        "original": {
+          "product_name": "GenOptics Aura Essence",
+          "brand": "SK-II",
+          "category": "serum",
+          "price_tier": "luxury",
+          "key_actives": [
+            "Galactomyces Ferment Filtrate",
+            "Niacinamide",
+            "Undecylenoyl Phenylalanine"
+          ]
+        },
+        "dupes": [
+          {
+            "product_name": "Niacinamide 10% + Zinc 1%",
+            "brand": "The Ordinary",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Niacinamide",
+              "Zinc PCA"
+            ],
+            "notes_en": "High-concentration niacinamide for brightening. Pair with fermented essence for full dupe.",
+            "notes_zh": "高浓度烟酰胺美白。搭配发酵精华可完全替代。"
+          },
+          {
+            "product_name": "Galactomyces 95 + Niacinamide 10%",
+            "brand": "Some By Mi",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Galactomyces Ferment Filtrate",
+              "Niacinamide"
+            ],
+            "notes_en": "Both key ingredients in one product.",
+            "notes_zh": "两种关键成分合一的产品。"
+          }
+        ]
+      },
+      {
+        "id": "caudalie-vinoperfect",
+        "original": {
+          "product_name": "Vinoperfect Radiance Serum",
+          "brand": "Caudalie",
+          "category": "serum",
+          "price_tier": "mid",
+          "key_actives": [
+            "Viniferine",
+            "Squalane",
+            "Glycerin"
+          ]
+        },
+        "dupes": [
+          {
+            "product_name": "Alpha Arbutin 2% + HA",
+            "brand": "The Ordinary",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Alpha-Arbutin",
+              "Hyaluronic Acid"
+            ],
+            "notes_en": "Different brightener but similar tyrosinase-inhibiting approach.",
+            "notes_zh": "不同的美白成分但类似的酪氨酸酶抑制方式。"
+          },
+          {
+            "product_name": "Tranexamic Acid Serum",
+            "brand": "Good Molecules",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Tranexamic Acid",
+              "Niacinamide"
+            ],
+            "notes_en": "TXA for brightening. Different pathway, excellent results for dark spots.",
+            "notes_zh": "传明酸美白。不同的机制，对色斑效果优秀。"
+          }
+        ]
+      },
+      {
+        "id": "elta-md-uv-clear",
+        "original": {
+          "product_name": "UV Clear Broad-Spectrum SPF 46",
+          "brand": "EltaMD",
+          "category": "sunscreen",
+          "price_tier": "mid",
+          "key_actives": [
+            "Zinc Oxide",
+            "Niacinamide",
+            "Hyaluronic Acid"
+          ]
+        },
+        "dupes": [
+          {
+            "product_name": "Ultra Sheer Dry-Touch SPF 100",
+            "brand": "Neutrogena",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Avobenzone",
+              "Homosalate"
+            ],
+            "notes_en": "Chemical sunscreen. Lightweight finish. No niacinamide but excellent UV protection.",
+            "notes_zh": "化学防晒。轻薄肤感。无烟酰胺但紫外线防护优秀。"
+          },
+          {
+            "product_name": "Sheer Zinc Dry-Touch SPF 50",
+            "brand": "Neutrogena",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Zinc Oxide"
+            ],
+            "notes_en": "Mineral sunscreen at drugstore price. Similar zinc oxide base.",
+            "notes_zh": "平价矿物防晒。类似的氧化锌基底。"
+          }
+        ]
+      },
+      {
+        "id": "herbivore-lapis-oil",
+        "original": {
+          "product_name": "Lapis Blue Tansy Face Oil",
+          "brand": "Herbivore",
+          "category": "treatment",
+          "price_tier": "luxury",
+          "key_actives": [
+            "Blue Tansy Oil",
+            "Squalane",
+            "Jojoba Oil"
+          ]
+        },
+        "dupes": [
+          {
+            "product_name": "100% Plant-Derived Squalane",
+            "brand": "The Ordinary",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Squalane"
+            ],
+            "notes_en": "Pure squalane. Lightweight, non-comedogenic base oil.",
+            "notes_zh": "纯角鲨烷。轻薄、不致粉刺的基础油。"
+          },
+          {
+            "product_name": "Jojoba Oil",
+            "brand": "The Ordinary",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Jojoba Oil"
+            ],
+            "notes_en": "Pure jojoba. Mimics sebum. Combine with squalane for budget dupe.",
+            "notes_zh": "纯荷荷巴油。模拟皮脂。与角鲨烷组合可作为平价替代。"
+          }
+        ]
+      },
+      {
+        "id": "the-ordinary-niacinamide",
+        "original": {
+          "product_name": "Niacinamide 10% + Zinc 1%",
+          "brand": "The Ordinary",
+          "category": "serum",
+          "price_tier": "budget",
+          "key_actives": [
+            "Niacinamide",
+            "Zinc PCA"
+          ]
+        },
+        "dupes": [
+          {
+            "product_name": "Niacinamide Serum 12% Plus Zinc 2%",
+            "brand": "Naturium",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Niacinamide",
+              "Zinc"
+            ],
+            "notes_en": "Higher concentrations of both actives. More elegant texture.",
+            "notes_zh": "两种活性成分浓度都更高。质地更优雅。"
+          },
+          {
+            "product_name": "Niacinamide 20% Treatment",
+            "brand": "Paula's Choice",
+            "price_tier": "mid",
+            "key_similarities": [
+              "Niacinamide"
+            ],
+            "notes_en": "20% niacinamide. Higher concentration; may cause flushing for some.",
+            "notes_zh": "20%烟酰胺。浓度更高；部分人可能出现泛红。"
+          }
+        ]
+      },
+      {
+        "id": "supergoop-unseen-sunscreen",
+        "original": {
+          "product_name": "Unseen Sunscreen SPF 40",
+          "brand": "Supergoop!",
+          "category": "sunscreen",
+          "price_tier": "mid",
+          "key_actives": [
+            "Avobenzone",
+            "Homosalate",
+            "Octisalate"
+          ]
+        },
+        "dupes": [
+          {
+            "product_name": "UV Aqua Rich Watery Essence SPF 50+",
+            "brand": "Biore",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Chemical UV Filters"
+            ],
+            "notes_en": "Lightweight watery sunscreen. Similar invisible finish. Asian formulation.",
+            "notes_zh": "轻薄水感防晒。类似的隐形效果。亚洲配方。"
+          },
+          {
+            "product_name": "Anthelios Ultra-Light Fluid SPF 60",
+            "brand": "La Roche-Posay",
+            "price_tier": "mid",
+            "key_similarities": [
+              "Chemical UV Filters"
+            ],
+            "notes_en": "Ultra-light fluid. Excellent for face under makeup.",
+            "notes_zh": "超轻流体。妆前使用效果优秀。"
+          }
+        ]
+      },
+      {
+        "id": "cosrx-snail-mucin",
+        "original": {
+          "product_name": "Advanced Snail 96 Mucin Power Essence",
+          "brand": "COSRX",
+          "category": "essence",
+          "price_tier": "budget",
+          "key_actives": [
+            "Snail Secretion Filtrate",
+            "Sodium Hyaluronate",
+            "Panthenol"
+          ]
+        },
+        "dupes": [
+          {
+            "product_name": "Snail Repairing Essence",
+            "brand": "Mizon",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Snail Secretion Filtrate"
+            ],
+            "notes_en": "Similar snail mucin essence with lighter texture. Lower snail filtrate concentration.",
+            "notes_zh": "类似的蜗牛精华，质地更轻薄。蜗牛滤液浓度较低。"
+          },
+          {
+            "product_name": "Snail Bee High Content Essence",
+            "brand": "Benton",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Snail Secretion Filtrate",
+              "Bee Venom"
+            ],
+            "notes_en": "Combines snail mucin with bee venom for added anti-inflammatory benefits.",
+            "notes_zh": "将蜗牛粘液与蜂毒结合，增加消炎功效。"
+          },
+          {
+            "product_name": "Multi-Peptide + HA Serum",
+            "brand": "The Ordinary",
+            "price_tier": "budget",
+            "key_similarities": [
+              "Hyaluronic Acid",
+              "Panthenol"
+            ],
+            "notes_en": "No snail mucin but similar hydration and repair focus via peptides and HA.",
+            "notes_zh": "无蜗牛粘液但通过多肽和HA实现类似的保湿修复效果。"
+          }
+        ]
+      }
+    ]
+  }
