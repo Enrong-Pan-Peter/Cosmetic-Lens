@@ -63,6 +63,13 @@ export async function searchKnowledge(
   }
 }
 
+export async function searchDupeProducts(
+  query: string,
+  matchCount = 5,
+): Promise<KnowledgeResult[]> {
+  return searchKnowledge(query, { matchCount, filterType: 'product' });
+}
+
 export async function indexContent(
   content: string,
   contentType: string,

@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import ClaimsTable from './ClaimsTable';
+import DupeSuggestions from './DupeSuggestions';
 
 // ---------------------------------------------------------------------------
 // Parse the <!-- CLAIMS_DATA [...] --> block from the LLM response
@@ -47,7 +48,7 @@ function extractText(node) {
 // ---------------------------------------------------------------------------
 // Component
 // ---------------------------------------------------------------------------
-export default function AnalysisDisplay({ content, lang }) {
+export default function AnalysisDisplay({ content, lang, dupes, productName, onFindDupes }) {
   const [copied, setCopied] = useState(false);
   const { claims, cleanContent } = useMemo(() => parseClaimsData(content), [content]);
 
@@ -208,6 +209,25 @@ export default function AnalysisDisplay({ content, lang }) {
           {cleanContent}
         </ReactMarkdown>
       </div>
+
+      {dupes?.length > 0 && (
+        <DupeSuggestions dupes={dupes} productName={productName} lang={lang} />
+      )}
+
+      {productName && !dupes?.length && onFindDupes && (
+        <div className="mt-4">
+          <button
+            type="button"
+            onClick={() => onFindDupes(productName)}
+            className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-2 text-sm font-medium text-foreground hover:bg-muted/50 transition-colors"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+            </svg>
+            {lang === 'zh' ? '找相似产品' : 'Find Similar Products'}
+          </button>
+        </div>
+      )}
     </div>
   );
 }

@@ -159,7 +159,11 @@ export default function ChatInterface({ lang, translations: t }) {
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: apiMessages, language: lang }),
+        body: JSON.stringify({
+          messages: apiMessages,
+          language: lang,
+          userId: user?.id || null,
+        }),
       });
       const data = await res.json();
 
@@ -168,6 +172,7 @@ export default function ChatInterface({ lang, translations: t }) {
           role: 'assistant',
           content: data.data,
           source: data.source,
+          dupes: data.dupes,
         };
         const full = [...withUser, assistantMsg];
         setMessages(full);
@@ -190,6 +195,15 @@ export default function ChatInterface({ lang, translations: t }) {
   };
 
   const examples = [t.chat.example_1, t.chat.example_2, t.chat.example_3];
+
+  const handleFindDupes = (productName) => {
+    if (!productName?.trim()) return;
+    const dupeQuery =
+      lang === 'zh'
+        ? `找平替：${productName}`
+        : `Find me a dupe for ${productName}`;
+    handleAnalyze(dupeQuery);
+  };
 
   // -------------------------------------------------------------------
   // Render
@@ -283,9 +297,21 @@ export default function ChatInterface({ lang, translations: t }) {
             ) : (
               /* ---------- Conversation ---------- */
               <div className="space-y-8">
-                {messages.map((msg, i) => (
-                  <ChatMessage key={i} message={msg} lang={lang} />
-                ))}
+                {messages.map((msg, i) => {
+                  const prevUser = messages
+                    .slice(0, i)
+                    .reverse()
+                    .find((m) => m.role === 'user');
+                  return (
+                    <ChatMessage
+                      key={i}
+                      message={msg}
+                      lang={lang}
+                      prevUserContent={prevUser?.content}
+                      onFindDupes={msg.role === 'assistant' ? handleFindDupes : undefined}
+                    />
+                  );
+                })}
 
                 {isLoading && <LoadingIndicator text={t.chat.analyzing} />}
 

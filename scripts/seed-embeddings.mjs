@@ -1,10 +1,14 @@
 /**
- * Seed script: reads ingredients + articles, generates embeddings, stores in Supabase.
+ * Seed script: reads ingredients, glossary, fun-facts, interactions, articles, curated dupes;
+ * generates embeddings, stores in Supabase.
  *
  * Usage:
  *   node scripts/seed-embeddings.mjs
  *
  * Requires: OPENAI_API_KEY, PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY in .env
+ *
+ * If you get "violates check constraint knowledge_embeddings_content_type_check",
+ * run supabase/migrations/20250302_add_content_types.sql in Supabase SQL Editor first.
  */
 
 import 'dotenv/config';
@@ -110,7 +114,132 @@ async function seedIngredients() {
 }
 
 // ------------------------------------------------------------------
-// 2. Seed education articles
+// 2. Seed glossary
+// ------------------------------------------------------------------
+async function seedGlossary() {
+  console.log('\n=== Seeding glossary ===');
+  const raw = readFileSync(join(ROOT, 'src/data/glossary-data.json'), 'utf-8');
+  const db = JSON.parse(raw);
+
+  for (const entry of db.entries) {
+    const aliases = [...(entry.aliases_en || []), ...(entry.aliases_zh || [])].join(', ');
+    const chunk = [
+      `Glossary: ${entry.inci_name} / ${entry.chinese_name}`,
+      aliases ? `Aliases: ${aliases}` : '',
+      `Category: ${entry.category}`,
+      `Function: ${entry.function_en || ''}`,
+      entry.function_zh ? `功能: ${entry.function_zh}` : '',
+      entry.notes_en ? `Notes: ${entry.notes_en}` : '',
+      entry.notes_zh ? `备注: ${entry.notes_zh}` : '',
+    ]
+      .filter(Boolean)
+      .join('. ');
+
+    console.log(`  → ${entry.inci_name} (${entry.chinese_name})`);
+    await upsertRow(chunk, 'glossary', { inci_name: entry.inci_name, chinese_name: entry.chinese_name }, 'en');
+    await new Promise((r) => setTimeout(r, 250));
+  }
+
+  console.log(`  ✓ ${db.entries.length} glossary entries indexed`);
+}
+
+// ------------------------------------------------------------------
+// 3. Seed fun facts
+// ------------------------------------------------------------------
+async function seedFunFacts() {
+  console.log('\n=== Seeding fun facts ===');
+
+  for (const lang of ['en', 'zh']) {
+    const path = join(ROOT, 'content', lang, 'fun-facts.json');
+    let raw;
+    try {
+      raw = readFileSync(path, 'utf-8');
+    } catch {
+      console.log(`  No fun-facts.json for ${lang}, skipping`);
+      continue;
+    }
+
+    const db = JSON.parse(raw);
+    const facts = db.facts || [];
+
+    for (const fact of facts) {
+      const chunk = `Fun fact: ${fact.title}\n\n${fact.content}`;
+      console.log(`  → [${lang}] ${fact.title}`);
+      await upsertRow(chunk, 'faq', { id: fact.id, category: fact.category }, lang);
+      await new Promise((r) => setTimeout(r, 250));
+    }
+
+    console.log(`  ✓ ${facts.length} fun facts indexed for ${lang}`);
+  }
+}
+
+// ------------------------------------------------------------------
+// 4. Seed ingredient interactions
+// ------------------------------------------------------------------
+async function seedInteractions() {
+  console.log('\n=== Seeding interactions ===');
+  const raw = readFileSync(join(ROOT, 'src/data/ingredient-interactions.json'), 'utf-8');
+  const db = JSON.parse(raw);
+
+  for (const pair of db.pairs) {
+    const ingredientsStr = (pair.ingredients || []).join(' + ');
+    const chunk = [
+      `Interaction: ${ingredientsStr}`,
+      pair.ingredients_zh?.length ? `成分: ${pair.ingredients_zh.join(' + ')}` : '',
+      `Level: ${pair.level}`,
+      pair.context ? `Context: ${pair.context}` : '',
+      pair.warning_en || '',
+      pair.warning_zh ? `中文: ${pair.warning_zh}` : '',
+    ]
+      .filter(Boolean)
+      .join('. ');
+
+    console.log(`  → ${ingredientsStr} (${pair.level})`);
+    await upsertRow(chunk, 'interaction', { ingredients: pair.ingredients, level: pair.level, context: pair.context }, 'en');
+    await new Promise((r) => setTimeout(r, 250));
+  }
+
+  console.log(`  ✓ ${db.pairs.length} interaction pairs indexed`);
+}
+
+// ------------------------------------------------------------------
+// 5. Seed curated dupes (products)
+// ------------------------------------------------------------------
+async function seedCuratedDupes() {
+  console.log('\n=== Seeding curated dupes ===');
+  const raw = readFileSync(join(ROOT, 'src/data/curated-dupes.json'), 'utf-8');
+  const db = JSON.parse(raw);
+
+  for (const pair of db.pairs) {
+    const orig = pair.original || {};
+    const dupes = pair.dupes || [];
+    const keyActives = (orig.key_actives || []).join(', ');
+    const alternatives = dupes.map((d) => `${d.product_name} (${d.brand})`).join('; ');
+    const notes = dupes.map((d) => d.notes_en || '').filter(Boolean).join(' ');
+
+    const chunk = [
+      `Product: ${orig.product_name} by ${orig.brand} (${orig.category})`,
+      keyActives ? `Key actives: ${keyActives}` : '',
+      alternatives ? `Budget alternatives: ${alternatives}` : '',
+      notes,
+    ]
+      .filter(Boolean)
+      .join('. ');
+
+    console.log(`  → ${orig.product_name} (${orig.brand})`);
+    await upsertRow(chunk, 'product', {
+      pair_id: pair.id,
+      original_name: orig.product_name,
+      original_brand: orig.brand,
+    }, 'en');
+    await new Promise((r) => setTimeout(r, 250));
+  }
+
+  console.log(`  ✓ ${db.pairs.length} dupe pairs indexed`);
+}
+
+// ------------------------------------------------------------------
+// 6. Seed education articles
 // ------------------------------------------------------------------
 async function seedArticles() {
   console.log('\n=== Seeding articles ===');
@@ -177,7 +306,11 @@ async function main() {
   if (error) console.warn('Could not clear old rows:', error.message);
 
   await seedIngredients();
+  await seedGlossary();
+  await seedFunFacts();
+  await seedInteractions();
   await seedArticles();
+  await seedCuratedDupes();
 
   console.log('\n✅ Done! Knowledge base seeded.');
 }

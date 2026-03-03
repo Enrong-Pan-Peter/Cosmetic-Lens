@@ -6,12 +6,17 @@ import {
 import {
   buildSystemPrompt,
   looksLikeProductName,
+  looksLikeDupeRequest,
+  extractProductFromDupeRequest,
   enrichMessageWithIngredients,
   findIngredientData,
+  getInteractionWarnings,
+  formatInteractionWarnings,
   type Language,
   type IngredientSource,
 } from '../../lib/prompt';
 import { searchKnowledge } from '../../lib/embeddings';
+import { findDupes } from '../../lib/dupe-finder';
 import { searchProduct, extractIngredients } from '../../lib/openbeautyfacts';
 import { createServerClient } from '../../lib/supabase';
 
@@ -41,7 +46,11 @@ export const POST: APIRoute = async ({ request }) => {
       return jsonResponse(400, { success: false, error: 'No user message found' });
     }
 
-    const userText = lastUserMsg.content.trim();
+    const rawContent = lastUserMsg.content;
+    if (rawContent == null || typeof rawContent !== 'string') {
+      return jsonResponse(400, { success: false, error: 'User message content must be a string' });
+    }
+    const userText = rawContent.trim();
 
     // ----------------------------------------------------------
     // 1. Load user profile (if authenticated)
@@ -65,14 +74,16 @@ export const POST: APIRoute = async ({ request }) => {
     const productIntent = looksLikeProductName(userText);
     let enrichedUserContent: string | null = null;
     let source: IngredientSource = 'llm_knowledge';
+    let ingredientData: any[] = [];
+    let ingredientList: string | null = null;
 
     if (productIntent !== false) {
       try {
         const productData = await searchProduct(userText);
         if (productData) {
-          const ingredientList = extractIngredients(productData, lang);
+          ingredientList = extractIngredients(productData, lang);
           if (ingredientList) {
-            const ingredientData = findIngredientData(ingredientList);
+            ingredientData = findIngredientData(ingredientList);
             enrichedUserContent = enrichMessageWithIngredients(
               userText,
               userText,
@@ -90,16 +101,53 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     // ----------------------------------------------------------
+    // 2b. Dupe intent: find alternatives
+    // ----------------------------------------------------------
+    let dupeResult: Awaited<ReturnType<typeof findDupes>> = null;
+    if (looksLikeDupeRequest(userText)) {
+      const userMsgs = clientMessages.filter((m) => m.role === 'user');
+      const prevProduct = userMsgs.length >= 2 ? userMsgs[userMsgs.length - 2]?.content?.trim() : null;
+      const productQuery =
+        extractProductFromDupeRequest(userText) ||
+        (productIntent !== false ? userText : null) ||
+        prevProduct;
+      if (productQuery) {
+        try {
+          dupeResult = await findDupes(productQuery, ingredientList || undefined, lang);
+        } catch (err) {
+          console.warn('Dupe finder failed (non-blocking):', err);
+        }
+      }
+    }
+
+    // ----------------------------------------------------------
+    // 2c. Interaction warnings (when we have verified ingredients)
+    // ----------------------------------------------------------
+    let interactionWarningsText = '';
+    if (ingredientData.length > 0) {
+      const inciNames = ingredientData.map((i) => i.inci_name).filter(Boolean);
+      const rawNames = ingredientList
+        ? ingredientList.split(/[,\n]/).map((i) => i.trim()).filter((i) => i.length > 2)
+        : [];
+      const allNames = [...inciNames, ...rawNames];
+      const warnings = getInteractionWarnings(allNames, userProfile, lang);
+      interactionWarningsText = formatInteractionWarnings(warnings, lang);
+    }
+
+    // ----------------------------------------------------------
     // 3. RAG: retrieve relevant knowledge for the latest message
     // ----------------------------------------------------------
     let ragContext = '';
     try {
-      const results = await searchKnowledge(userText, { matchCount: 4 });
+      const results = await searchKnowledge(userText, { matchCount: 6 });
       const relevant = results.filter((r) => r.similarity > 0.3);
       if (relevant.length > 0) {
         ragContext = relevant
           .map((r) => `[${r.content_type}] ${r.content}`)
           .join('\n---\n');
+      }
+      if (dupeResult?.dupes?.length) {
+        ragContext += (ragContext ? '\n---\n' : '') + `[dupe_suggestions] User asked for alternatives. Here are vetted options:\n${JSON.stringify(dupeResult.dupes, null, 2)}`;
       }
     } catch (err) {
       console.warn('RAG search failed (non-blocking):', err);
@@ -131,8 +179,10 @@ export const POST: APIRoute = async ({ request }) => {
 
       // For the LAST user message, use enriched content if we have product data
       const isLastUser = msg === lastUserMsg;
-      const content =
-        isLastUser && enrichedUserContent ? enrichedUserContent : msg.content;
+      let content = isLastUser && enrichedUserContent ? enrichedUserContent : msg.content;
+      if (isLastUser && interactionWarningsText) {
+        content = `${content}\n\n${interactionWarningsText}`;
+      }
 
       openaiMessages.push({ role, content });
     }
@@ -157,6 +207,7 @@ export const POST: APIRoute = async ({ request }) => {
       success: true,
       data: result.content,
       source,
+      dupes: dupeResult?.dupes ?? undefined,
     });
   } catch (error) {
     console.error('Chat API error:', error);

@@ -2,6 +2,7 @@
 import systemPromptTemplate from '../data/system-prompt.md?raw';
 import ingredientsDatabase from '../data/ingredients-database.json';
 import translationsReference from '../data/translations-reference.json';
+import ingredientInteractions from '../data/ingredient-interactions.json';
 
 export type Language = 'en' | 'zh';
 
@@ -172,6 +173,99 @@ export function findIngredientData(ingredientList: string): any[] {
 }
 
 // ================================================
+// INTERACTION WARNINGS
+// ================================================
+
+/** Map common names in interaction pairs to INCI/aliases for matching */
+const INTERACTION_ALIASES: Record<string, string[]> = {
+  'Vitamin C': ['ascorbic acid', 'l-ascorbic acid', 'vitamin c'],
+  'Retinol': ['retinol', 'retinal', 'retinyl', 'tretinoin', 'adapalene', 'tazarotene'],
+  'Niacinamide': ['niacinamide', 'nicotinamide', 'vitamin b3'],
+  'Glycolic Acid': ['glycolic acid', 'glycolate'],
+  'Lactic Acid': ['lactic acid', 'lactate'],
+  'Salicylic Acid': ['salicylic acid', 'salicylate'],
+  'Benzoyl Peroxide': ['benzoyl peroxide'],
+  'AHAs': ['glycolic acid', 'lactic acid', 'mandelic acid', 'citric acid', 'malic acid'],
+  'BHAs': ['salicylic acid', 'salicylate'],
+};
+
+function normalizeIngredientForMatch(name: string): string[] {
+  const n = name.toLowerCase().trim();
+  const aliases = INTERACTION_ALIASES[n] || [n];
+  return [...new Set([n, ...aliases])];
+}
+
+function productHasIngredient(productNames: string[], interactionIngredient: string): boolean {
+  const productSet = new Set(productNames.map((p) => p.toLowerCase().trim()));
+  const matchVariants = normalizeIngredientForMatch(interactionIngredient);
+  return matchVariants.some((v) =>
+    Array.from(productSet).some((p) => p.includes(v) || v.includes(p)),
+  );
+}
+
+export interface InteractionWarning {
+  level: string;
+  warning_en: string;
+  warning_zh: string;
+}
+
+export function getInteractionWarnings(
+  ingredientInciNames: string[],
+  userProfile?: UserProfile | null,
+  lang: Language = 'en',
+): InteractionWarning[] {
+  const warnings: InteractionWarning[] = [];
+  const productNames = ingredientInciNames.filter(Boolean);
+  if (productNames.length === 0) return warnings;
+
+  for (const pair of ingredientInteractions.pairs) {
+    const ingredients = pair.ingredients || [];
+
+    if (pair.context === 'pregnancy') {
+      if (!userProfile?.is_pregnant) continue;
+      const hasRetinoid = productNames.some((p) =>
+        ['retinol', 'retinal', 'tretinoin', 'adapalene', 'tazarotene', '视黄醇', '维a酸', '阿达帕林'].some(
+          (r) => p.toLowerCase().includes(r),
+        ),
+      );
+      if (hasRetinoid) {
+        warnings.push({
+          level: pair.level || 'avoid',
+          warning_en: pair.warning_en || '',
+          warning_zh: pair.warning_zh || '',
+        });
+      }
+      continue;
+    }
+
+    const allPresent = ingredients.every((ing) => productHasIngredient(productNames, ing));
+    if (allPresent && ingredients.length > 0) {
+      warnings.push({
+        level: pair.level || 'info',
+        warning_en: pair.warning_en || '',
+        warning_zh: pair.warning_zh || '',
+      });
+    }
+  }
+
+  return warnings;
+}
+
+export function formatInteractionWarnings(warnings: InteractionWarning[], lang: Language): string {
+  if (warnings.length === 0) return '';
+
+  const isZh = lang === 'zh';
+  const header = isZh ? '**成分相互作用提示**' : '**Ingredient Interaction Warnings**';
+  const lines = warnings.map((w) => {
+    const text = isZh ? w.warning_zh || w.warning_en : w.warning_en || w.warning_zh;
+    const prefix = w.level === 'avoid' ? '🚫' : w.level === 'caution' ? '⚠️' : 'ℹ️';
+    return `${prefix} ${text}`;
+  });
+
+  return `${header}\n\n${lines.join('\n\n')}\n`;
+}
+
+// ================================================
 // PROFILE FORMATTING HELPERS
 // ================================================
 
@@ -323,6 +417,27 @@ export function looksLikeProductName(text: string): boolean | 'maybe' {
   if (trimmed.length <= 60 && /^[A-Z]/.test(trimmed)) return 'maybe';
 
   return 'maybe';
+}
+
+const DUPE_PHRASES_EN = /\b(find\s+(me\s+)?(a\s+)?dupe|similar\s+(to|products?)|alternative(s?)\s+(to|for)|dupes?\s+for|cheaper\s+alternative)\b/i;
+const DUPE_PHRASES_ZH = /(找|求|推荐)?(平替|替代|相似产品|替代品|有没有类似的)/;
+
+export function looksLikeDupeRequest(text: string): boolean {
+  if (text == null || typeof text !== 'string') return false;
+  const t = text.trim();
+  return DUPE_PHRASES_EN.test(t) || DUPE_PHRASES_ZH.test(t);
+}
+
+/** Extract product name from dupe request, e.g. "find dupe for La Mer" -> "La Mer" */
+export function extractProductFromDupeRequest(text: string): string | null {
+  if (text == null || typeof text !== 'string') return null;
+  const t = text.trim();
+  const enMatch = t.match(/(?:dupe\s+for|similar\s+to|alternative(s?)\s+(?:to|for))\s+(.+?)(?:\?|$)/i);
+  if (enMatch && enMatch[1] != null) return enMatch[1].trim();
+  const zhMatch = t.match(/(?:平替|替代|相似于?)\s*[：:]\s*(.+?)(?:\?|？|$)/);
+  if (zhMatch && zhMatch[1] != null) return zhMatch[1].trim();
+  if (looksLikeDupeRequest(t) && t.length < 80) return t.replace(DUPE_PHRASES_EN, '').replace(DUPE_PHRASES_ZH, '').trim() || null;
+  return null;
 }
 
 // ================================================

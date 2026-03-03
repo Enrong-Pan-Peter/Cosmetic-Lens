@@ -1,7 +1,7 @@
 import { Microscope } from '@phosphor-icons/react';
 import AnalysisDisplay from './AnalysisDisplay';
 
-export default function ChatMessage({ message, lang }) {
+export default function ChatMessage({ message, lang, prevUserContent, onFindDupes }) {
   const isUser = message.role === 'user';
 
   // ---- User bubble ----
@@ -58,7 +58,13 @@ export default function ChatMessage({ message, lang }) {
           </div>
         )}
 
-        <AnalysisDisplay content={message.content} lang={lang} />
+        <AnalysisDisplay
+          content={message.content}
+          lang={lang}
+          dupes={message.dupes}
+          productName={prevUserContent || undefined}
+          onFindDupes={onFindDupes ? () => onFindDupes(prevUserContent) : undefined}
+        />
       </div>
     </div>
   );

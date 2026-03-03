@@ -223,12 +223,17 @@ CREATE EXTENSION IF NOT EXISTS vector;
 CREATE TABLE IF NOT EXISTS knowledge_embeddings (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   content TEXT NOT NULL,
-  content_type TEXT NOT NULL CHECK (content_type IN ('ingredient', 'article', 'faq', 'regulation')),
+  content_type TEXT NOT NULL CHECK (content_type IN ('ingredient', 'article', 'faq', 'regulation', 'glossary', 'interaction', 'product')),
   metadata JSONB DEFAULT '{}',
   language TEXT DEFAULT 'en',
   embedding vector(1536),
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- Allow re-running: update content_type CHECK for existing tables
+ALTER TABLE knowledge_embeddings DROP CONSTRAINT IF EXISTS knowledge_embeddings_content_type_check;
+ALTER TABLE knowledge_embeddings ADD CONSTRAINT knowledge_embeddings_content_type_check
+  CHECK (content_type IN ('ingredient', 'article', 'faq', 'regulation', 'glossary', 'interaction', 'product'));
 
 CREATE INDEX IF NOT EXISTS idx_knowledge_embeddings_type ON knowledge_embeddings(content_type);
 CREATE INDEX IF NOT EXISTS idx_knowledge_embeddings_language ON knowledge_embeddings(language);
