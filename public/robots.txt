@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Don't crawl API endpoints
+Disallow: /api/
+
+# Don't index auth flows (server-side, no useful indexable content)
+Disallow: /en/auth/
+Disallow: /zh/auth/
+
+Sitemap: https://cosmetic-lens.vercel.app/sitemap-index.xml

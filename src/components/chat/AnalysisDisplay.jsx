@@ -35,7 +35,6 @@ function getVerdictBadgeClass(children) {
   return null;
 }
 
-/** Recursively extract plain text from React children */
 function extractText(node) {
   if (node == null) return '';
   if (typeof node === 'string') return node;
@@ -48,7 +47,17 @@ function extractText(node) {
 // ---------------------------------------------------------------------------
 // Component
 // ---------------------------------------------------------------------------
-export default function AnalysisDisplay({ content, lang, dupes, productName, onFindDupes }) {
+export default function AnalysisDisplay({
+  content,
+  lang,
+  dupes,
+  intent,
+  stopped,
+  streaming,
+  prevUserContent,
+  onFindDupes,
+  onSimilarIngredients,
+}) {
   const [copied, setCopied] = useState(false);
   const { claims, cleanContent } = useMemo(() => parseClaimsData(content), [content]);
 
@@ -62,35 +71,43 @@ export default function AnalysisDisplay({ content, lang, dupes, productName, onF
     }
   };
 
+  const isProductIntent = intent === 'product';
+  const isKnowledgeIntent = intent === 'knowledge';
+  const isDupeIntent = intent === 'dupe';
+  const hasDupes = dupes?.length > 0;
+
+  // Show "Find similar products" only when this was a product analysis,
+  // we haven't already shown dupes inline, and we have a prev user message
+  // that looks like a product to use as the dupe query (Bug 2/3/5).
+  const showFindDupes =
+    !streaming &&
+    !stopped &&
+    isProductIntent &&
+    !hasDupes &&
+    !isDupeIntent &&
+    onFindDupes &&
+    prevUserContent;
+
+  const showSimilarIngredients =
+    !streaming &&
+    !stopped &&
+    isKnowledgeIntent &&
+    onSimilarIngredients;
+
   return (
     <div className="relative group">
-      {/* Copy button — top-right, visible on hover */}
       <button
         onClick={handleCopy}
-        className="absolute -top-1 -right-1 opacity-0 group-hover:opacity-100 transition-opacity inline-flex items-center justify-center h-7 w-7 rounded-md border border-border bg-card text-muted-foreground hover:bg-accent hover:text-accent-foreground z-10"
+        className="absolute -top-1 -right-1 opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity inline-flex items-center justify-center h-7 w-7 rounded-md border border-border bg-card text-muted-foreground hover:bg-accent hover:text-accent-foreground z-10"
         title={lang === 'zh' ? '复制' : 'Copy'}
+        aria-label={lang === 'zh' ? '复制' : 'Copy'}
       >
         {copied ? (
-          <svg
-            className="w-3.5 h-3.5 text-green-600"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M5 13l4 4L19 7"
-            />
+          <svg className="w-3.5 h-3.5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
           </svg>
         ) : (
-          <svg
-            className="w-3.5 h-3.5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
+          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -101,47 +118,32 @@ export default function AnalysisDisplay({ content, lang, dupes, productName, onF
         )}
       </button>
 
-      <div className="prose-analysis">
+      <div className={`prose-analysis ${streaming ? 'streaming-caret' : ''}`}>
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           components={{
-            // ----- Tables -----
-            // If we have structured CLAIMS_DATA, replace every markdown table
-            // with the rich ClaimsTable component. The LLM output typically has
-            // a single table (Claims Check), so this is safe.
-            // Fallback: render styled markdown table with verdict badges.
             table: claims
               ? () => <ClaimsTable claims={claims} lang={lang} />
               : ({ children }) => (
                   <div className="overflow-x-auto my-4 rounded-xl border border-border">
-                    <table className="min-w-full border-collapse text-sm">
-                      {children}
-                    </table>
+                    <table className="min-w-full border-collapse text-sm">{children}</table>
                   </div>
                 ),
-
             thead: claims
               ? () => null
               : ({ children }) => (
-                  <thead className="bg-muted/50 border-b border-border">
-                    {children}
-                  </thead>
+                  <thead className="bg-muted/50 border-b border-border">{children}</thead>
                 ),
-
             tbody: claims
               ? () => null
               : ({ children }) => (
                   <tbody className="divide-y divide-border">{children}</tbody>
                 ),
-
             tr: claims
               ? () => null
               : ({ children }) => (
-                  <tr className="hover:bg-muted/30 transition-colors">
-                    {children}
-                  </tr>
+                  <tr className="hover:bg-muted/30 transition-colors">{children}</tr>
                 ),
-
             th: claims
               ? () => null
               : ({ children }) => (
@@ -149,7 +151,6 @@ export default function AnalysisDisplay({ content, lang, dupes, productName, onF
                     {children}
                   </th>
                 ),
-
             td: claims
               ? () => null
               : ({ children }) => {
@@ -169,7 +170,6 @@ export default function AnalysisDisplay({ content, lang, dupes, productName, onF
                   );
                 },
 
-            // ----- Typography -----
             h2: ({ children }) => (
               <h2 className="text-base font-semibold text-foreground mt-5 mb-2 flex items-center gap-2">
                 {children}
@@ -181,14 +181,10 @@ export default function AnalysisDisplay({ content, lang, dupes, productName, onF
               </h3>
             ),
             strong: ({ children }) => (
-              <strong className="font-semibold text-foreground">
-                {children}
-              </strong>
+              <strong className="font-semibold text-foreground">{children}</strong>
             ),
             p: ({ children }) => (
-              <p className="text-sm text-muted-foreground mb-3 leading-relaxed">
-                {children}
-              </p>
+              <p className="text-sm text-muted-foreground mb-3 leading-relaxed">{children}</p>
             ),
             ul: ({ children }) => (
               <ul className="mb-3 space-y-1.5 pl-0 list-none">{children}</ul>
@@ -210,22 +206,36 @@ export default function AnalysisDisplay({ content, lang, dupes, productName, onF
         </ReactMarkdown>
       </div>
 
-      {dupes?.length > 0 && (
-        <DupeSuggestions dupes={dupes} productName={productName} lang={lang} />
+      {hasDupes && (
+        <DupeSuggestions dupes={dupes} productName={prevUserContent} lang={lang} />
       )}
 
-      {productName && !dupes?.length && onFindDupes && (
-        <div className="mt-4">
-          <button
-            type="button"
-            onClick={() => onFindDupes(productName)}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-2 text-sm font-medium text-foreground hover:bg-muted/50 transition-colors"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-            </svg>
-            {lang === 'zh' ? '找相似产品' : 'Find Similar Products'}
-          </button>
+      {(showFindDupes || showSimilarIngredients) && (
+        <div className="mt-4 flex flex-wrap gap-2">
+          {showFindDupes && (
+            <button
+              type="button"
+              onClick={() => onFindDupes(prevUserContent)}
+              className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-2 text-sm font-medium text-foreground hover:bg-accent transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+              </svg>
+              {lang === 'zh' ? '找相似产品' : 'Find Similar Products'}
+            </button>
+          )}
+          {showSimilarIngredients && (
+            <button
+              type="button"
+              onClick={() => onSimilarIngredients(prevUserContent)}
+              className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-2 text-sm font-medium text-foreground hover:bg-accent transition-colors"
+            >
+              <svg className="w-4 h-4" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">
+                <path d="M197.58,129.06,146,110l-19-51.62a15.92,15.92,0,0,0-29.88,0L78,110l-51.62,19a15.92,15.92,0,0,0,0,29.88L78,178l19,51.62a15.92,15.92,0,0,0,29.88,0L146,178l51.62-19a15.92,15.92,0,0,0,0-29.88ZM137,164.22a8,8,0,0,0-4.74,4.74L112,223.85,91.78,169A8,8,0,0,0,87,164.22L32.15,144,87,123.78A8,8,0,0,0,91.78,119L112,64.15,132.22,119a8,8,0,0,0,4.74,4.74L191.85,144ZM144,40a8,8,0,0,1,8-8h16V16a8,8,0,0,1,16,0V32h16a8,8,0,0,1,0,16H184V64a8,8,0,0,1-16,0V48H152A8,8,0,0,1,144,40ZM248,88a8,8,0,0,1-8,8h-8v8a8,8,0,0,1-16,0V96h-8a8,8,0,0,1,0-16h8V72a8,8,0,0,1,16,0v8h8A8,8,0,0,1,248,88Z"/>
+              </svg>
+              {lang === 'zh' ? '相似功效的成分' : 'Similar ingredients'}
+            </button>
+          )}
         </div>
       )}
     </div>

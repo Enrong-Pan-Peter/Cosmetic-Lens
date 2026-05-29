@@ -8,6 +8,19 @@ export interface Props {
   description?: string;
   lang?: 'en' | 'zh';
   hideFooter?: boolean;
+  /**
+   * Optional absolute URL or root-relative path for the social-preview image.
+   * Defaults to `/images/og.webp`.
+   */
+  image?: string;
+  /**
+   * Optional override for the canonical URL. Defaults to PUBLIC_SITE_URL + Astro.url.pathname.
+   */
+  canonical?: string;
+  /**
+   * Schema.org JSON-LD object to inline in <head>. Defaults to a WebSite schema.
+   */
+  jsonLd?: Record<string, unknown> | null;
 }
 
 const {
@@ -15,10 +28,56 @@ const {
   description = '',
   lang = 'en',
   hideFooter = false,
+  image = '/images/og.webp',
+  canonical,
+  jsonLd,
 } = Astro.props;
 
 const siteName = lang === 'zh' ? '成分透视' : 'CosmeticLens';
 const fullTitle = `${title} | ${siteName}`;
+
+// Normalise PUBLIC_SITE_URL to just the origin so we can build clean canonical / OG URLs
+// regardless of whether the env var has a trailing path or slash.
+const rawSiteUrl =
+  (import.meta.env.PUBLIC_SITE_URL as string | undefined) ||
+  'https://cosmetic-lens.vercel.app';
+let siteOrigin: string;
+try {
+  siteOrigin = new URL(rawSiteUrl).origin;
+} catch {
+  siteOrigin = 'https://cosmetic-lens.vercel.app';
+}
+
+const canonicalUrl =
+  canonical ?? new URL(Astro.url.pathname, siteOrigin).toString();
+
+const ogImageUrl = image.startsWith('http')
+  ? image
+  : new URL(image, siteOrigin).toString();
+
+// hreflang alternates: swap /en <-> /zh prefix to point at the same logical page in the other locale.
+const altPath = Astro.url.pathname.replace(
+  /^\/(en|zh)/,
+  lang === 'en' ? '/zh' : '/en'
+);
+const altLang: 'en' | 'zh' = lang === 'en' ? 'zh' : 'en';
+const alternateUrl = new URL(altPath || '/', siteOrigin).toString();
+
+const defaultJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: siteName,
+  url: siteOrigin,
+  description,
+  inLanguage: lang === 'zh' ? 'zh-CN' : 'en',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: `${siteOrigin}/${lang}/chat?q={search_term_string}`,
+    'query-input': 'required name=search_term_string',
+  },
+};
+
+const finalJsonLd = jsonLd === null ? null : jsonLd ?? defaultJsonLd;
 ---
 
 <!DOCTYPE html>
@@ -27,19 +86,44 @@ const fullTitle = `${title} | ${siteName}`;
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content={description} />
+  <meta name="theme-color" content="#fef7f4" />
 
   <title>{fullTitle}</title>
 
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="canonical" href={canonicalUrl} />
+  <link rel="alternate" hreflang={altLang} href={alternateUrl} />
+  <link rel="alternate" hreflang="x-default" href={new URL('/en/', siteOrigin).toString()} />
 
+  <!-- Open Graph -->
+  <meta property="og:site_name" content={siteName} />
   <meta property="og:title" content={fullTitle} />
   <meta property="og:description" content={description} />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content={lang === 'zh' ? 'zh_CN' : 'en_US'} />
+  <meta property="og:url" content={canonicalUrl} />
+  <meta property="og:image" content={ogImageUrl} />
+  <meta property="og:image:type" content={ogImageUrl.endsWith('.webp') ? 'image/webp' : 'image/png'} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content={fullTitle} />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={fullTitle} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImageUrl} />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  {finalJsonLd && (
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(finalJsonLd)}
+    />
+  )}
 </head>
 <body class={`flex w-full flex-col ${hideFooter ? 'h-screen overflow-hidden' : 'min-h-screen'}`}>
   <Navigation lang={lang} />

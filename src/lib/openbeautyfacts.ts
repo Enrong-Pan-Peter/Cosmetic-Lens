@@ -1,4 +1,4 @@
-interface ProductSearchResult {
+export interface ProductSearchResult {
   product_name: string;
   brands?: string;
   ingredients_text?: string;

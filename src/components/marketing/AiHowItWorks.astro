@@ -1,0 +1,71 @@
+---
+import { icons } from './icons';
+
+export interface Props {
+  t: any;
+}
+
+const { t } = Astro.props;
+
+const cards = [
+  {
+    icon: icons.camera,
+    title: t.home.ai_card_1_title,
+    desc: t.home.ai_card_1_desc,
+    img: '/images/feature-vision.webp',
+    alt: t.home.ai_card_1_image_alt,
+  },
+  {
+    icon: icons.brain,
+    title: t.home.ai_card_2_title,
+    desc: t.home.ai_card_2_desc,
+    img: '/images/feature-agent.webp',
+    alt: t.home.ai_card_2_image_alt,
+  },
+  {
+    icon: icons.bookOpen,
+    title: t.home.ai_card_3_title,
+    desc: t.home.ai_card_3_desc,
+    img: '/images/feature-rag.webp',
+    alt: t.home.ai_card_3_image_alt,
+  },
+];
+---
+
+<section class="py-16 md:py-20 lg:py-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto mb-12 max-w-3xl text-center sm:mb-16">
+      <h2 class="text-2xl font-semibold text-foreground sm:text-3xl lg:text-4xl">
+        {t.home.ai_section_title}
+      </h2>
+      <p class="mt-4 text-base text-muted-foreground sm:text-lg">
+        {t.home.ai_section_subtitle}
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
+      {cards.map(c => (
+        <article class="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-shadow hover:shadow-lg">
+          <div class="overflow-hidden">
+            <img
+              src={c.img}
+              alt={c.alt}
+              loading="lazy"
+              decoding="async"
+              class="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+          </div>
+          <div class="flex flex-col gap-3 p-6">
+            <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <svg class="h-5 w-5" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">
+                <path d={c.icon} />
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-card-foreground">{c.title}</h3>
+            <p class="text-sm leading-relaxed text-muted-foreground">{c.desc}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

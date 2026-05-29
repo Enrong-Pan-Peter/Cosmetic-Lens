@@ -113,23 +113,26 @@ Status: **Fixed** | **Open**
 
 ---
 
-## 8–15. Current open bugs (Feb 2025)
+## 8–15. Fixed in Phase 0 commercialization pass (May 2026)
 
-**Status:** Open  
-**Reported:** Recent testing session
+**Status:** Fixed  
+**Reported:** Feb 2025 testing session  
+**Fixed:** Phase 0 commercialization pass — 2026-05-27
 
-These are documented in [docs/BUGS.md](BUGS.md). Summary:
+All eight UX bugs documented in [docs/BUGS.md](BUGS.md) were resolved in a single Phase 0 sweep:
 
-| # | Description |
-|---|-------------|
-| 8 | Chat input disabled during assistant response; no stop button |
-| 9 | "Find similar products" shown for knowledge questions |
-| 10 | "Find similar products" on knowledge answer triggers product analysis (resolved if #9 fixed) |
-| 11 | Dupe request produces full product analysis first, then dupes |
-| 12 | "Find similar products" button creates awkward follow-up phrasing |
-| 13 | Language switch causes page refresh and chat state loss |
-| 14 | Chat title is raw first question; long questions produce poor titles — use OpenAI to re-interpret as precise, concise title |
-| 15 | Dull waiting experience; no "thinking" indicator |
+| # | Description | Fix |
+|---|-------------|-----|
+| 8 | Chat input disabled during assistant response; no stop button | `ProductInput.jsx` textarea no longer disabled while loading; submit button toggles to a Stop button that calls `AbortController.abort()` on the in-flight `fetch` |
+| 9 | "Find similar products" shown for knowledge questions | New `src/lib/intent.ts` classifies user message as `product` / `dupe` / `knowledge`; `AnalysisDisplay.jsx` only renders "Find Similar Products" when `intent === 'product'` |
+| 10 | "Find similar products" on knowledge answer triggers product analysis | No longer reachable — button is gated by intent (Bug 9 fix) |
+| 11 | Dupe request produces full product analysis first, then dupes | New "Mode C — Dupe Request" section added to `system-prompt.md` with concise dupe-only output format; `[intent: dupe]` tag injected into the last user message so the model branches deterministically |
+| 12 | "Find similar products" button creates awkward follow-up phrasing | Button only shown for product intent, where the previous user message *is* a product name. Knowledge answers get a new "Similar ingredients" affordance instead (no template substitution) |
+| 13 | Language switch causes page refresh and chat state loss | `LanguageSwitcher.jsx` now preserves `window.location.search` (specifically `?chat=<id>`) when building the alternate-language href; `ChatInterface.jsx` reads `?chat=<id>` on mount and re-hydrates the saved chat. Scroll restores to the latest message on chat switch |
+| 14 | Chat title is raw first question; long questions produce poor titles | New `/api/chat-title.ts` endpoint summarizes the first user message with `gpt-4o-mini` (3–6 words EN / ≤12 chars ZH); `ChatInterface.jsx` fires this fire-and-forget after the first turn and updates the title in localStorage |
+| 15 | Dull waiting experience; no "thinking" indicator | `/api/chat` now streams via SSE (`event: intent` / `meta` / `delta` / `done`); new `ThinkingDots` component shows animated dots while waiting for the first token, and a streaming caret blinks at the end of the in-flight assistant message until streaming ends |
+
+Implementation files: `src/lib/intent.ts`, `src/lib/openai.ts` (added `streamOpenAIChat` async generator), `src/pages/api/chat.ts` (full SSE rewrite), `src/pages/api/chat-title.ts`, `src/components/chat/ChatInterface.jsx`, `src/components/chat/ProductInput.jsx`, `src/components/chat/ChatMessage.jsx`, `src/components/chat/AnalysisDisplay.jsx`, `src/components/chat/ThinkingDots.jsx`, `src/components/layout/LanguageSwitcher.jsx`, `src/data/system-prompt.md`, `src/i18n/{en,zh}.json`.
 
 ---
 

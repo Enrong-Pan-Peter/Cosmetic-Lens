@@ -1,0 +1,81 @@
+---
+import { icons } from './icons';
+import type { Language } from '../../i18n/utils';
+
+export interface Props {
+  lang: Language;
+  t: any;
+}
+
+const { lang, t } = Astro.props;
+---
+
+<section class="relative overflow-hidden py-12 md:py-20 lg:py-28">
+  <div class="absolute inset-0 -z-10 bg-gradient-to-br from-primary/5 via-background to-secondary/30"></div>
+
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-16">
+      <!-- Text column -->
+      <div class="lg:col-span-6 lg:pr-4">
+        <span class="inline-flex items-center gap-1.5 rounded-full border border-border bg-card/60 px-3 py-1 text-sm font-medium text-foreground backdrop-blur">
+          <svg class="h-4 w-4 text-primary" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">
+            <path d={icons.sparkle} />
+          </svg>
+          {t.home.hero_badge}
+        </span>
+
+        <h1 class="mt-6 text-4xl font-semibold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+          {t.home.hero_title}
+        </h1>
+
+        <p class="mt-6 max-w-xl text-lg text-muted-foreground sm:text-xl">
+          {t.home.hero_subtitle}
+        </p>
+
+        <div class="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <a
+            href={`/${lang}/chat`}
+            class="inline-flex h-12 items-center justify-center rounded-lg bg-primary px-8 text-base font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+          >
+            <svg class="mr-2 h-4 w-4" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">
+              <path d={icons.microscope} />
+            </svg>
+            {t.home.cta_analyze}
+          </a>
+          <a
+            href={`/${lang}/glossary`}
+            class="inline-flex h-12 items-center justify-center rounded-lg border border-input bg-background px-8 text-base font-medium text-foreground shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground"
+          >
+            <svg class="mr-2 h-4 w-4" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">
+              <path d={icons.bookOpen} />
+            </svg>
+            {t.home.cta_learn}
+          </a>
+        </div>
+      </div>
+
+      <!-- Image column -->
+      <div class="lg:col-span-6">
+        <div class="relative">
+          <div
+            aria-hidden="true"
+            class="absolute -inset-4 rounded-3xl bg-gradient-to-tr from-primary/20 via-transparent to-secondary/40 blur-2xl"
+          ></div>
+
+          <div class="relative overflow-hidden rounded-2xl border border-border bg-card shadow-2xl">
+            <img
+              src="/images/hero-lab.webp"
+              alt={t.home.hero_image_alt}
+              width="2400"
+              height="1800"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
+              class="aspect-[4/3] w-full object-cover"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

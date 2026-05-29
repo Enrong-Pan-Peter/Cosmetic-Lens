@@ -16,8 +16,10 @@
     "logout": "Log Out"
   },
   "home": {
+    "hero_badge": "AI-Powered Ingredient Analysis",
     "hero_title": "Know What's Really in Your Skincare",
     "hero_subtitle": "Analyze ingredient lists, compare marketing claims to reality, and find affordable alternatives",
+    "hero_image_alt": "Skincare bottles and beaker arranged on a marble counter with eucalyptus and chamomile",
     "cta_analyze": "Analyze a Product",
     "cta_learn": "Learn About Ingredients",
     "features_title": "What You Can Do",
@@ -32,7 +34,25 @@
     "how_it_works": "How It Works",
     "step_1": "Enter a product name or paste the ingredient list",
     "step_2": "Our AI analyzes each ingredient for efficacy and safety",
-    "step_3": "Get a clear breakdown with personalized recommendations"
+    "step_3": "Get a clear breakdown with personalized recommendations",
+    "trust_strip_label": "Powered by",
+    "trust_openai": "OpenAI",
+    "trust_supabase": "Supabase",
+    "trust_obf": "Open Beauty Facts",
+    "trust_pgvector": "pgvector RAG",
+    "ai_section_title": "How the AI works under the hood",
+    "ai_section_subtitle": "Three techniques work together to ground every answer in real ingredient data — not marketing copy.",
+    "ai_card_1_title": "Vision OCR for product labels",
+    "ai_card_1_desc": "Snap a photo of the back of a product and we extract the INCI ingredient list with a multimodal model.",
+    "ai_card_1_image_alt": "Smartphone scanning a skincare product label, with an analyzed ingredient card visible on screen",
+    "ai_card_2_title": "Agentic reasoning, not a single prompt",
+    "ai_card_2_desc": "The AI calls specialized tools — product search, dupe lookup, interaction checks — and chains the results.",
+    "ai_card_2_image_alt": "A dropper bottle surrounded by softly glowing light strands representing connected reasoning steps",
+    "ai_card_3_title": "RAG over curated knowledge",
+    "ai_card_3_desc": "Every answer is grounded in our pgvector knowledge base of 100 ingredients, 39 interactions, and 30 dupe sets.",
+    "ai_card_3_image_alt": "An open book with a magnifying glass beside skincare bottles and eucalyptus",
+    "cta_band_title": "Know what's in your products",
+    "cta_band_subtitle": "Start your first ingredient analysis in seconds — no signup required."
   },
   "chat": {
     "title": "Analyze a Product",
@@ -56,7 +76,28 @@
     "new_chat": "New Analysis",
     "clear": "Clear",
     "copy": "Copy",
-    "copied": "Copied!"
+    "copied": "Copied!",
+    "stop": "Stop",
+    "thinking": "Thinking",
+    "stopped": "_(stopped)_",
+    "send": "Send",
+    "upload_photo": "Upload product photo",
+    "upload_short": "Photo",
+    "extracting_photo": "Reading ingredients from photo…",
+    "extracted_from_photo": "Extracted from photo",
+    "extracted_review_hint": "Review the extracted ingredients, then click Send.",
+    "extracted_low_confidence": "Low-confidence extraction — please verify before sending.",
+    "extracted_unreadable": "We couldn't read an ingredient list in this photo. Try a clearer, well-lit shot of the back of the package.",
+    "vision_error_generic": "Couldn't process the photo. Please try again.",
+    "vision_error_unsupported_type": "Unsupported file type. Use JPG, PNG, WebP, or GIF.",
+    "vision_error_too_large": "Image is too large. Maximum size is 8 MB.",
+    "remove_photo": "Remove photo",
+    "photo_preview_alt": "Uploaded product photo preview",
+    "agent_thinking": "Agent is working…",
+    "agent_running": "Running…",
+    "agent_no_tools": "No tool calls yet",
+    "agent_show": "Show",
+    "agent_hide": "Hide"
   },
   "analysis": {
     "overview": "Product Overview",
@@ -80,7 +121,9 @@
     "value_assessment": "Value Assessment",
     "personalized_notes": "Personalized Notes",
     "interaction_warnings": "Ingredient Interaction Warnings",
-    "dupe_suggestions": "Similar Products"
+    "dupe_suggestions": "Similar Products",
+    "find_dupes": "Find Similar Products",
+    "similar_ingredients": "Similar ingredients"
   },
   "education": {
     "title": "Learn About Ingredients",

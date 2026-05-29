@@ -2,6 +2,8 @@
 
 Bugs reported during testing. Ordered by severity and dependency.
 
+> **Status (2026-05-27): All 8 bugs below were fixed in the Phase 0 commit.** See [BUGS-HISTORY.md](BUGS-HISTORY.md) for the rolling log.
+
 ---
 
 ## Bug 1: Chat input disabled during assistant response; no stop button
