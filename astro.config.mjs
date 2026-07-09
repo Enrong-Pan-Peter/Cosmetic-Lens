@@ -28,7 +28,9 @@ export default defineConfig({
     }),
   ],
   output: 'server',
-  adapter: vercel(),
+  // maxDuration: agentic SSE (up to 4 tool iterations + streaming) exceeds
+  // Vercel's 10s default and would be killed mid-stream in production.
+  adapter: vercel({ maxDuration: 60 }),
   vite: {
     ssr: {
       noExternal: ['react-markdown', 'remark-gfm', '@phosphor-icons/react']

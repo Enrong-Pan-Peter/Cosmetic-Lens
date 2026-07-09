@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../../../components/layout/BaseLayout.astro';
+import IngredientDetail from '../../../components/ingredients/IngredientDetail.astro';
+import { ALL_INGREDIENTS, ingredientSlug, type IngredientFull } from '../../../lib/ingredients';
+
+export const prerender = true;
+
+const lang = 'zh';
+
+export function getStaticPaths() {
+  return ALL_INGREDIENTS.map((ing) => ({
+    params: { id: ingredientSlug(ing.id) },
+    props: { ingredient: ing },
+  }));
+}
+
+const { ingredient } = Astro.props as { ingredient: IngredientFull };
+
+const description = `${ingredient.chinese_name}（${ingredient.inci_name}）——功效、有效浓度、成分搭配与孕期安全性。`;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'DefinedTerm',
+  name: ingredient.chinese_name,
+  alternateName: [ingredient.inci_name, ...(ingredient.aliases_zh ?? [])],
+  description,
+  inDefinedTermSet: '成分透视 成分库',
+};
+---
+
+<BaseLayout title={ingredient.chinese_name} description={description} lang={lang} jsonLd={jsonLd}>
+  <IngredientDetail ingredient={ingredient} lang={lang} />
+</BaseLayout>

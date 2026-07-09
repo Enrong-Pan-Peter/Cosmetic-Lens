@@ -336,7 +336,9 @@ type StoredChat = {
 };
 ```
 
-`STORAGE_KEY = 'cosmeticlens_chat_history'`. Never reads/writes directly — go through `loadHistory()` / `persistHistory()` / `saveChat()`.
+`STORAGE_KEY = 'cosmeticlens_chat_history'`. Never reads/writes directly — go through `loadHistory()` / `persistHistory()` / `saveChat()`. **v2 (P3.7):** persisted shape is `{ version: 2, chats: StoredChat[] }`; `loadHistory` still accepts the bare-array v1 form.
+
+**Server sync (P3, 2026-07-07).** For authenticated users, localStorage is a working cache and Supabase is the source of truth: `saveChat`/`generateTitle` queue a debounced (800 ms) `PUT /api/chats/[id]` snapshot; deletes call `DELETE`; on login the client merges `GET /api/chats` into the sidebar (remote chats appear as stubs whose messages hydrate on select), offers a one-time import of local-only chats when the account is empty, and hydrates cross-device `?chat=<id>` deep links from the server. Sync is fire-and-forget — offline/anonymous behavior is unchanged. `sanitizeMessagesForServer` strips ephemeral fields and trims toolCalls before upload.
 
 **URL state:** `?chat=<id>` is the only URL parameter the chat respects. Mounting reads it; `handleNewChat` / `handleSelectChat` / `handleDeleteChat` keep it in sync via `window.history.replaceState`.
 
@@ -372,16 +374,20 @@ All routes live in `src/pages/api/*.ts`. Astro converts each exported `GET`/`POS
 
 | Route | Methods | Auth | Rate limit | Returns |
 |-------|---------|------|------------|---------|
-| `/api/chat` | POST | none (body `userId` optional, **unverified**) | none | **SSE** stream (see §6.2) |
-| `/api/chat-agentic` | POST | none (body `userId` optional, **unverified**) | none | **SSE** stream with `tool_call` / `tool_result` events (see §7.4) — current default endpoint used by the chat UI |
-| `/api/chat-title` | POST | none | none | `{ success, data: { title, fallback } }` |
-| `/api/vision-extract` | POST | none | none | `{ success, data: VisionExtractionResult, model }` (see §7.3) |
-| `/api/analyze` | POST | none (body `userId` unverified) | code present but **disabled** | `{ success, data, source, cached?, ... }` |
+| `/api/chat` | POST | optional **Bearer JWT** (anonymous allowed; identity never from body) | `chat`: 20/day anon-IP, 100/day user | **SSE** stream (see §6.2) |
+| `/api/chat-agentic` | POST | optional **Bearer JWT** (anonymous allowed; identity never from body) | `chat`: 20/day anon-IP, 100/day user | **SSE** stream with `tool_call` / `tool_result` events (see §7.4) — current default endpoint used by the chat UI |
+| `/api/chat-title` | POST | none | `light`: 60/day per IP | `{ success, data: { title, fallback } }` |
+| `/api/vision-extract` | POST | optional **Bearer JWT** | `vision`: 5/day anon-IP, 25/day user | `{ success, data: VisionExtractionResult, model }` (see §7.3) |
+| `/api/analyze` | POST | optional **Bearer JWT** (identity never from body) | `chat` (shared budget) | `{ success, data, source, cached?, ... }` |
 | `/api/profile` | GET, PUT | **Bearer JWT** | none | profile row JSON |
-| `/api/history` | GET, DELETE | **Bearer JWT** | none | `{ success, data, total, limit, offset }` |
-| `/api/search-product` | GET | none | none | OBF passthrough |
+| `/api/history` | GET, DELETE | **Bearer JWT** | none | `{ success, data, total, limit, offset }` — **legacy** (UI no longer reads it; History page uses `/api/chats`) |
+| `/api/chats` | GET | **Bearer JWT** | none | `{ success, data: [{ id, title, created_at, updated_at }] }` (P3 chat sync) |
+| `/api/chats/[id]` | GET, PUT, DELETE | **Bearer JWT** + ownership | none | GET returns chat + messages; PUT = create-or-replace full snapshot (client-generated TEXT id, ≤80 msgs); DELETE cascades messages |
+| `/api/search-product` | GET | none | `light`: 60/day per IP | OBF passthrough |
 
-> ⚠️ **Security debt acknowledged.** `/api/chat`, `/api/analyze`, `/api/search-product` currently accept a body `userId` without JWT verification, and rate limiting is disabled on `/api/analyze` (`RATE_LIMIT_DISABLED = true`). Phase 5 of the [commercialization plan](../docs/architecture.md) addresses both.
+Rate limiting lives in [src/lib/rate-limit.ts](../src/lib/rate-limit.ts): daily windows via the `rate_limits` table + atomic `increment_rate_limit()` RPC, identifiers namespaced per cost class (`chat:` / `vision:` / `light:`), increment-then-check, **fail-open** if Supabase is unreachable (OpenAI dashboard spend cap is the hard backstop). 429 responses carry `error: 'rate_limit_exceeded'` + localized `message` + `Retry-After` (UTC midnight). Input caps: 40 messages / 8 000 chars per message on chat endpoints (400 on violation).
+
+> ⚠️ **Security status (updated 2026-07-07).** The former body-`userId` IDOR is fixed: `/api/chat`, `/api/chat-agentic`, and `/api/analyze` now derive identity exclusively via [src/lib/auth.ts](../src/lib/auth.ts) `getUserFromRequest()` (verified Supabase JWT in the `Authorization` header); body `userId` is ignored/removed. Daily rate limiting is enforced on all six public endpoints via [src/lib/rate-limit.ts](../src/lib/rate-limit.ts) (see table above), replacing the old disabled `RATE_LIMIT_DISABLED` code in `/api/analyze`. Remaining Phase 1 items in [docs/improvement-plan.md](improvement-plan.md): key rotation, CSP header.
 
 ### 7.1 POST /api/chat
 
@@ -574,6 +580,13 @@ agentic mode.
 > infinite tool loops if the model keeps re-calling tools. If you raise
 > it, also raise per-request cost expectations.
 
+> ⚠️ **Contract — forced final answer (2026-07-07).** If the loop exhausts
+> `MAX_TOOL_ITERATIONS` while the model is still requesting tools (or a
+> turn ends with neither tools nor text), the endpoint runs one extra
+> `streamOneTurn` with `tool_choice: 'none'` so an answer is always
+> streamed — previously the user could get an empty bubble (eval finding
+> e2e-002). This turn emits `agent_step { step: 5, status: 'answering' }`.
+
 ### 7.5 POST /api/analyze (legacy)
 
 Single-turn analysis. Used by an older entry point — **not** by the chat page anymore. Pipeline ([analyzer.ts](../src/lib/analyzer.ts)):
@@ -712,7 +725,10 @@ Schema lives in [supabase/schema.sql](../supabase/schema.sql). Forward-only migr
 | `analysis_history` | One row per user-saved analysis | `user_id`, `product_name`, `analysis_result jsonb`, `language`, `source`, `created_at` | user can SELECT/INSERT/DELETE own |
 | `analysis_cache` | Shared cache of recent analyses | `product_name_normalized` UNIQUE, `analysis_result_en jsonb`, `analysis_result_zh jsonb`, `updated_at` | authenticated read-all |
 | `rate_limits` | Daily request counters per identifier | `(identifier, date)` UNIQUE; `identifier_type ∈ {user, ip}` | user can SELECT own |
-| `knowledge_embeddings` | RAG store | `content`, `content_type`, `metadata jsonb`, `language`, `embedding vector(1536)` | public read; service_role full |
+| `knowledge_embeddings` | RAG store | `content`, `content_type`, `metadata jsonb`, `language`, `embedding vector(1536)`, `content_hash` (seed idempotency) | public read; service_role full |
+| `chats` (P3) | Synced conversations | `id TEXT` (client-generated), `user_id`, `title`, timestamps | owner-only CRUD |
+| `chat_messages` (P3) | Messages per chat | `chat_id`, `seq`, `role`, `content`, `metadata jsonb` (intent/source/dupes/toolCalls/sources), `UNIQUE(chat_id, seq)` | owner-only via chats join |
+| `llm_calls` (P4.6) | LLM telemetry | `endpoint`, `model`, `prompt_tokens`, `completion_tokens`, `latency_ms`, `ok`, `error` | service-role only (RLS on, no policies) |
 
 **Indexes:** B-tree on user_id, created_at, product_name, rate_limits composite. **No HNSW/IVFFlat vector index yet** — `match_knowledge` does full-scan cosine distance. Acceptable while embeddings count is ~300; revisit at the 10k row mark.
 
@@ -724,7 +740,7 @@ Schema lives in [supabase/schema.sql](../supabase/schema.sql). Forward-only migr
 | `check_rate_limit(p_identifier, p_limit)` | returns bool | Convenience check (unused by API; `/api/analyze` uses inline query) |
 | `update_profile_timestamp()` | trigger | Updates `updated_at` on profile UPDATE |
 | `clean_old_cache(days_old)` | void | Deletes old cache rows (not wired to cron in repo) |
-| **`match_knowledge(query_embedding vector(1536), match_count, filter_type)`** | table | Cosine distance via `<=>`; returns `id, content, content_type, metadata, language, similarity` |
+| **`match_knowledge(query_embedding vector(1536), match_count, filter_type, filter_language)`** | table | Cosine distance via `<=>`; returns `id, content, content_type, metadata, language, similarity`. `filter_language` added 2026-07-07 (P4.1) — `searchKnowledge` passes the UI language and gracefully retries without it if the migration isn't applied |
 
 ### 10.3 RLS
 
@@ -766,7 +782,7 @@ Steps:
 3. For each row: call OpenAI embeddings, INSERT.
 4. Sequential, with a 250 ms delay between calls. ~295 rows total → ~75 s per full seed.
 
-> ⚠️ **Contract — seed is destructive.** Re-run only when content changes. There's no incremental upsert; partial failure leaves a partial index. Phase 7 (CI) will run a smoke subset; full re-seed stays manual.
+> **Seed is incremental since 2026-07-07 (P4.7).** Each row carries a sha256 `content_hash`; unchanged rows are skipped (no embedding API call), stale rows are pruned at the end. A no-change re-run costs ~0 embeddings and a few seconds. If the `content_hash` column is missing (migration not applied), the script warns and falls back to plain inserts without pruning.
 
 ### 11.3 Retrieval at chat time
 
@@ -916,7 +932,7 @@ npm run build       # ✓ Complete expected
 The list below captures non-obvious constraints. If a change breaks one, update this file.
 
 1. **`@ts-nocheck` in `src/lib/prompt.ts`** disables TS for the whole file. Don't rely on its types being checked at compile time. Phase 8 will clean this up.
-2. **Service-role Supabase client bypasses RLS.** Anything written in an API route that uses `createServerClient()` is the auth boundary. Do not trust `userId` from request bodies — Phase 5 will add a `requireUser()` helper.
+2. **Service-role Supabase client bypasses RLS.** Anything written in an API route that uses `createServerClient()` is the auth boundary. **Never trust `userId` from request bodies** — derive identity via `getUserFromRequest()` in [src/lib/auth.ts](../src/lib/auth.ts) (this is the only sanctioned request→identity path; enforced on chat, chat-agentic, analyze since 2026-07-07).
 3. **The chat endpoint streams unconditionally.** Old non-streaming JSON callers will receive a `text/event-stream` body. The frontend has been updated; any external scripts hitting `/api/chat` must read SSE.
 4. **`AbortController` must abort previous request before starting a new one.** See `handleAnalyze` in `ChatInterface.jsx`. Otherwise deltas from a stale stream may land in the new chat.
 5. **`?chat=<id>` is the only persisted URL state.** Adding more params requires updating `LanguageSwitcher.jsx` and the `updateUrlChatId` helper.
@@ -981,6 +997,10 @@ For "where does X live?" lookups.
 | Auth hook (React) | [src/lib/useAuth.jsx](../src/lib/useAuth.jsx) |
 | Database schema | [supabase/schema.sql](../supabase/schema.sql) |
 | Embedding seed | [scripts/seed-embeddings.mjs](../scripts/seed-embeddings.mjs) |
+| Eval harness (intent/retrieval/e2e suites) | [evals/run.mjs](../evals/run.mjs) + [evals/README.md](../evals/README.md) |
+| Golden eval datasets | [evals/datasets/](../evals/datasets/) |
+| Auth helper (request → identity) | [src/lib/auth.ts](../src/lib/auth.ts) |
+| Rate limiting | [src/lib/rate-limit.ts](../src/lib/rate-limit.ts) |
 | Layout shell | [src/components/layout/BaseLayout.astro](../src/components/layout/BaseLayout.astro) |
 | Top navigation | [src/components/layout/Navigation.astro](../src/components/layout/Navigation.astro) |
 | Language switcher | [src/components/layout/LanguageSwitcher.jsx](../src/components/layout/LanguageSwitcher.jsx) |

@@ -1,5 +1,10 @@
+import { CheckCircle, WarningCircle, XCircle, Question } from '@phosphor-icons/react';
+
 /**
- * ClaimsTable — renders structured claim-vs-reality data with coloured badges.
+ * ClaimsTable — renders structured claim-vs-reality data.
+ *
+ * Verdict badges use monochrome Phosphor line icons (regular weight) to match
+ * the homepage design language — no emoji, no candy colors.
  *
  * Props:
  *   claims: Array<{ claim: string, rating: string, analysis: string }>
@@ -14,37 +19,45 @@ export default function ClaimsTable({ claims, lang }) {
     if (
       (r.includes('support') && !r.includes('unsupport') && !r.includes('not support') && !r.includes('partial')) ||
       r === 'supported' ||
-      r === '✅'
+      r === '✅' // legacy chats saved before the emoji purge
     ) {
       return {
-        label: lang === 'zh' ? '✅ 有支持' : '✅ Supported',
-        cls: 'bg-green-100 text-green-800 border-green-200',
+        label: lang === 'zh' ? '有支持' : 'Supported',
+        Icon: CheckCircle,
+        cls: 'border-border bg-card text-foreground',
       };
     }
 
     if (r.includes('partial') || r.includes('partly') || r === '⚠️') {
       return {
-        label: lang === 'zh' ? '⚠️ 部分支持' : '⚠️ Partial',
-        cls: 'bg-yellow-100 text-yellow-800 border-yellow-200',
+        label: lang === 'zh' ? '部分支持' : 'Partial',
+        Icon: WarningCircle,
+        cls: 'border-border bg-card text-foreground',
       };
     }
 
     if (r.includes('unsupport') || r.includes('not support') || r === '❌') {
       return {
-        label: lang === 'zh' ? '❌ 无支持' : '❌ Unsupported',
-        cls: 'bg-red-100 text-red-800 border-red-200',
+        label: lang === 'zh' ? '无支持' : 'Unsupported',
+        Icon: XCircle,
+        cls: 'border-border bg-card text-foreground',
       };
     }
 
     if (r.includes('unverif') || r === '❓') {
       return {
-        label: lang === 'zh' ? '❓ 无法验证' : '❓ Unverifiable',
-        cls: 'bg-gray-100 text-gray-600 border-gray-200',
+        label: lang === 'zh' ? '无法验证' : 'Unverifiable',
+        Icon: Question,
+        cls: 'border-border bg-card text-muted-foreground',
       };
     }
 
-    // Fallback — show raw text in neutral pill
-    return { label: raw, cls: 'bg-gray-100 text-gray-600 border-gray-200' };
+    // Fallback — show raw text in a neutral pill (strip any stray emoji)
+    return {
+      label: (raw || '').replace(/[✅⚠️❌❓]/g, '').trim() || raw,
+      Icon: null,
+      cls: 'border-border bg-card text-muted-foreground',
+    };
   };
 
   return (
@@ -76,8 +89,9 @@ export default function ClaimsTable({ claims, lang }) {
                 </td>
                 <td className="px-4 py-3">
                   <span
-                    className={`inline-flex items-center whitespace-nowrap rounded-full border px-2.5 py-0.5 text-[11px] font-semibold ${badge.cls}`}
+                    className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full border px-2.5 py-0.5 text-[11px] font-medium ${badge.cls}`}
                   >
+                    {badge.Icon && <badge.Icon size={12} weight="regular" aria-hidden="true" />}
                     {badge.label}
                   </span>
                 </td>

@@ -43,6 +43,8 @@ import {
   MAX_IMAGE_BYTES,
   SUPPORTED_MIME_TYPES,
 } from '../../lib/vision';
+import { getUserFromRequest } from '../../lib/auth';
+import { enforceRateLimit, getClientIp, rateLimitResponse } from '../../lib/rate-limit';
 
 export const prerender = false;
 
@@ -53,6 +55,7 @@ type ErrorCode =
   | 'api_key_missing'
   | 'api_error'
   | 'invalid_response'
+  | 'unreadable'
   | 'network_error'
   | 'internal_error';
 
@@ -63,7 +66,7 @@ function errorResponse(status: number, code: ErrorCode, message: string) {
   );
 }
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, clientAddress }) => {
   try {
     const contentType = request.headers.get('content-type') ?? '';
     if (!contentType.includes('multipart/form-data')) {
@@ -72,6 +75,21 @@ export const POST: APIRoute = async ({ request }) => {
         'missing_image',
         'Expected multipart/form-data with an "image" field',
       );
+    }
+
+    // Rate limit BEFORE reading the (up to 8 MB) body — vision is the most
+    // expensive endpoint per call. Language isn't parsed yet, so the 429
+    // message language falls back via the Accept-Language-free default; the
+    // client maps code 'rate_limit_exceeded' regardless.
+    const authedUser = await getUserFromRequest(request);
+    const rl = await enforceRateLimit({
+      cls: 'vision',
+      userId: authedUser?.id ?? null,
+      ip: getClientIp(request, clientAddress),
+      request,
+    });
+    if (!rl.allowed) {
+      return rateLimitResponse('vision', 'en', Boolean(authedUser));
     }
 
     let formData: FormData;

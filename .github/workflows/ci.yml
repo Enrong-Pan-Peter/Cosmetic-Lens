@@ -1,0 +1,41 @@
+# CI: unit tests (incl. the deterministic intent eval — the same 60 golden
+# cases the eval harness uses), typecheck, and a production build.
+# LLM-judge evals stay manual (evals/run.mjs) — they cost money and have
+# run-to-run variance; CI runs everything deterministic.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    env:
+      # Dummy values: modules construct Supabase clients at import time.
+      # Nothing in CI talks to a real service.
+      PUBLIC_SUPABASE_URL: http://localhost:54321
+      PUBLIC_SUPABASE_ANON_KEY: ci-anon-key
+      SUPABASE_SERVICE_ROLE_KEY: ci-service-key
+      OPENAI_API_KEY: ci-openai-key
+      PUBLIC_SITE_URL: https://cosmetic-lens.vercel.app
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Unit tests + deterministic evals
+        run: npm run test
+
+      - name: Typecheck
+        run: npx astro check
+
+      - name: Build
+        run: npm run build

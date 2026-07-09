@@ -48,7 +48,51 @@ async function embed(text) {
   return data.data[0].embedding;
 }
 
+// ------------------------------------------------------------------
+// Idempotent upsert (improvement-plan P4.7).
+// Each row gets a stable content hash; unchanged rows are skipped
+// entirely (no embedding API call), stale rows are pruned at the end.
+// Requires the content_hash column (20260707_rag_language_telemetry.sql);
+// if it's missing we fall back to plain inserts + full-wipe semantics.
+// ------------------------------------------------------------------
+import { createHash } from 'crypto';
+
+const existingHashes = new Map(); // content_hash -> row id
+const seenHashes = new Set();
+let hashColumnAvailable = true;
+let insertedCount = 0;
+let skippedCount = 0;
+
+function contentHash(content, contentType, language) {
+  return createHash('sha256').update(`${contentType}|${language}|${content}`).digest('hex');
+}
+
+async function loadExistingHashes() {
+  const { data, error } = await supabase
+    .from('knowledge_embeddings')
+    .select('id, content_hash')
+    .not('content_hash', 'is', null)
+    .limit(10000);
+  if (error) {
+    console.warn('  ⚠ content_hash column unavailable — run 20260707_rag_language_telemetry.sql for incremental seeding. Falling back to full re-seed.');
+    hashColumnAvailable = false;
+    return;
+  }
+  for (const row of data ?? []) existingHashes.set(row.content_hash, row.id);
+  console.log(`  ${existingHashes.size} existing hashed rows found`);
+}
+
 async function upsertRow(content, contentType, metadata, language) {
+  const hash = hashColumnAvailable ? contentHash(content, contentType, language) : null;
+
+  if (hash) {
+    seenHashes.add(hash);
+    if (existingHashes.has(hash)) {
+      skippedCount++;
+      return false; // unchanged — no embedding call, no insert
+    }
+  }
+
   const embedding = await embed(content);
   const { error } = await supabase.from('knowledge_embeddings').insert({
     content,
@@ -56,8 +100,47 @@ async function upsertRow(content, contentType, metadata, language) {
     metadata,
     language,
     embedding,
+    ...(hash ? { content_hash: hash } : {}),
   });
   if (error) console.warn(`  ⚠ Insert failed: ${error.message}`);
+  else insertedCount++;
+
+  // Rate-limit pause only when we actually hit the embeddings API.
+  await new Promise((r) => setTimeout(r, 250));
+  return true;
+}
+
+async function pruneStaleRows() {
+  const SENTINEL = '00000000-0000-0000-0000-000000000000';
+
+  if (!hashColumnAvailable) {
+    console.warn('  (no content_hash — skipping prune; old rows were not wiped this run)');
+    return;
+  }
+
+  // Rows whose hash disappeared from the datasets + legacy rows without a hash.
+  const staleIds = [];
+  for (const [hash, id] of existingHashes) {
+    if (!seenHashes.has(hash)) staleIds.push(id);
+  }
+  const { data: unhashed } = await supabase
+    .from('knowledge_embeddings')
+    .select('id')
+    .is('content_hash', null)
+    .neq('id', SENTINEL)
+    .limit(10000);
+  for (const row of unhashed ?? []) staleIds.push(row.id);
+
+  if (staleIds.length === 0) {
+    console.log('  No stale rows to prune');
+    return;
+  }
+  for (let i = 0; i < staleIds.length; i += 100) {
+    const batch = staleIds.slice(i, i + 100);
+    const { error } = await supabase.from('knowledge_embeddings').delete().in('id', batch);
+    if (error) console.warn(`  ⚠ Prune failed: ${error.message}`);
+  }
+  console.log(`  Pruned ${staleIds.length} stale row(s)`);
 }
 
 // ------------------------------------------------------------------
@@ -106,8 +189,6 @@ async function seedIngredients() {
     console.log(`  → ${ing.inci_name} (${ing.chinese_name})`);
     await upsertRow(chunk, 'ingredient', { id: ing.id, inci_name: ing.inci_name, chinese_name: ing.chinese_name }, 'en');
 
-    // Small delay to stay under rate limits
-    await new Promise((r) => setTimeout(r, 250));
   }
 
   console.log(`  ✓ ${db.ingredients.length} ingredients indexed`);
@@ -137,7 +218,6 @@ async function seedGlossary() {
 
     console.log(`  → ${entry.inci_name} (${entry.chinese_name})`);
     await upsertRow(chunk, 'glossary', { inci_name: entry.inci_name, chinese_name: entry.chinese_name }, 'en');
-    await new Promise((r) => setTimeout(r, 250));
   }
 
   console.log(`  ✓ ${db.entries.length} glossary entries indexed`);
@@ -196,7 +276,6 @@ async function seedInteractions() {
 
     console.log(`  → ${ingredientsStr} (${pair.level})`);
     await upsertRow(chunk, 'interaction', { ingredients: pair.ingredients, level: pair.level, context: pair.context }, 'en');
-    await new Promise((r) => setTimeout(r, 250));
   }
 
   console.log(`  ✓ ${db.pairs.length} interaction pairs indexed`);
@@ -214,11 +293,13 @@ async function seedCuratedDupes() {
     const orig = pair.original || {};
     const dupes = pair.dupes || [];
     const keyActives = (orig.key_actives || []).join(', ');
+    const aliases = (orig.aliases || []).join(', ');
     const alternatives = dupes.map((d) => `${d.product_name} (${d.brand})`).join('; ');
     const notes = dupes.map((d) => d.notes_en || '').filter(Boolean).join(' ');
 
     const chunk = [
       `Product: ${orig.product_name} by ${orig.brand} (${orig.category})`,
+      aliases ? `Also known as: ${aliases}` : '',
       keyActives ? `Key actives: ${keyActives}` : '',
       alternatives ? `Budget alternatives: ${alternatives}` : '',
       notes,
@@ -232,7 +313,6 @@ async function seedCuratedDupes() {
       original_name: orig.product_name,
       original_brand: orig.brand,
     }, 'en');
-    await new Promise((r) => setTimeout(r, 250));
   }
 
   console.log(`  ✓ ${db.pairs.length} dupe pairs indexed`);
@@ -271,7 +351,6 @@ async function seedArticles() {
         const chunkContent = `Article: ${title}\n\n${chunks[i]}`;
         console.log(`  → [${lang}] ${title} (chunk ${i + 1}/${chunks.length})`);
         await upsertRow(chunkContent, 'article', { slug, title, lang, chunk: i }, lang);
-        await new Promise((r) => setTimeout(r, 250));
       }
     }
   }
@@ -299,11 +378,9 @@ function chunkText(text, maxLen) {
 // Main
 // ------------------------------------------------------------------
 async function main() {
-  console.log('Seeding knowledge embeddings...');
+  console.log('Seeding knowledge embeddings (incremental — unchanged rows are skipped)...');
 
-  // Clear existing rows to allow re-runs
-  const { error } = await supabase.from('knowledge_embeddings').delete().neq('id', '00000000-0000-0000-0000-000000000000');
-  if (error) console.warn('Could not clear old rows:', error.message);
+  await loadExistingHashes();
 
   await seedIngredients();
   await seedGlossary();
@@ -312,7 +389,10 @@ async function main() {
   await seedArticles();
   await seedCuratedDupes();
 
-  console.log('\n✅ Done! Knowledge base seeded.');
+  console.log('\n=== Pruning stale rows ===');
+  await pruneStaleRows();
+
+  console.log(`\n✅ Done! ${insertedCount} inserted/updated, ${skippedCount} unchanged (skipped).`);
 }
 
 main().catch((err) => {

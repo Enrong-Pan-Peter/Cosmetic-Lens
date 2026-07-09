@@ -43,3 +43,6 @@ pnpm-debug.log*
 
 # Misc
 *.local
+
+# Eval outputs (JSON runs are local; latest-summary.md may be committed intentionally)
+evals/results/*.json

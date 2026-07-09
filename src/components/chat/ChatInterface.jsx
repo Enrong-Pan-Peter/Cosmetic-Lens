@@ -10,6 +10,9 @@ import { useAuth } from '../../lib/useAuth';
 // localStorage helpers
 // ---------------------------------------------------------------------------
 const STORAGE_KEY = 'cosmeticlens_chat_history';
+// v1 was a bare array; v2 wraps it with a version field so future message
+// shape changes can migrate instead of silently breaking old chats (P3.7).
+const STORAGE_VERSION = 2;
 
 function generateId() {
   return Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
@@ -18,7 +21,11 @@ function generateId() {
 function loadHistory() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed)) return parsed; // v1 (unversioned)
+    if (parsed && Array.isArray(parsed.chats)) return parsed.chats; // v2+
+    return [];
   } catch {
     return [];
   }
@@ -26,10 +33,80 @@ function loadHistory() {
 
 function persistHistory(history) {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ version: STORAGE_VERSION, chats: history }),
+    );
   } catch (e) {
     console.warn('Failed to persist chat history:', e);
   }
+}
+
+// ---------------------------------------------------------------------------
+// Server chat sync (P3) — authenticated users get their chats persisted in
+// Supabase and synced across devices. localStorage remains the working cache
+// (and the only store for anonymous users).
+// ---------------------------------------------------------------------------
+function authHeaders(token) {
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
+
+/** Strip bulky/ephemeral fields before shipping messages to the server. */
+function sanitizeMessagesForServer(messages) {
+  return (messages || []).slice(-80).map((m) => {
+    const out = { role: m.role, content: m.content };
+    if (m.intent) out.intent = m.intent;
+    if (m.source) out.source = m.source;
+    if (m.mode) out.mode = m.mode;
+    if (m.stopped) out.stopped = true;
+    if (m.fromPhoto) out.fromPhoto = true;
+    if (Array.isArray(m.dupes) && m.dupes.length) out.dupes = m.dupes;
+    if (Array.isArray(m.sources) && m.sources.length) out.sources = m.sources;
+    if (Array.isArray(m.toolCalls) && m.toolCalls.length) {
+      out.toolCalls = m.toolCalls.map((tc) => ({
+        id: tc.id,
+        name: tc.name,
+        status: tc.status,
+        success: tc.success,
+        durationMs: tc.durationMs,
+        summary: tc.summary,
+      }));
+    }
+    return out;
+  });
+}
+
+async function apiListChats(token) {
+  const res = await fetch('/api/chats', { headers: authHeaders(token) });
+  if (!res.ok) throw new Error('chats_list_failed');
+  return (await res.json())?.data ?? [];
+}
+
+async function apiGetChat(token, id) {
+  const res = await fetch(`/api/chats/${encodeURIComponent(id)}`, {
+    headers: authHeaders(token),
+  });
+  if (!res.ok) throw new Error('chat_get_failed');
+  return (await res.json())?.data ?? null;
+}
+
+async function apiPutChat(token, chat) {
+  await fetch(`/api/chats/${encodeURIComponent(chat.id)}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...authHeaders(token) },
+    body: JSON.stringify({
+      title: chat.title,
+      createdAt: chat.createdAt,
+      messages: sanitizeMessagesForServer(chat.messages),
+    }),
+  });
+}
+
+async function apiDeleteChat(token, id) {
+  await fetch(`/api/chats/${encodeURIComponent(id)}`, {
+    method: 'DELETE',
+    headers: authHeaders(token),
+  });
 }
 
 function readActiveChatFromUrl() {
@@ -151,7 +228,7 @@ function formatExtractedText(data, lang) {
 }
 
 export default function ChatInterface({ lang, translations: t }) {
-  const { user } = useAuth();
+  const { user, session, loading } = useAuth();
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [streamingStarted, setStreamingStarted] = useState(false);
@@ -172,6 +249,38 @@ export default function ChatInterface({ lang, translations: t }) {
   const extractAbortRef = useRef(null);
   const composerInputRef = useRef(null);
 
+  // --- server sync plumbing (P3) ---
+  const token = session?.access_token || null;
+  const chatHistoryRef = useRef([]);
+  const activeChatIdRef = useRef(null);
+  const syncTimersRef = useRef({});
+  const serverMergedRef = useRef(false);
+  const pendingUrlChatRef = useRef(null);
+
+  useEffect(() => {
+    chatHistoryRef.current = chatHistory;
+  }, [chatHistory]);
+  useEffect(() => {
+    activeChatIdRef.current = activeChatId;
+  }, [activeChatId]);
+
+  /** Debounced fire-and-forget PUT of one chat to the server. */
+  const queueChatSync = useCallback(
+    (chatId) => {
+      if (!token || !chatId) return;
+      clearTimeout(syncTimersRef.current[chatId]);
+      syncTimersRef.current[chatId] = setTimeout(() => {
+        const chat = chatHistoryRef.current.find((c) => c.id === chatId);
+        if (chat && chat.messages?.length) {
+          apiPutChat(token, chat).catch(() => {
+            /* offline / server error — localStorage still has it */
+          });
+        }
+      }, 800);
+    },
+    [token],
+  );
+
   const displayName = user?.user_metadata?.display_name
     || user?.email?.split('@')[0]
     || null;
@@ -190,10 +299,106 @@ export default function ChatInterface({ lang, translations: t }) {
         setMessages(chat.messages);
         setActiveChatId(chat.id);
       } else {
-        updateUrlChatId(null);
+        // Not local — maybe it's a server chat opened on a new device.
+        // Keep the param and let the server-merge effect try to hydrate it.
+        pendingUrlChatRef.current = urlChatId;
       }
     }
   }, []);
+
+  // -------------------------------------------------------------------
+  // Server merge (P3): once authenticated, pull the server chat list,
+  // offer a one-time import of local-only chats, and hydrate a pending
+  // ?chat= id that wasn't found locally.
+  // -------------------------------------------------------------------
+  useEffect(() => {
+    if (!token || serverMergedRef.current) return;
+    serverMergedRef.current = true;
+
+    (async () => {
+      try {
+        const serverChats = await apiListChats(token);
+        const serverIds = new Set(serverChats.map((c) => c.id));
+
+        // One-time import offer when the account has no chats yet (3.4).
+        const localOnly = chatHistoryRef.current.filter(
+          (c) => !serverIds.has(c.id) && c.messages?.length,
+        );
+        if (serverChats.length === 0 && localOnly.length > 0) {
+          const template =
+            t.chat.import_confirm ||
+            'Save your {n} local chats to your account so they sync across devices?';
+          if (window.confirm(template.replace('{n}', String(localOnly.length)))) {
+            for (const c of localOnly) {
+              try {
+                await apiPutChat(token, c);
+              } catch {
+                /* keep local copy */
+              }
+            }
+          }
+        }
+
+        // Merge server entries into the sidebar list (remote stubs hydrate
+        // lazily on select).
+        setChatHistory((prev) => {
+          const byId = new Map(prev.map((c) => [c.id, c]));
+          for (const sc of serverChats) {
+            const existing = byId.get(sc.id);
+            if (existing) {
+              byId.set(sc.id, { ...existing, title: sc.title || existing.title });
+            } else {
+              byId.set(sc.id, {
+                id: sc.id,
+                title: sc.title,
+                messages: [],
+                createdAt: sc.created_at,
+                updatedAt: sc.updated_at,
+                _remote: true,
+              });
+            }
+          }
+          const next = [...byId.values()].sort(
+            (a, b) => new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0),
+          );
+          persistHistory(next);
+          return next;
+        });
+
+        // Cross-device deep link: ?chat=<id> that only exists server-side.
+        const pendingId = pendingUrlChatRef.current;
+        if (pendingId) {
+          pendingUrlChatRef.current = null;
+          const remote = await apiGetChat(token, pendingId).catch(() => null);
+          if (remote?.messages?.length) {
+            setChatHistory((prev) => {
+              const next = prev.map((c) =>
+                c.id === pendingId
+                  ? { ...c, messages: remote.messages, title: remote.title || c.title }
+                  : c,
+              );
+              persistHistory(next);
+              return next;
+            });
+            setMessages(remote.messages);
+            setActiveChatId(pendingId);
+          } else {
+            updateUrlChatId(null);
+          }
+        }
+      } catch {
+        /* offline / server error — anonymous-style local mode still works */
+      }
+    })();
+  }, [token, t]);
+
+  // Anonymous user with an unknown ?chat= id: clear it once auth resolves.
+  useEffect(() => {
+    if (!loading && !user && pendingUrlChatRef.current) {
+      pendingUrlChatRef.current = null;
+      updateUrlChatId(null);
+    }
+  }, [loading, user]);
 
   // Auto-scroll to bottom when a chat is freshly loaded from history.
   useEffect(() => {
@@ -253,9 +458,10 @@ export default function ChatInterface({ lang, translations: t }) {
         return next;
       });
 
+      queueChatSync(id);
       return id;
     },
-    [lang],
+    [lang, queueChatSync],
   );
 
   // -------------------------------------------------------------------
@@ -279,11 +485,12 @@ export default function ChatInterface({ lang, translations: t }) {
           persistHistory(next);
           return next;
         });
+        queueChatSync(chatId);
       } catch {
         /* non-blocking */
       }
     },
-    [lang],
+    [lang, queueChatSync],
   );
 
   // -------------------------------------------------------------------
@@ -317,6 +524,29 @@ export default function ChatInterface({ lang, translations: t }) {
       setIsLoading(false);
       setStreamingStarted(false);
       updateUrlChatId(chat.id);
+
+      // Remote stub from the server merge — hydrate messages lazily (P3).
+      if ((!chat.messages || chat.messages.length === 0) && token) {
+        apiGetChat(token, chatId)
+          .then((remote) => {
+            if (!remote?.messages?.length) return;
+            setChatHistory((prev) => {
+              const next = prev.map((c) =>
+                c.id === chatId
+                  ? { ...c, messages: remote.messages, title: remote.title || c.title }
+                  : c,
+              );
+              persistHistory(next);
+              return next;
+            });
+            if (activeChatIdRef.current === chatId) {
+              setMessages(remote.messages);
+            }
+          })
+          .catch(() => {
+            /* keep empty; user can retry */
+          });
+      }
     }
   };
 
@@ -326,6 +556,7 @@ export default function ChatInterface({ lang, translations: t }) {
       persistHistory(next);
       return next;
     });
+    if (token) apiDeleteChat(token, chatId).catch(() => {});
     if (activeChatId === chatId) {
       clearPhotoState();
       setMessages([]);
@@ -431,6 +662,7 @@ export default function ChatInterface({ lang, translations: t }) {
         let msg = t.chat.vision_error_generic;
         if (code === 'too_large') msg = t.chat.vision_error_too_large;
         else if (code === 'unsupported_type') msg = t.chat.vision_error_unsupported_type;
+        else if (code === 'rate_limit_exceeded') msg = t.chat.error_rate_limit;
         setError(msg);
         clearPhotoState();
         return;
@@ -508,7 +740,9 @@ export default function ChatInterface({ lang, translations: t }) {
     let intent = null;
     let source = null;
     let dupes;
+    let sources;
     let mode = null;
+    let cached = false;
     // Live tool-call trace — accumulated locally so we can update statuses
     // by id without re-rendering the parent state every keystroke.
     const toolCalls = [];
@@ -531,8 +765,10 @@ export default function ChatInterface({ lang, translations: t }) {
           content: assistantContent,
           source,
           dupes,
+          sources,
           intent,
           mode,
+          cached,
           toolCalls: toolCalls.length ? [...toolCalls] : undefined,
           ...extra,
         };
@@ -548,11 +784,18 @@ export default function ChatInterface({ lang, translations: t }) {
     try {
       const res = await fetch(CHAT_ENDPOINT, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'text/event-stream' },
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'text/event-stream',
+          // Server derives identity from this verified JWT only —
+          // it no longer accepts a userId in the body (IDOR fix).
+          ...(session?.access_token
+            ? { Authorization: `Bearer ${session.access_token}` }
+            : {}),
+        },
         body: JSON.stringify({
           messages: apiMessages,
           language: lang,
-          userId: user?.id || null,
         }),
         signal: controller.signal,
       });
@@ -574,7 +817,11 @@ export default function ChatInterface({ lang, translations: t }) {
         },
         onMeta: (meta) => {
           source = meta.source;
+          if (meta.cached) cached = true;
           dupes = meta.dupes;
+          if (Array.isArray(meta.sources) && meta.sources.length) {
+            sources = meta.sources;
+          }
           mode = meta.mode ?? mode;
           // If we're in agentic mode, surface the placeholder assistant
           // message early so the AgentTrace card appears before the first
@@ -609,6 +856,16 @@ export default function ChatInterface({ lang, translations: t }) {
           if (Array.isArray(payload.dupes) && payload.dupes.length > 0) {
             dupes = payload.dupes;
           }
+          if (Array.isArray(payload.sources) && payload.sources.length > 0) {
+            const merged = [...(sources || []), ...payload.sources];
+            const seen = new Set();
+            sources = merged.filter((s) => {
+              const key = `${s.type}|${s.name}`;
+              if (seen.has(key)) return false;
+              seen.add(key);
+              return true;
+            }).slice(0, 8);
+          }
           upsertAssistantMessage();
         },
         onDeltaReset: () => {
@@ -629,8 +886,10 @@ export default function ChatInterface({ lang, translations: t }) {
               content: assistantContent,
               source,
               dupes,
+              sources,
               intent,
               mode,
+              cached,
               toolCalls: toolCalls.length ? [...toolCalls] : undefined,
             };
             if (last && last.role === 'assistant' && last._streaming) {
@@ -658,6 +917,7 @@ export default function ChatInterface({ lang, translations: t }) {
               content: assistantContent || t.chat.stopped,
               source,
               dupes,
+              sources,
               intent,
               mode,
               toolCalls: toolCalls.length ? [...toolCalls] : undefined,
@@ -800,7 +1060,13 @@ export default function ChatInterface({ lang, translations: t }) {
                 </div>
               </div>
             ) : (
-              <div className="space-y-8">
+              <div
+                className="space-y-8"
+                role="log"
+                aria-live="polite"
+                aria-busy={isLoading}
+                aria-label={lang === 'zh' ? '对话记录' : 'Conversation'}
+              >
                 {messages.map((msg, i) => {
                   const prevUser = messages
                     .slice(0, i)
@@ -812,6 +1078,9 @@ export default function ChatInterface({ lang, translations: t }) {
                       message={msg}
                       lang={lang}
                       prevUserContent={prevUser?.content}
+                      t={t}
+                      token={token}
+                      chatId={activeChatId}
                       onFindDupes={msg.role === 'assistant' ? handleFindDupes : undefined}
                       onSimilarIngredients={
                         msg.role === 'assistant' ? handleSimilarIngredients : undefined
@@ -834,7 +1103,10 @@ export default function ChatInterface({ lang, translations: t }) {
                 {showThinking && <ThinkingDots text={thinkingText} />}
 
                 {error && (
-                  <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive">
+                  <div
+                    role="alert"
+                    className="rounded-lg border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive"
+                  >
                     {error}
                   </div>
                 )}

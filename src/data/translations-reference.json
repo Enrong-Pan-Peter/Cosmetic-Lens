@@ -18,10 +18,10 @@
     "why": { "en": "Why", "zh": "原因" }
   },
   "verdicts": {
-    "supported": { "en": "✅ Supported", "zh": "✅ 有证据支持" },
-    "partial": { "en": "⚠️ Partially Supported", "zh": "⚠️ 部分证据支持" },
-    "unsupported": { "en": "❌ Unsupported", "zh": "❌ 虚假宣传" },
-    "unverifiable": { "en": "❓ Unverifiable", "zh": "❓ 无法验证" }
+    "supported": { "en": "Supported", "zh": "有证据支持" },
+    "partial": { "en": "Partially Supported", "zh": "部分证据支持" },
+    "unsupported": { "en": "Unsupported", "zh": "虚假宣传" },
+    "unverifiable": { "en": "Unverifiable", "zh": "无法验证" }
   },
   "skin_types": {
     "oily": { "en": "Oily skin", "zh": "油性皮肤/油皮" },

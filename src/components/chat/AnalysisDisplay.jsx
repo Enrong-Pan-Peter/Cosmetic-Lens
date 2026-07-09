@@ -1,8 +1,12 @@
 import { useState, useMemo } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+import 'katex/dist/katex.min.css';
 import ClaimsTable from './ClaimsTable';
 import DupeSuggestions from './DupeSuggestions';
+import { rehypeEmojiIcons, EmojiIcon, normalizeMathDelimiters } from './markdown-icons';
 
 // ---------------------------------------------------------------------------
 // Parse the <!-- CLAIMS_DATA [...] --> block from the LLM response
@@ -24,14 +28,20 @@ function parseClaimsData(content) {
 }
 
 // ---------------------------------------------------------------------------
-// Detect verdict emoji in a table cell and return a badge class
+// Detect verdict wording (or legacy emoji from old saved chats) in a table
+// cell and return a badge class. Monochrome to match the homepage design
+// language — semantic distinction comes from the label text itself.
 // ---------------------------------------------------------------------------
 function getVerdictBadgeClass(children) {
   const text = extractText(children);
-  if (text.includes('✅')) return 'bg-green-100 text-green-800';
-  if (text.includes('⚠️') || text.includes('⚠')) return 'bg-yellow-100 text-yellow-800';
-  if (text.includes('❌')) return 'bg-red-100 text-red-800';
-  if (text.includes('❓')) return 'bg-gray-100 text-gray-600';
+  const t = text.toLowerCase();
+  if (
+    /✅|⚠️|⚠|❌|❓/.test(text) ||
+    /\b(supported|partial|unsupported|unverifiable)\b/.test(t) ||
+    /(有支持|部分支持|无支持|无法验证)/.test(text)
+  ) {
+    return 'bg-card border border-border text-foreground';
+  }
   return null;
 }
 
@@ -59,7 +69,10 @@ export default function AnalysisDisplay({
   onSimilarIngredients,
 }) {
   const [copied, setCopied] = useState(false);
-  const { claims, cleanContent } = useMemo(() => parseClaimsData(content), [content]);
+  const { claims, cleanContent } = useMemo(() => {
+    const parsed = parseClaimsData(content);
+    return { ...parsed, cleanContent: normalizeMathDelimiters(parsed.cleanContent) };
+  }, [content]);
 
   const handleCopy = async () => {
     try {
@@ -120,8 +133,12 @@ export default function AnalysisDisplay({
 
       <div className={`prose-analysis ${streaming ? 'streaming-caret' : ''}`}>
         <ReactMarkdown
-          remarkPlugins={[remarkGfm]}
+          // singleDollarTextMath OFF: "$15 and $30" are prices on this site,
+          // not math delimiters. Math uses $$...$$ (inline or own-line block).
+          remarkPlugins={[remarkGfm, [remarkMath, { singleDollarTextMath: false }]]}
+          rehypePlugins={[rehypeKatex, rehypeEmojiIcons]}
           components={{
+            'emoji-icon': EmojiIcon,
             table: claims
               ? () => <ClaimsTable claims={claims} lang={lang} />
               : ({ children }) => (

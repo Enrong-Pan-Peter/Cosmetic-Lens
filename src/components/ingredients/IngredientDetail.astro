@@ -1,0 +1,313 @@
+---
+import {
+  type IngredientFull,
+  categoryName,
+  ingredientName,
+  relatedIngredients,
+  ingredientSlug,
+  idByInci,
+  interactionLevel,
+} from '../../lib/ingredients';
+import { getTranslations } from '../../i18n/utils';
+
+interface Props {
+  ingredient: IngredientFull;
+  lang: 'en' | 'zh';
+}
+
+const { ingredient: ing, lang } = Astro.props;
+const t = getTranslations(lang);
+const isZh = lang === 'zh';
+
+// Humanize snake_case tokens (many concern / skin-type values have no i18n key).
+function humanize(token: string): string {
+  return token
+    .split('_')
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ');
+}
+
+function concernLabel(id: string): string {
+  const dict = t.concerns as Record<string, string>;
+  return dict?.[id] ?? humanize(id);
+}
+
+function skinTypeLabel(id: string): string {
+  const dict = t.skin_types as Record<string, string>;
+  return dict?.[id] ?? humanize(id);
+}
+
+const functions = (isZh ? ing.functions?.zh : ing.functions?.en) ?? [];
+const notes = isZh ? ing.notes_zh : ing.notes_en;
+const evidenceNotes = isZh ? ing.evidence_notes_zh : ing.evidence_notes_en;
+const pregnancyNotes = isZh ? ing.pregnancy_notes_zh : ing.pregnancy_notes_en;
+const skinNotes = isZh ? ing.skin_types?.notes_zh : ing.skin_types?.notes_en;
+const concNotes = isZh
+  ? ing.effective_concentration?.notes_zh
+  : ing.effective_concentration?.notes_en;
+
+// Concentration numeric fields (exclude the note keys).
+const concEntries = Object.entries(ing.effective_concentration ?? {}).filter(
+  ([k]) => k !== 'notes_en' && k !== 'notes_zh',
+);
+
+const aliases = isZh ? ing.aliases_zh : ing.aliases_en;
+const related = relatedIngredients(ing, 6);
+
+const evidenceLabel =
+  ing.evidence_level === 'strong'
+    ? t.ingredients.evidence_strong
+    : ing.evidence_level === 'moderate'
+      ? t.ingredients.evidence_moderate
+      : t.ingredients.evidence_limited;
+
+const levelClasses: Record<string, string> = {
+  avoid: 'border-destructive/30 bg-destructive/5 text-destructive',
+  caution: 'border-amber-300 bg-amber-50 text-amber-800',
+  synergy: 'border-emerald-300 bg-emerald-50 text-emerald-800',
+  info: 'border-border bg-muted text-muted-foreground',
+};
+const levelLabel: Record<string, string> = {
+  avoid: t.ingredients.level_avoid,
+  caution: t.ingredients.level_caution,
+  synergy: t.ingredients.level_synergy,
+  info: t.ingredients.level_info,
+};
+---
+
+<article class="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
+  <a
+    href={`/${lang}/ingredients`}
+    class="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors"
+  >
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+    </svg>
+    {t.ingredients.back_to_index}
+  </a>
+
+  <!-- Header -->
+  <header class="mb-8">
+    {ing.category && (
+      <span class="inline-block px-3 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full mb-3">
+        {categoryName(ing.category, lang)}
+      </span>
+    )}
+    <h1 class="text-3xl font-bold text-foreground">
+      {isZh ? ing.chinese_name : ing.inci_name}
+    </h1>
+    <p class="text-muted-foreground mt-1">
+      {isZh ? ing.inci_name : ing.chinese_name}
+    </p>
+    {aliases && aliases.length > 0 && (
+      <p class="text-sm text-muted-foreground mt-2">
+        <span class="font-medium text-foreground">{t.ingredients.aliases}:</span>{' '}
+        {aliases.join(', ')}
+      </p>
+    )}
+  </header>
+
+  <div class="space-y-8">
+    <!-- Functions -->
+    {functions.length > 0 && (
+      <section>
+        <h2 class="text-lg font-semibold text-foreground mb-3">{t.ingredients.functions}</h2>
+        <ul class="space-y-1.5">
+          {functions.map((f) => (
+            <li class="flex gap-2 text-sm text-muted-foreground">
+              <span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary/60"></span>
+              <span>{f}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    <!-- Effective concentration -->
+    {concEntries.length > 0 && (
+      <section>
+        <h2 class="text-lg font-semibold text-foreground mb-3">
+          {t.ingredients.effective_concentration}
+        </h2>
+        <div class="flex flex-wrap gap-2">
+          {concEntries.map(([k, v]) => (
+            <span class="inline-flex items-baseline gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-sm">
+              <span class="text-muted-foreground">{humanize(k)}</span>
+              <span class="font-medium text-foreground">{v}</span>
+            </span>
+          ))}
+        </div>
+        {concNotes && <p class="text-sm text-muted-foreground mt-2">{concNotes}</p>}
+      </section>
+    )}
+
+    <!-- Evidence -->
+    {ing.evidence_level && (
+      <section>
+        <h2 class="text-lg font-semibold text-foreground mb-2">{t.ingredients.evidence}</h2>
+        <span class="inline-flex items-center rounded-full border border-border bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground">
+          {evidenceLabel}
+        </span>
+        {evidenceNotes && <p class="text-sm text-muted-foreground mt-2">{evidenceNotes}</p>}
+      </section>
+    )}
+
+    <!-- Skin types -->
+    {(ing.skin_types?.suited?.length || ing.skin_types?.caution?.length) && (
+      <section>
+        <h2 class="text-lg font-semibold text-foreground mb-3">{t.ingredients.skin_types}</h2>
+        <div class="space-y-2">
+          {ing.skin_types?.suited && ing.skin_types.suited.length > 0 && (
+            <div class="flex flex-wrap items-center gap-1.5">
+              <span class="text-sm text-muted-foreground mr-1">{t.ingredients.suited_for}:</span>
+              {ing.skin_types.suited.map((s) => (
+                <span class="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-xs text-emerald-800">
+                  {skinTypeLabel(s)}
+                </span>
+              ))}
+            </div>
+          )}
+          {ing.skin_types?.caution && ing.skin_types.caution.length > 0 && (
+            <div class="flex flex-wrap items-center gap-1.5">
+              <span class="text-sm text-muted-foreground mr-1">{t.ingredients.use_caution}:</span>
+              {ing.skin_types.caution.map((s) => (
+                <span class="inline-flex items-center rounded-full border border-amber-200 bg-amber-50 px-2.5 py-0.5 text-xs text-amber-800">
+                  {skinTypeLabel(s)}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+        {skinNotes && <p class="text-sm text-muted-foreground mt-2">{skinNotes}</p>}
+      </section>
+    )}
+
+    <!-- Concerns -->
+    {ing.concerns_addressed && ing.concerns_addressed.length > 0 && (
+      <section>
+        <h2 class="text-lg font-semibold text-foreground mb-3">
+          {t.ingredients.concerns_addressed}
+        </h2>
+        <div class="flex flex-wrap gap-1.5">
+          {ing.concerns_addressed.map((c) => (
+            <span class="inline-flex items-center rounded-full border border-border bg-muted px-2.5 py-0.5 text-xs text-muted-foreground">
+              {concernLabel(c)}
+            </span>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- Interactions -->
+    {ing.interactions && ing.interactions.length > 0 && (
+      <section>
+        <h2 class="text-lg font-semibold text-foreground mb-3">{t.ingredients.interactions}</h2>
+        <div class="space-y-2.5">
+          {ing.interactions.map((it) => {
+            const level = interactionLevel(it.type);
+            const partnerId = it.ingredient ? idByInci(it.ingredient) : undefined;
+            const partnerName = isZh ? it.ingredient_zh || it.ingredient : it.ingredient;
+            const details = isZh ? it.details_zh : it.details_en;
+            return (
+              <div class={`rounded-lg border px-4 py-3 ${levelClasses[level]}`}>
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="text-xs font-semibold uppercase tracking-wide">
+                    {levelLabel[level]}
+                  </span>
+                  {partnerId ? (
+                    <a
+                      href={`/${lang}/ingredients/${ingredientSlug(partnerId)}`}
+                      class="text-sm font-medium underline underline-offset-2 hover:opacity-80"
+                    >
+                      {partnerName}
+                    </a>
+                  ) : (
+                    <span class="text-sm font-medium">{partnerName}</span>
+                  )}
+                </div>
+                {details && <p class="text-sm opacity-90">{details}</p>}
+              </div>
+            );
+          })}
+        </div>
+      </section>
+    )}
+
+    <!-- Quick facts row -->
+    <section class="grid grid-cols-2 gap-3 sm:grid-cols-3">
+      {ing.irritation_potential && (
+        <div class="rounded-lg border border-border bg-card px-3 py-2.5">
+          <div class="text-xs text-muted-foreground">{t.ingredients.irritation_potential}</div>
+          <div class="text-sm font-medium text-foreground mt-0.5">
+            {humanize(ing.irritation_potential)}
+          </div>
+        </div>
+      )}
+      {typeof ing.comedogenic_rating === 'number' && (
+        <div class="rounded-lg border border-border bg-card px-3 py-2.5">
+          <div class="text-xs text-muted-foreground">{t.ingredients.comedogenic}</div>
+          <div class="text-sm font-medium text-foreground mt-0.5">
+            {ing.comedogenic_rating} / 5
+          </div>
+        </div>
+      )}
+      {typeof ing.pregnancy_safe === 'boolean' && (
+        <div class="rounded-lg border border-border bg-card px-3 py-2.5">
+          <div class="text-xs text-muted-foreground">{t.ingredients.pregnancy}</div>
+          <div
+            class={`text-sm font-medium mt-0.5 ${ing.pregnancy_safe ? 'text-emerald-700' : 'text-destructive'}`}
+          >
+            {ing.pregnancy_safe
+              ? t.ingredients.pregnancy_safe_yes
+              : t.ingredients.pregnancy_safe_no}
+          </div>
+        </div>
+      )}
+    </section>
+
+    {pregnancyNotes && (
+      <p class="text-sm text-muted-foreground -mt-4">{pregnancyNotes}</p>
+    )}
+
+    <!-- Notes -->
+    {notes && (
+      <section class="rounded-xl border border-border bg-muted/40 p-4">
+        <h2 class="text-sm font-semibold text-foreground mb-1">{t.ingredients.notes}</h2>
+        <p class="text-sm text-muted-foreground">{notes}</p>
+      </section>
+    )}
+
+    <!-- Related -->
+    {related.length > 0 && (
+      <section>
+        <h2 class="text-lg font-semibold text-foreground mb-3">{t.ingredients.related}</h2>
+        <div class="flex flex-wrap gap-2">
+          {related.map((r) => (
+            <a
+              href={`/${lang}/ingredients/${ingredientSlug(r.id)}`}
+              class="inline-flex items-center rounded-lg border border-border bg-card px-3 py-1.5 text-sm text-foreground hover:bg-accent transition-colors"
+            >
+              {ingredientName(r, lang)}
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- CTA -->
+    <section class="rounded-xl border border-primary/20 bg-primary/5 p-5">
+      <h2 class="text-base font-semibold text-foreground">{t.ingredients.cta_title}</h2>
+      <p class="text-sm text-muted-foreground mt-1">{t.ingredients.cta_desc}</p>
+      <a
+        href={`/${lang}/chat`}
+        class="mt-3 inline-flex items-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+      >
+        {t.ingredients.cta_button}
+      </a>
+    </section>
+
+    <p class="text-xs text-muted-foreground/80 border-t border-border pt-4">
+      {t.ingredients.disclaimer}
+    </p>
+  </div>
+</article>

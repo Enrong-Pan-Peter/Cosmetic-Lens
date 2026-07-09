@@ -48,7 +48,7 @@ const footerLinks = [
   <!-- Bottom: Copyright + Disclaimer -->
   <div class="mx-auto max-w-5xl px-4 py-6 sm:px-6">
     <p class="text-center text-sm text-muted-foreground">
-      {t.footer.copyright}
+      {t.footer.copyright.replace('{year}', String(new Date().getFullYear()))}
     </p>
     <p class="text-center text-xs text-muted-foreground/70 mt-2 max-w-2xl mx-auto">
       {t.footer.disclaimer_text}

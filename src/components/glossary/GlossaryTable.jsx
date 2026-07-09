@@ -160,9 +160,18 @@ export default function GlossaryTable({ entries, categories, lang, translations:
                   className="border-b border-border last:border-0 hover:bg-muted/50 transition-colors"
                 >
                   <td className="px-4 py-3">
-                    <div className="font-medium text-card-foreground">
-                      {entry.inci_name}
-                    </div>
+                    {entry.href ? (
+                      <a
+                        href={entry.href}
+                        className="font-medium text-card-foreground hover:text-primary hover:underline underline-offset-2"
+                      >
+                        {entry.inci_name}
+                      </a>
+                    ) : (
+                      <div className="font-medium text-card-foreground">
+                        {entry.inci_name}
+                      </div>
+                    )}
                     {entry.aliases_en?.length > 0 && (
                       <div className="text-xs text-muted-foreground mt-0.5">
                         {entry.aliases_en.join(', ')}

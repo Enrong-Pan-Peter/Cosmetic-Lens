@@ -1,31 +1,41 @@
 import { useState, useEffect } from 'react';
+import { ChatCircleText, Trash, ArrowRight } from '@phosphor-icons/react';
 import { supabase } from '../../lib/supabase';
 
+/**
+ * History page = the user's server-synced conversations (P3.5).
+ * Replaces the dead analysis_history list: nothing wrote that table from the
+ * chat flow, so logged-in users always saw an empty page. Chats are the real
+ * unit of history now; each row deep-links back into the chat UI via ?chat=.
+ */
 export default function HistoryList({ lang, translations: t }) {
-  const [history, setHistory] = useState([]);
+  const [chats, setChats] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [total, setTotal] = useState(0);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchHistory();
+    fetchChats();
   }, []);
 
-  const fetchHistory = async () => {
+  const fetchChats = async () => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
-      if (!session) return;
-
-      const response = await fetch('/api/history?limit=50', {
-        headers: { 'Authorization': `Bearer ${session.access_token}` },
-      });
-
-      const result = await response.json();
-      if (result.success) {
-        setHistory(result.data || []);
-        setTotal(result.total || 0);
+      if (!session) {
+        setLoading(false);
+        return;
       }
-    } catch (error) {
-      console.error('Error loading history:', error);
+      const res = await fetch('/api/chats', {
+        headers: { Authorization: `Bearer ${session.access_token}` },
+      });
+      const result = await res.json();
+      if (result.success) {
+        setChats(result.data || []);
+      } else {
+        setError(result.error || 'error');
+      }
+    } catch (err) {
+      console.error('Error loading chats:', err);
+      setError('network');
     } finally {
       setLoading(false);
     }
@@ -33,62 +43,66 @@ export default function HistoryList({ lang, translations: t }) {
 
   const handleDelete = async (id) => {
     if (!confirm(t.history.delete_confirm)) return;
-
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) return;
-
-      const response = await fetch(`/api/history?id=${id}`, {
+      const res = await fetch(`/api/chats/${encodeURIComponent(id)}`, {
         method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${session.access_token}` },
+        headers: { Authorization: `Bearer ${session.access_token}` },
       });
-
-      const result = await response.json();
-      if (result.success) {
-        setHistory((prev) => prev.filter((item) => item.id !== id));
-        setTotal((prev) => prev - 1);
+      if (res.ok) {
+        setChats((prev) => prev.filter((c) => c.id !== id));
       }
-    } catch (error) {
-      console.error('Error deleting history item:', error);
+    } catch (err) {
+      console.error('Error deleting chat:', err);
     }
   };
 
-  const formatDate = (dateStr) => {
-    const date = new Date(dateStr);
-    return date.toLocaleDateString(lang === 'zh' ? 'zh-CN' : 'en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
+  const formatDate = (iso) => {
+    if (!iso) return '';
+    try {
+      return new Date(iso).toLocaleDateString(lang === 'zh' ? 'zh-CN' : 'en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+    } catch {
+      return iso;
+    }
   };
 
   if (loading) {
     return (
-      <div className="space-y-4">
-        {[1, 2, 3].map((i) => (
-          <div key={i} className="h-20 bg-muted rounded-lg animate-pulse" />
+      <div className="space-y-3">
+        {[0, 1, 2].map((i) => (
+          <div key={i} className="h-16 rounded-xl border border-border bg-muted/40 animate-pulse" />
         ))}
       </div>
     );
   }
 
-  if (history.length === 0) {
+  if (error) {
+    return (
+      <div className="text-center py-12 text-muted-foreground">
+        {lang === 'zh' ? '加载失败，请刷新重试。' : 'Failed to load. Please refresh and try again.'}
+      </div>
+    );
+  }
+
+  if (chats.length === 0) {
     return (
       <div className="text-center py-16">
-        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-muted flex items-center justify-center">
-          <svg className="w-8 h-8 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        </div>
-        <h3 className="text-lg font-medium text-foreground mb-1">{t.history.empty}</h3>
-        <p className="text-muted-foreground mb-6">{t.history.empty_desc}</p>
+        <ChatCircleText size={40} className="mx-auto text-muted-foreground/60" />
+        <h3 className="mt-4 text-lg font-medium text-foreground">{t.history.empty}</h3>
+        <p className="mt-1 text-sm text-muted-foreground">{t.history.empty_desc}</p>
         <a
           href={`/${lang}/chat`}
-          className="inline-flex px-6 py-2.5 bg-primary text-primary-foreground font-medium rounded-lg hover:bg-primary/90 transition-colors"
+          className="mt-6 inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90 transition-opacity"
         >
           {t.history.analyze_now}
+          <ArrowRight size={14} />
         </a>
       </div>
     );
@@ -96,40 +110,37 @@ export default function HistoryList({ lang, translations: t }) {
 
   return (
     <div className="space-y-3">
-      <p className="text-sm text-muted-foreground mb-4">
-        {total} {lang === 'zh' ? '条记录' : 'analyses'}
-      </p>
-
-      {history.map((item) => (
+      {chats.map((chat) => (
         <div
-          key={item.id}
-          className="flex items-center justify-between p-4 bg-background border border-border rounded-lg hover:border-primary/20 transition-colors"
+          key={chat.id}
+          className="group flex items-center gap-3 rounded-xl border border-border bg-card px-4 py-3 hover:border-primary/40 transition-colors"
         >
-          <div className="flex-1 min-w-0">
-            <h3 className="font-medium text-foreground truncate">
-              {item.product_name}
-            </h3>
-            <div className="flex items-center gap-3 mt-1">
-              {item.product_brand && (
-                <span className="text-sm text-muted-foreground">{item.product_brand}</span>
-              )}
-              <span className="text-xs text-muted-foreground">
-                {t.history.analyzed_on} {formatDate(item.created_at)}
-              </span>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
-                {item.language === 'zh' ? '中文' : 'EN'}
-              </span>
-            </div>
+          <ChatCircleText size={20} className="shrink-0 text-primary" />
+          <div className="min-w-0 flex-1">
+            <a
+              href={`/${lang}/chat?chat=${encodeURIComponent(chat.id)}`}
+              className="block truncate text-sm font-medium text-foreground hover:text-primary transition-colors"
+            >
+              {chat.title || (lang === 'zh' ? '未命名对话' : 'Untitled chat')}
+            </a>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              {t.history.updated_on} {formatDate(chat.updated_at)}
+            </p>
           </div>
-
+          <a
+            href={`/${lang}/chat?chat=${encodeURIComponent(chat.id)}`}
+            className="shrink-0 rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-foreground hover:bg-muted transition-colors"
+          >
+            {t.history.open}
+          </a>
           <button
-            onClick={() => handleDelete(item.id)}
-            className="ml-4 p-2 text-muted-foreground hover:text-destructive transition-colors shrink-0"
+            type="button"
+            onClick={() => handleDelete(chat.id)}
+            className="shrink-0 rounded-lg p-1.5 text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
+            aria-label={t.history.delete}
             title={t.history.delete}
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-            </svg>
+            <Trash size={16} />
           </button>
         </div>
       ))}

@@ -1,6 +1,7 @@
-import { Microscope } from '@phosphor-icons/react';
+import { Microscope, SealCheck, BookOpen, TreeStructure, ClockCounterClockwise } from '@phosphor-icons/react';
 import AnalysisDisplay from './AnalysisDisplay';
 import AgentTrace from './AgentTrace';
+import MessageFeedback from './MessageFeedback';
 
 export default function ChatMessage({
   message,
@@ -9,6 +10,9 @@ export default function ChatMessage({
   onFindDupes,
   onSimilarIngredients,
   agentLabels,
+  t,
+  token,
+  chatId,
 }) {
   const isUser = message.role === 'user';
 
@@ -53,7 +57,7 @@ export default function ChatMessage({
 
       <div className="flex-1 min-w-0">
         {/* Source / product badge row */}
-        {(message.product || message.source) && (
+        {(message.product || message.source || message.cached) && (
           <div className="flex items-center flex-wrap gap-x-2 gap-y-1 mb-2">
             {message.product?.name && (
               <span className="text-sm font-medium text-foreground">
@@ -67,22 +71,26 @@ export default function ChatMessage({
             )}
 
             {message.source === 'verified' && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-green-50 border border-green-200 px-2 py-0.5 text-[11px] font-medium text-green-700">
-                ✅ {lang === 'zh' ? '已验证' : 'Verified'}
+              <span className="inline-flex items-center gap-1 rounded-full bg-card border border-border px-2 py-0.5 text-[11px] font-medium text-foreground">
+                <SealCheck size={12} weight="regular" aria-hidden="true" />
+                {lang === 'zh' ? '已验证' : 'Verified'}
               </span>
             )}
             {message.source === 'llm_knowledge' && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 border border-amber-200 px-2 py-0.5 text-[11px] font-medium text-amber-700">
-                ⚠️ {lang === 'zh' ? '基于配方知识' : 'Based on knowledge'}
+              <span className="inline-flex items-center gap-1 rounded-full bg-card border border-border px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+                <BookOpen size={12} weight="regular" aria-hidden="true" />
+                {lang === 'zh' ? '基于配方知识' : 'Based on knowledge'}
               </span>
             )}
             {message.source === 'agentic' && message.mode === 'agentic' && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-violet-50 border border-violet-200 px-2 py-0.5 text-[11px] font-medium text-violet-700">
-                🤖 {lang === 'zh' ? '智能体式' : 'Agentic'}
+              <span className="inline-flex items-center gap-1 rounded-full bg-card border border-border px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+                <TreeStructure size={12} weight="regular" aria-hidden="true" />
+                {lang === 'zh' ? '智能体式' : 'Agentic'}
               </span>
             )}
             {message.cached && (
-              <span className="inline-flex items-center rounded-full bg-muted border border-border px-2 py-0.5 text-[11px] text-muted-foreground">
+              <span className="inline-flex items-center gap-1 rounded-full bg-card border border-border px-2 py-0.5 text-[11px] text-muted-foreground">
+                <ClockCounterClockwise size={12} weight="regular" aria-hidden="true" />
                 {lang === 'zh' ? '缓存' : 'Cached'}
               </span>
             )}
@@ -109,6 +117,42 @@ export default function ChatMessage({
           onFindDupes={onFindDupes}
           onSimilarIngredients={onSimilarIngredients}
         />
+
+        {/* Provenance chips (P4.2): which KB entries grounded this answer */}
+        {!message._streaming && Array.isArray(message.sources) && message.sources.length > 0 && (
+          <div className="mt-2 flex flex-wrap items-center gap-1.5">
+            <span className="text-[11px] text-muted-foreground">
+              {lang === 'zh' ? '资料来源' : 'Sources'}:
+            </span>
+            {message.sources.slice(0, 6).map((s, i) => (
+              <span
+                key={`${s.type}-${s.name}-${i}`}
+                className="inline-flex items-center rounded-full bg-muted border border-border px-2 py-0.5 text-[11px] text-muted-foreground"
+                title={lang === 'zh' ? '来自 CosmeticLens 知识库' : 'From the CosmeticLens knowledge base'}
+              >
+                {s.type ? `${s.type} · ` : ''}{s.name}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {/* Answer feedback (7.3) — only on completed, non-empty answers */}
+        {t?.feedback &&
+          !message._streaming &&
+          !message.stopped &&
+          typeof message.content === 'string' &&
+          message.content.trim().length > 0 && (
+            <MessageFeedback
+              lang={lang}
+              t={t}
+              token={token}
+              chatId={chatId}
+              query={prevUserContent}
+              answer={message.content}
+              intent={message.intent}
+              pipeline={message.mode || message.source}
+            />
+          )}
       </div>
     </div>
   );

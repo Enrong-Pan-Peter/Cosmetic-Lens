@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../../../components/layout/BaseLayout.astro';
+import IngredientDetail from '../../../components/ingredients/IngredientDetail.astro';
+import { ALL_INGREDIENTS, ingredientSlug, type IngredientFull } from '../../../lib/ingredients';
+
+export const prerender = true;
+
+const lang = 'en';
+
+export function getStaticPaths() {
+  return ALL_INGREDIENTS.map((ing) => ({
+    params: { id: ingredientSlug(ing.id) },
+    props: { ingredient: ing },
+  }));
+}
+
+const { ingredient } = Astro.props as { ingredient: IngredientFull };
+
+const description = `${ingredient.inci_name} (${ingredient.chinese_name}) — functions, effective concentration, interactions, and pregnancy safety.`;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'DefinedTerm',
+  name: ingredient.inci_name,
+  alternateName: [ingredient.chinese_name, ...(ingredient.aliases_en ?? [])],
+  description,
+  inDefinedTermSet: 'CosmeticLens Ingredient Library',
+};
+---
+
+<BaseLayout title={ingredient.inci_name} description={description} lang={lang} jsonLd={jsonLd}>
+  <IngredientDetail ingredient={ingredient} lang={lang} />
+</BaseLayout>

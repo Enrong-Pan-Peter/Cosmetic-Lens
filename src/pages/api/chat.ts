@@ -16,11 +16,17 @@ import {
 } from '../../lib/prompt';
 import { classifyLatestIntent, type ChatIntent } from '../../lib/intent';
 import { searchKnowledge } from '../../lib/embeddings';
+import { expandQuery } from '../../lib/query-expansion';
 import { findDupes } from '../../lib/dupe-finder';
 import { searchProduct, extractIngredients } from '../../lib/openbeautyfacts';
 import { createServerClient } from '../../lib/supabase';
+import { getUserFromRequest } from '../../lib/auth';
+import { enforceRateLimit, getClientIp, rateLimitResponse } from '../../lib/rate-limit';
 
 const MAX_HISTORY_MESSAGES = 10;
+// Input caps — generous for real use, hostile to abuse (P1.3).
+const MAX_MESSAGES = 40;
+const MAX_MESSAGE_CHARS = 8000;
 
 // SSE helpers ----------------------------------------------------------------
 
@@ -36,7 +42,7 @@ function sseError(controller: ReadableStreamDefaultController<Uint8Array>, error
 
 // ----------------------------------------------------------------------------
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, clientAddress }) => {
   let body: any;
   try {
     body = await request.json();
@@ -50,15 +56,26 @@ export const POST: APIRoute = async ({ request }) => {
   const {
     messages: clientMessages = [],
     language = 'en',
-    userId = null,
   } = body as {
     messages: Array<{ role: string; content: string }>;
     language: string;
-    userId?: string | null;
   };
+
+  // Identity comes ONLY from the verified JWT — never from the body (IDOR fix).
+  const authedUser = await getUserFromRequest(request);
 
   if (!Array.isArray(clientMessages) || clientMessages.length === 0) {
     return new Response(JSON.stringify({ success: false, error: 'No messages provided' }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  if (
+    clientMessages.length > MAX_MESSAGES ||
+    clientMessages.some((m) => typeof m?.content === 'string' && m.content.length > MAX_MESSAGE_CHARS)
+  ) {
+    return new Response(JSON.stringify({ success: false, error: 'Message too long' }), {
       status: 400,
       headers: { 'Content-Type': 'application/json' },
     });
@@ -82,6 +99,18 @@ export const POST: APIRoute = async ({ request }) => {
     });
   }
 
+  // Daily rate limit (per-user when authed, per-IP otherwise). Runs before
+  // any LLM/OBF/RAG spend.
+  const rl = await enforceRateLimit({
+    cls: 'chat',
+    userId: authedUser?.id ?? null,
+    ip: getClientIp(request, clientAddress),
+    request,
+  });
+  if (!rl.allowed) {
+    return rateLimitResponse('chat', lang, Boolean(authedUser));
+  }
+
   // Stream over Server-Sent Events. The client sets `Accept: text/event-stream`,
   // but we stream unconditionally — non-streaming clients can buffer.
   const stream = new ReadableStream<Uint8Array>({
@@ -97,13 +126,13 @@ export const POST: APIRoute = async ({ request }) => {
         // 1. Load profile if authenticated (best-effort)
         // -----------------------------------------------------------------
         let userProfile = null;
-        if (userId) {
+        if (authedUser) {
           try {
             const supabase = createServerClient();
             const { data } = await supabase
               .from('profiles')
               .select('*')
-              .eq('user_id', userId)
+              .eq('user_id', authedUser.id)
               .single();
             userProfile = data;
           } catch {
@@ -173,7 +202,7 @@ export const POST: APIRoute = async ({ request }) => {
           const inciNames = ingredientData.map((i: any) => i.inci_name).filter(Boolean);
           const rawNames = ingredientList
             ? ingredientList
-                .split(/[,\n]/)
+                .split(/[,，、\n]/)
                 .map((i) => i.trim())
                 .filter((i) => i.length > 2)
             : [];
@@ -186,13 +215,33 @@ export const POST: APIRoute = async ({ request }) => {
         // 5. RAG retrieval
         // -----------------------------------------------------------------
         let ragContext = '';
+        const sources: Array<{ type: string; name: string }> = [];
         try {
-          const results = await searchKnowledge(userText, { matchCount: 6 });
+          // Query transformation (8.3): rewrite a bare follow-up into a
+          // standalone query by re-attaching the recent subject.
+          const priorTexts = clientMessages
+            .filter((m) => m !== lastUserMsg)
+            .map((m) => m.content);
+          const retrievalQuery = expandQuery(userText, priorTexts);
+          // Language-filtered retrieval (P4.1) — zh users search zh rows.
+          const results = await searchKnowledge(retrievalQuery, { matchCount: 6, language: lang });
           const relevant = results.filter((r) => r.similarity > 0.3);
           if (relevant.length > 0) {
             ragContext = relevant
               .map((r) => `[${r.content_type}] ${r.content}`)
               .join('\n---\n');
+            // Provenance chips (P4.2)
+            for (const r of relevant.slice(0, 6)) {
+              sources.push({
+                type: r.content_type,
+                name:
+                  r.metadata?.inci_name ||
+                  r.metadata?.name ||
+                  r.metadata?.original_name ||
+                  r.metadata?.title ||
+                  String(r.content ?? '').slice(0, 40),
+              });
+            }
           }
           if (dupeResult?.dupes?.length) {
             ragContext +=
@@ -211,6 +260,7 @@ export const POST: APIRoute = async ({ request }) => {
           sseEvent('meta', {
             source,
             dupes: dupeResult?.dupes ?? undefined,
+            sources: sources.length ? sources : undefined,
           }),
         );
 
@@ -256,11 +306,17 @@ export const POST: APIRoute = async ({ request }) => {
         // -----------------------------------------------------------------
         const abortSignal = request.signal;
 
+        // Consistency (P4.5): structured product/dupe analyses run cooler
+        // than conversational knowledge answers, so re-asking about the same
+        // product yields stable verdicts.
+        const temperature = intent === 'product' || intent === 'dupe' ? 0.4 : 0.7;
+
         for await (const chunk of streamOpenAIChat({
           messages: openaiMessages,
-          temperature: 0.7,
+          temperature,
           maxTokens: 2048,
           signal: abortSignal,
+          telemetryEndpoint: 'chat',
         })) {
           if (abortSignal?.aborted) break;
           if (chunk.type === 'delta' && chunk.delta) {

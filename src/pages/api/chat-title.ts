@@ -1,5 +1,7 @@
 import type { APIRoute } from 'astro';
 import { callOpenAIChatWithRetry, type ChatMessage } from '../../lib/openai';
+import { enforceRateLimit, getClientIp, rateLimitResponse } from '../../lib/rate-limit';
+import { logLlmCall } from '../../lib/telemetry';
 
 const MAX_INPUT_CHARS = 600;
 const TITLE_FALLBACK_LEN = 40;
@@ -21,7 +23,8 @@ const SYSTEM_PROMPT_ZH = `你为护肤对话生成简短的标题。
 - 知识类问题，总结主题（例：早C晚A搭配）
 只输出标题本身，不要任何其他文字。`;
 
-function cleanTitle(raw: string): string {
+/** Exported for unit tests. */
+export function cleanTitle(raw: string): string {
   return raw
     .trim()
     .replace(/^["'「『《]+|["'」』》]+$/g, '')
@@ -30,7 +33,7 @@ function cleanTitle(raw: string): string {
     .slice(0, 80);
 }
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, clientAddress }) => {
   try {
     const body = await request.json();
     const { message, language = 'en' } = body as { message?: string; language?: string };
@@ -43,6 +46,17 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     const lang = language === 'zh' ? 'zh' : 'en';
+
+    // Cheap endpoint, but still an LLM call — per-IP daily cap.
+    const rl = await enforceRateLimit({
+      cls: 'light',
+      ip: getClientIp(request, clientAddress),
+      request,
+    });
+    if (!rl.allowed) {
+      return rateLimitResponse('light', lang, false);
+    }
+
     const trimmed = message.trim().slice(0, MAX_INPUT_CHARS);
 
     const fallback =
@@ -55,10 +69,20 @@ export const POST: APIRoute = async ({ request }) => {
       { role: 'user', content: trimmed },
     ];
 
+    const titleStarted = Date.now();
     const result = await callOpenAIChatWithRetry({
       messages,
       temperature: 0.3,
       maxTokens: 30,
+    });
+    logLlmCall({
+      endpoint: 'chat-title',
+      model: result.model ?? null,
+      promptTokens: result.usage?.prompt_tokens ?? null,
+      completionTokens: result.usage?.completion_tokens ?? null,
+      latencyMs: Date.now() - titleStarted,
+      ok: result.success,
+      error: result.success ? null : (result.error ?? 'unknown'),
     });
 
     if (!result.success || !result.content) {

@@ -13,6 +13,8 @@ interface OpenAIResponse {
   success: boolean;
   content?: string;
   error?: string;
+  model?: string;
+  usage?: { prompt_tokens?: number; completion_tokens?: number };
 }
 
 // ================================================================
@@ -34,7 +36,13 @@ export interface ChatRequest {
 // Shared internals
 // ================================================================
 
-const PRIMARY_MODEL = 'gpt-4.1-mini';
+import { logLlmCall } from './telemetry';
+import { buildModelParams } from './model-params';
+
+// Primary is gpt-5.4-mini (generous free daily quota). gpt-4o-mini stays as
+// the resilience fallback: if the primary errors on connect, we switch once
+// and never mid-stream.
+const PRIMARY_MODEL = 'gpt-5.4-mini';
 const FALLBACK_MODEL = 'gpt-4o-mini';
 
 async function callModel(
@@ -60,9 +68,7 @@ async function callModel(
       body: JSON.stringify({
         model,
         messages,
-        temperature,
-        max_tokens: maxTokens,
-        top_p: 0.95,
+        ...buildModelParams(model, { temperature, maxTokens, topP: 0.95 }),
       }),
     });
 
@@ -79,7 +85,7 @@ async function callModel(
       return { success: false, error: 'No content in response' };
     }
 
-    return { success: true, content };
+    return { success: true, content, model, usage: data.usage ?? undefined };
   } catch (error) {
     console.error(`OpenAI API error (${model}):`, error);
     return {
@@ -182,6 +188,8 @@ export interface StreamChunk {
   type: 'delta' | 'done' | 'error';
   delta?: string;
   error?: string;
+  /** Real token usage (present on 'done' when the API sent a usage frame). */
+  usage?: { prompt_tokens?: number; completion_tokens?: number };
 }
 
 export interface StreamRequest extends ChatRequest {
@@ -190,6 +198,11 @@ export interface StreamRequest extends ChatRequest {
    * cleans up. Server should pass the request signal here.
    */
   signal?: AbortSignal;
+  /**
+   * When set, the call is logged to `llm_calls` (P4.6) under this endpoint
+   * name, with real token counts from stream_options.include_usage.
+   */
+  telemetryEndpoint?: string;
 }
 
 /**
@@ -209,10 +222,13 @@ export async function* streamOpenAIChat(
   const body = JSON.stringify({
     model: PRIMARY_MODEL,
     messages: request.messages,
-    temperature: request.temperature ?? 0.7,
-    max_tokens: request.maxTokens ?? 4096,
-    top_p: 0.95,
+    ...buildModelParams(PRIMARY_MODEL, {
+      temperature: request.temperature ?? 0.7,
+      maxTokens: request.maxTokens ?? 4096,
+      topP: 0.95,
+    }),
     stream: true,
+    stream_options: { include_usage: true },
   });
 
   let response: Response;
@@ -237,11 +253,62 @@ export async function* streamOpenAIChat(
     console.warn(
       `OpenAI streaming error (${PRIMARY_MODEL}): ${response.status} ${errorText}; trying fallback`,
     );
+    if (request.telemetryEndpoint) {
+      logLlmCall({
+        endpoint: request.telemetryEndpoint,
+        model: PRIMARY_MODEL,
+        ok: false,
+        error: `HTTP ${response.status}`,
+      });
+    }
     yield* streamWithModel(FALLBACK_MODEL, request, apiKey);
     return;
   }
 
-  yield* parseSSE(response.body, request.signal);
+  yield* withStreamTelemetry(
+    parseSSE(response.body, request.signal),
+    request.telemetryEndpoint,
+    PRIMARY_MODEL,
+  );
+}
+
+/**
+ * Pass-through generator that records one llm_calls row when the stream
+ * finishes (done or error). No-op when endpoint is undefined.
+ */
+async function* withStreamTelemetry(
+  inner: AsyncGenerator<StreamChunk, void, void>,
+  endpoint: string | undefined,
+  model: string,
+): AsyncGenerator<StreamChunk, void, void> {
+  if (!endpoint) {
+    yield* inner;
+    return;
+  }
+  const started = Date.now();
+  let usage: StreamChunk['usage'] = undefined;
+  let ok = true;
+  let errMsg: string | undefined;
+  try {
+    for await (const chunk of inner) {
+      if (chunk.type === 'done' && chunk.usage) usage = chunk.usage;
+      if (chunk.type === 'error') {
+        ok = false;
+        errMsg = chunk.error;
+      }
+      yield chunk;
+    }
+  } finally {
+    logLlmCall({
+      endpoint,
+      model,
+      promptTokens: usage?.prompt_tokens ?? null,
+      completionTokens: usage?.completion_tokens ?? null,
+      latencyMs: Date.now() - started,
+      ok,
+      error: errMsg ?? null,
+    });
+  }
 }
 
 async function* streamWithModel(
@@ -260,10 +327,13 @@ async function* streamWithModel(
       body: JSON.stringify({
         model,
         messages: request.messages,
-        temperature: request.temperature ?? 0.7,
-        max_tokens: request.maxTokens ?? 4096,
-        top_p: 0.95,
+        ...buildModelParams(model, {
+          temperature: request.temperature ?? 0.7,
+          maxTokens: request.maxTokens ?? 4096,
+          topP: 0.95,
+        }),
         stream: true,
+        stream_options: { include_usage: true },
       }),
       signal: request.signal,
     });
@@ -279,7 +349,7 @@ async function* streamWithModel(
     return;
   }
 
-  yield* parseSSE(response.body, request.signal);
+  yield* withStreamTelemetry(parseSSE(response.body, request.signal), request.telemetryEndpoint, model);
 }
 
 async function* parseSSE(
@@ -289,6 +359,7 @@ async function* parseSSE(
   const reader = body.getReader();
   const decoder = new TextDecoder();
   let buffer = '';
+  let usage: StreamChunk['usage'] = undefined;
 
   try {
     while (true) {
@@ -304,11 +375,13 @@ async function* parseSSE(
         if (!rawLine.startsWith('data:')) continue;
         const data = rawLine.slice(5).trim();
         if (data === '[DONE]') {
-          yield { type: 'done' };
+          yield { type: 'done', usage };
           return;
         }
         try {
           const json = JSON.parse(data);
+          // Final usage frame (stream_options.include_usage) has empty choices.
+          if (json.usage) usage = json.usage;
           const delta: string | undefined = json.choices?.[0]?.delta?.content;
           if (delta) yield { type: 'delta', delta };
         } catch (err) {
@@ -316,7 +389,7 @@ async function* parseSSE(
         }
       }
     }
-    yield { type: 'done' };
+    yield { type: 'done', usage };
   } catch (err) {
     if ((err as Error).name === 'AbortError') return;
     yield { type: 'error', error: (err as Error).message };

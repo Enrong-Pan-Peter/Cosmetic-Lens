@@ -1,10 +1,78 @@
-// @ts-nocheck - raw import for markdown
 import systemPromptTemplate from '../data/system-prompt.md?raw';
-import ingredientsDatabase from '../data/ingredients-database.json';
+import rawIngredientsDatabase from '../data/ingredients-database.json';
 import translationsReference from '../data/translations-reference.json';
-import ingredientInteractions from '../data/ingredient-interactions.json';
+import rawIngredientInteractions from '../data/ingredient-interactions.json';
 
 export type Language = 'en' | 'zh';
+
+// ================================================
+// Curated-data shapes (fields optional where the JSON varies per entry).
+// The JSON imports are cast once here: TypeScript's inferred literal-union
+// types for 100-entry JSON files make per-property access impractical, so
+// the boundary cast to a documented interface is the honest tradeoff.
+// ================================================
+
+export interface IngredientRecord {
+  id: string;
+  inci_name: string;
+  chinese_name: string;
+  aliases_en?: string[];
+  aliases_zh?: string[];
+  category?: string;
+  subcategory?: string;
+  functions?: { en?: string[]; zh?: string[] };
+  effective_concentration?: {
+    minimum?: string;
+    optimal?: string;
+    maximum_beneficial?: string;
+    notes_en?: string;
+    notes_zh?: string;
+  };
+  evidence_level?: string;
+  skin_types?: { suited?: string[]; caution?: string[] };
+  concerns_addressed?: string[];
+  interactions?: Array<{ ingredient?: string; details_en?: string; details_zh?: string }>;
+  irritation_potential?: string;
+  pregnancy_safe?: boolean;
+  pregnancy_notes_en?: string;
+  notes_en?: string;
+  notes_zh?: string;
+}
+
+export interface InteractionPair {
+  ingredients?: string[];
+  ingredients_zh?: string[];
+  level?: string;
+  context?: string;
+  warning_en?: string;
+  warning_zh?: string;
+}
+
+const ingredientsDatabase = rawIngredientsDatabase as unknown as {
+  ingredients: IngredientRecord[];
+};
+const ingredientInteractions = rawIngredientInteractions as unknown as {
+  pairs: InteractionPair[];
+};
+
+/** Subset of IngredientRecord surfaced to the LLM for matched ingredients. */
+export type MatchedIngredient = Pick<
+  IngredientRecord,
+  | 'id'
+  | 'inci_name'
+  | 'chinese_name'
+  | 'category'
+  | 'functions'
+  | 'effective_concentration'
+  | 'evidence_level'
+  | 'skin_types'
+  | 'concerns_addressed'
+  | 'interactions'
+  | 'irritation_potential'
+  | 'pregnancy_safe'
+  | 'notes_en'
+  | 'notes_zh'
+>;
 
 /** Where the ingredient data came from */
 export type IngredientSource = 'verified' | 'llm_knowledge';
@@ -56,7 +124,7 @@ export function buildSystemPrompt(
 
 export function buildUserMessage(
   context: ProductContext,
-  ingredientData: any[],
+  ingredientData: MatchedIngredient[],
   language: Language = 'en'
 ): string {
   let message = `[source: verified]\n\nPlease analyze this cosmetic product:\n\n`;
@@ -122,14 +190,14 @@ export function buildProductNameOnlyMessage(
 // INGREDIENT DATA LOOKUP
 // ================================================
 
-export function findIngredientData(ingredientList: string): any[] {
+export function findIngredientData(ingredientList: string): MatchedIngredient[] {
   const ingredients = ingredientList
-    .split(/[,\n]/)
+    .split(/[,，、\n]/)
     .map(i => i.trim().toLowerCase())
     .filter(i => i.length > 0)
     .slice(0, 40);
 
-  const matches: any[] = [];
+  const matches: MatchedIngredient[] = [];
   const matchedIds = new Set<string>();
 
   for (const ingredient of ingredients) {
@@ -141,8 +209,8 @@ export function findIngredientData(ingredientList: string): any[] {
       const isMatch =
         dbIngredient.inci_name.toLowerCase() === ingredient ||
         dbIngredient.chinese_name === ingredient ||
-        dbIngredient.aliases_en?.some((a: string) => a.toLowerCase() === ingredient) ||
-        dbIngredient.aliases_zh?.some((a: string) => a === ingredient) ||
+        dbIngredient.aliases_en?.some((a) => a.toLowerCase() === ingredient) ||
+        dbIngredient.aliases_zh?.some((a) => a === ingredient) ||
         ingredient.includes(dbIngredient.inci_name.toLowerCase()) ||
         dbIngredient.inci_name.toLowerCase().includes(ingredient);
 
@@ -153,7 +221,7 @@ export function findIngredientData(ingredientList: string): any[] {
           chinese_name: dbIngredient.chinese_name,
           category: dbIngredient.category,
           functions: dbIngredient.functions,
-          effective_concentration: (dbIngredient as any).effective_concentration,
+          effective_concentration: dbIngredient.effective_concentration,
           evidence_level: dbIngredient.evidence_level,
           skin_types: dbIngredient.skin_types,
           concerns_addressed: dbIngredient.concerns_addressed,
@@ -195,7 +263,7 @@ function normalizeIngredientForMatch(name: string): string[] {
   return [...new Set([n, ...aliases])];
 }
 
-function productHasIngredient(productNames: string[], interactionIngredient: string): boolean {
+export function productHasIngredient(productNames: string[], interactionIngredient: string): boolean {
   const productSet = new Set(productNames.map((p) => p.toLowerCase().trim()));
   const matchVariants = normalizeIngredientForMatch(interactionIngredient);
   return matchVariants.some((v) =>
@@ -258,7 +326,13 @@ export function formatInteractionWarnings(warnings: InteractionWarning[], lang: 
   const header = isZh ? '**成分相互作用提示**' : '**Ingredient Interaction Warnings**';
   const lines = warnings.map((w) => {
     const text = isZh ? w.warning_zh || w.warning_en : w.warning_en || w.warning_zh;
-    const prefix = w.level === 'avoid' ? '🚫' : w.level === 'caution' ? '⚠️' : 'ℹ️';
+    // Plain-text severity labels — no emoji (design language is monochrome).
+    const prefix =
+      w.level === 'avoid'
+        ? isZh ? '【避免】' : '**Avoid:**'
+        : w.level === 'caution'
+          ? isZh ? '【注意】' : '**Caution:**'
+          : isZh ? '【提示】' : '**Note:**';
     return `${prefix} ${text}`;
   });
 
@@ -389,7 +463,23 @@ function getPriceLabel(price: string, lang: Language): string {
 
 const QUESTION_STARTS_EN = /^\s*(what|how|which|why|who|when|where|is|are|can|do|does|should|could|would|tell|explain|compare|recommend|suggest|find)/i;
 const QUESTION_STARTS_ZH = /^\s*(什么|怎么|为什么|哪个|哪些|是否|能不能|可以|推荐|比较|建议|告诉|解释|找)/;
-const KNOWN_BRANDS = /\b(cerave|la roche[- ]posay|the ordinary|neutrogena|cetaphil|olay|l'?oreal|laneige|innisfree|sulwhasoo|sk[- ]?ii|clinique|estee lauder|drunk elephant|paula'?s choice|cosrx|missha|bioderma|avene|vichy|eucerin|first aid beauty|tatcha|glow recipe|kiehl'?s|shiseido|fresh|origins|philosophy|murad|dermalogica|sunday riley|peter thomas roth|belief|珂润|薇诺娜|玉泽|理肤泉|雅漾|适乐肤|修丽可|欧莱雅|兰蔻|资生堂|黛珂|至本|润百颜|敷尔佳|完美日记)\b/i;
+// NOTE: split into EN/ZH because JS `\b` is ASCII-only — a `\b`-wrapped
+// alternation can NEVER match Chinese brand names (eval finding int-041..045:
+// zh intent accuracy was 55% because every zh brand here was dead code).
+const KNOWN_BRANDS_EN = /\b(cerave|la roche[- ]posay|the ordinary|neutrogena|cetaphil|olay|l'?oreal|laneige|innisfree|sulwhasoo|sk[- ]?ii|clinique|estee lauder|drunk elephant|paula'?s choice|cosrx|missha|bioderma|avene|vichy|eucerin|first aid beauty|tatcha|glow recipe|kiehl'?s|shiseido|fresh|origins|philosophy|murad|dermalogica|sunday riley|peter thomas roth|belief)\b/i;
+const KNOWN_BRANDS_ZH = /(珂润|薇诺娜|玉泽|理肤泉|雅漾|适乐肤|修丽可|欧莱雅|兰蔻|资生堂|黛珂|至本|润百颜|敷尔佳|完美日记|雅诗兰黛|海蓝之谜|娇兰|香奈儿|科颜氏|倩碧)/;
+
+function hasKnownBrand(text: string): boolean {
+  return KNOWN_BRANDS_EN.test(text) || KNOWN_BRANDS_ZH.test(text);
+}
+
+// Greetings / smalltalk that must never be treated as a product name
+// (eval finding int-032/033/057: "hello", "thanks!", "给我讲个笑话" → product).
+const SMALLTALK = /^(hi|hiya|hello|hey|yo|sup|thanks?|thank you|thx|ty|ok(ay)?|cool|nice|great|awesome|perfect|good (morning|afternoon|evening|night)|bye|goodbye|see ya|lol|haha+|你好|您好|嗨|哈喽|谢谢|多谢|感谢|好的|好吧|行|嗯+|哦|噢|哈哈+|再见|拜拜|给我讲个笑话|讲个笑话)[!.。！？?～~\s]*$/i;
+
+// For pure-CJK text, "maybe a product name" requires a product-category noun;
+// otherwise short Chinese chatter falls through to product intent.
+const ZH_PRODUCT_NOUN = /(霜|乳液|精华|面膜|洁面|洗面奶|爽肤水|化妆水|柔肤水|喷雾|防晒|眼霜|面霜|身体乳|洗发|护发素|沐浴|卸妆|唇膏|口红|粉底|气垫|凝露|凝胶|安瓶|原液|肌底液|神仙水|小黑瓶|小棕瓶|小灯泡|次抛)/;
 
 /**
  * Returns `true` if the text likely names a product,
@@ -404,23 +494,40 @@ export function looksLikeProductName(text: string): boolean | 'maybe' {
   if (QUESTION_STARTS_EN.test(trimmed)) return false;
   if (QUESTION_STARTS_ZH.test(trimmed)) return false;
 
+  // Greetings / smalltalk are never product names
+  if (SMALLTALK.test(trimmed)) return false;
+
   // Long text is almost never just a product name
   if (trimmed.length > 100) return false;
 
-  // Looks like a raw ingredient list (many commas)
-  if ((trimmed.match(/,/g) || []).length >= 4) return false;
+  // Looks like a raw ingredient list (many commas — ASCII or CJK)
+  if ((trimmed.match(/[,，、]/g) || []).length >= 4) return false;
 
   // Contains a known brand → likely a product
-  if (KNOWN_BRANDS.test(trimmed)) return true;
+  if (hasKnownBrand(trimmed)) return true;
 
-  // Short text with mostly title-case words
-  if (trimmed.length <= 60 && /^[A-Z]/.test(trimmed)) return 'maybe';
+  const hasLatin = /[A-Za-z]/.test(trimmed);
+  const hasCJK = /[一-鿿]/.test(trimmed);
 
-  return 'maybe';
+  // Pure-CJK text: only plausible as a product name if it names a
+  // product category (霜/精华/洁面/...). Otherwise it's chatter.
+  if (hasCJK && !hasLatin) {
+    return trimmed.length <= 40 && ZH_PRODUCT_NOUN.test(trimmed) ? 'maybe' : false;
+  }
+
+  // Latin text: needs product-name shape — short and either starting
+  // uppercase or containing 2+ capitalized words. Lowercase chatter
+  // ("hello", "retinol benefits") is not a product-name candidate.
+  if (trimmed.length <= 60) {
+    const capWords = (trimmed.match(/\b[A-Z][A-Za-z0-9'%-]*/g) || []).length;
+    if (/^[A-Z0-9]/.test(trimmed) || capWords >= 2) return 'maybe';
+  }
+
+  return false;
 }
 
-const DUPE_PHRASES_EN = /\b(find\s+(me\s+)?(a\s+)?dupe|similar\s+(to|products?)|alternative(s?)\s+(to|for)|dupes?\s+for|cheaper\s+alternative)\b/i;
-const DUPE_PHRASES_ZH = /(找|求|推荐)?(平替|替代|相似产品|替代品|有没有类似的)/;
+const DUPE_PHRASES_EN = /\b(find\s+(me\s+)?(a\s+)?dupe|similar\s+(to|products?)|alternative(s?)\s+(to|for)|dupes?\s+for|cheaper\s+alternative|substitutes?\s+(for|to)|(affordable|budget|cheaper)\s+(version|substitute|dupe)s?)\b/i;
+const DUPE_PHRASES_ZH = /(找|求|推荐)?(平替|替代|相似产品|替代品|有没有类似|类似[^，。？！]{0,15}的产品|平价版)/;
 
 export function looksLikeDupeRequest(text: string): boolean {
   if (text == null || typeof text !== 'string') return false;
@@ -432,7 +539,10 @@ export function looksLikeDupeRequest(text: string): boolean {
 export function extractProductFromDupeRequest(text: string): string | null {
   if (text == null || typeof text !== 'string') return null;
   const t = text.trim();
-  const enMatch = t.match(/(?:dupe\s+for|similar\s+to|alternative(s?)\s+(?:to|for))\s+(.+?)(?:\?|$)/i);
+  // NOTE: `alternative(?:s)?` must be non-capturing — a capturing `(s?)`
+  // made group 1 the letter "s" for "alternatives to X" (latent bug found
+  // during the P6 typing pass; covered by tests/prompt-heuristics.test.ts).
+  const enMatch = t.match(/(?:dupes?\s+for|similar\s+to|alternative(?:s)?\s+(?:to|for)|substitutes?\s+(?:for|to))\s+(.+?)(?:\?|$)/i);
   if (enMatch && enMatch[1] != null) return enMatch[1].trim();
   const zhMatch = t.match(/(?:平替|替代|相似于?)\s*[：:]\s*(.+?)(?:\?|？|$)/);
   if (zhMatch && zhMatch[1] != null) return zhMatch[1].trim();
@@ -448,7 +558,7 @@ export function enrichMessageWithIngredients(
   userMessage: string,
   productName: string,
   ingredientList: string | null,
-  ingredientData: any[],
+  ingredientData: MatchedIngredient[],
   source: IngredientSource,
   language: Language,
 ): string {

@@ -210,3 +210,12 @@
 .prose-analysis a {
   @apply text-foreground font-medium underline underline-offset-4 decoration-border hover:decoration-foreground;
 }
+
+/* KaTeX (chat math rendering) — display formulas centered like ChatGPT,
+   scrollable when wider than the bubble. */
+.prose-analysis .katex-display {
+  @apply my-4 overflow-x-auto overflow-y-hidden py-1;
+}
+.prose-analysis .katex {
+  font-size: 1.05em;
+}

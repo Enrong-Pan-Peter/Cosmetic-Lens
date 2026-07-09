@@ -19,15 +19,20 @@ export interface FindDupesResult {
 }
 
 function normalizeForMatch(s: string): string {
+  // Keep CJK — the old [^\w\s] stripped ALL Chinese characters, so a
+  // pure-zh query normalized to "" and `nameNorm.includes("")` matched the
+  // FIRST curated pair for every Chinese dupe request (eval finding e2e-022).
   return s
     .toLowerCase()
-    .replace(/[^\w\s]/g, '')
+    .replace(/[^\w\s一-鿿]/g, '')
     .replace(/\s+/g, ' ')
     .trim();
 }
 
-function matchCurated(productQuery: string): FindDupesResult | null {
+/** Exported for unit tests (pure JSON matching; no network). */
+export function matchCurated(productQuery: string): FindDupesResult | null {
   const q = normalizeForMatch(productQuery);
+  if (!q) return null; // empty query must never match everything
   const words = q.split(/\s+/).filter((w) => w.length > 2);
 
   for (const pair of curatedDupes.pairs) {
@@ -35,13 +40,16 @@ function matchCurated(productQuery: string): FindDupesResult | null {
     const nameNorm = normalizeForMatch(orig.product_name);
     const brandNorm = normalizeForMatch(orig.brand);
     const combined = `${brandNorm} ${nameNorm}`;
+    // zh nicknames like 小黑瓶 / 神仙水 (optional `aliases` field)
+    const aliases: string[] = ((orig as { aliases?: string[] }).aliases ?? []).map(normalizeForMatch);
 
     const nameMatch = nameNorm.includes(q) || q.includes(nameNorm);
     const brandMatch = brandNorm.includes(q) || q.includes(brandNorm);
     const combinedMatch = combined.includes(q) || q.includes(combined);
+    const aliasMatch = aliases.some((a) => a && (q.includes(a) || a.includes(q)));
     const wordMatch = words.some((w) => nameNorm.includes(w) || brandNorm.includes(w));
 
-    if (nameMatch || brandMatch || combinedMatch || wordMatch) {
+    if (nameMatch || brandMatch || combinedMatch || aliasMatch || wordMatch) {
       const dupes: DupeSuggestion[] = (pair.dupes || []).map((d) => ({
         product_name: d.product_name,
         brand: d.brand,

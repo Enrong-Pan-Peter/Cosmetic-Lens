@@ -10,7 +10,7 @@
  *   3. `summarize`— produces a short human-readable string for the UI agent
  *                   trace ("Found CeraVe Moisturizing Cream · 25 ingredients").
  *
- * The set of tools is intentionally small (4) so the model rarely needs more
+ * The set of tools is intentionally small (5) so the model rarely needs more
  * than 1–2 calls per turn — keeps cost + latency low for a portfolio demo.
  *
  * To add a tool:
@@ -27,6 +27,8 @@ import {
 import { findDupes } from './dupe-finder';
 import { searchKnowledge } from './embeddings';
 import { getInteractionWarnings, type InteractionWarning } from './prompt';
+import { analyzeRoutine, type RoutineProductInput } from './routine';
+import { expandQuery } from './query-expansion';
 
 // ---------------------------------------------------------------------------
 // Re-exported types and limits
@@ -39,7 +41,8 @@ export type ToolName =
   | 'search_product'
   | 'find_dupes'
   | 'get_ingredient_interactions'
-  | 'search_knowledge_base';
+  | 'search_knowledge_base'
+  | 'check_routine';
 
 export interface ToolCallRequest {
   /** OpenAI-issued tool call id (round-trips back to the model). */
@@ -67,6 +70,8 @@ export interface ToolCallResult {
 export interface ToolContext {
   /** UI language; passed to executors that care. */
   language: 'en' | 'zh';
+  /** Recent prior message texts, used for follow-up query expansion (8.3). */
+  history?: string[];
 }
 
 // ---------------------------------------------------------------------------
@@ -318,7 +323,7 @@ const toolDefinitions: ToolDefinition[] = [
         },
       },
     },
-    async execute(args) {
+    async execute(args, ctx) {
       const query = String(args.query ?? '').trim();
       const limit = Number.isFinite(args.limit)
         ? Math.max(1, Math.min(8, Number(args.limit)))
@@ -331,7 +336,11 @@ const toolDefinitions: ToolDefinition[] = [
         };
       }
 
-      const hits = await searchKnowledge(query, { matchCount: limit });
+      // Follow-up query expansion (8.3): re-attach the recent subject when the
+      // model's query is a bare follow-up (no-op otherwise).
+      const expandedQuery = expandQuery(query, ctx?.history ?? []);
+      // Filter by UI language so zh users retrieve zh rows (P4.1).
+      const hits = await searchKnowledge(expandedQuery, { matchCount: limit, language: ctx?.language });
       const filtered = hits.filter((h) => h.similarity > 0.3);
 
       return {
@@ -346,6 +355,74 @@ const toolDefinitions: ToolDefinition[] = [
         summary: filtered.length
           ? `Found ${filtered.length} relevant snippet${filtered.length === 1 ? '' : 's'}`
           : 'No relevant knowledge found',
+      };
+    },
+  },
+
+  // -------------------------------------------------------------------------
+  // 5. check_routine — cross-product conflict matrix (deterministic, no LLM)
+  // -------------------------------------------------------------------------
+  {
+    name: 'check_routine',
+    schema: {
+      type: 'function',
+      function: {
+        name: 'check_routine',
+        description:
+          'Check a multi-product skincare routine (2–5 products) for cross-product ingredient conflicts, AM/PM placement, and layering guidance, using our curated interaction table. Call this when the user describes or lists MULTIPLE products they use together (a routine) and asks whether they can be combined, layered, or used together.',
+        parameters: {
+          type: 'object',
+          properties: {
+            products: {
+              type: 'array',
+              minItems: 2,
+              maxItems: 5,
+              description: 'The products in the routine. Provide each product\'s INCI ingredient list.',
+              items: {
+                type: 'object',
+                properties: {
+                  name: { type: 'string', description: 'Product name (optional).' },
+                  ingredients: {
+                    type: 'string',
+                    description: 'Comma-separated INCI ingredient list for this product.',
+                  },
+                },
+                required: ['ingredients'],
+                additionalProperties: false,
+              },
+            },
+          },
+          required: ['products'],
+          additionalProperties: false,
+        },
+      },
+    },
+    async execute(args, ctx) {
+      const rawProducts = Array.isArray(args.products) ? args.products : [];
+      const products: RoutineProductInput[] = rawProducts
+        .filter((p): p is Record<string, unknown> => Boolean(p) && typeof p === 'object')
+        .map((p) => ({
+          name: typeof p.name === 'string' ? p.name : '',
+          ingredients: typeof p.ingredients === 'string' ? p.ingredients : '',
+        }))
+        .filter((p) => p.ingredients.trim().length > 0);
+
+      if (products.length < 2) {
+        return {
+          result: { error: 'need at least 2 products with ingredient lists' },
+          summary: 'Routine check needs 2+ products',
+        };
+      }
+
+      const routine = analyzeRoutine(products, ctx.language);
+      const { avoid, caution, info } = routine.summary;
+      const total = avoid + caution + info;
+
+      return {
+        result: routine,
+        summary: total
+          ? `Checked ${products.length} products · ${avoid} avoid / ${caution} caution / ${info} note`
+          : `Checked ${products.length} products · no conflicts found`,
       };
     },
   },

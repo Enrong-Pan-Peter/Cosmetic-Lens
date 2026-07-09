@@ -14,6 +14,8 @@
  * We always request JSON mode so we don't need a brittle regex parser.
  */
 
+import { buildModelParams } from './model-params';
+
 // ---------------------------------------------------------------------------
 // Public types
 // ---------------------------------------------------------------------------
@@ -54,8 +56,8 @@ export type VisionExtractionResponse =
 // Configuration
 // ---------------------------------------------------------------------------
 
-const VISION_MODEL_PRIMARY = 'gpt-4o-mini';
-const VISION_MODEL_FALLBACK = 'gpt-4.1-mini';
+const VISION_MODEL_PRIMARY = 'gpt-5.4-mini';
+const VISION_MODEL_FALLBACK = 'gpt-4o-mini';
 
 /** Hard upper bound on what we send to OpenAI (independent of API endpoint). */
 export const MAX_IMAGE_BYTES = 8 * 1024 * 1024; // 8 MB
@@ -179,8 +181,7 @@ async function callVisionModel(
       },
     ],
     response_format: { type: 'json_object' },
-    temperature: 0.1,
-    max_tokens: 1500,
+    ...buildModelParams(model, { temperature: 0.1, maxTokens: 1500 }),
   });
 
   let response: Response;

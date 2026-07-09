@@ -97,17 +97,32 @@ const COSMETIC_DOMAIN_EN = new RegExp(
   'i',
 );
 
-const COSMETIC_DOMAIN_ZH = /(成分|配方|护肤|化妆|化妆品|化妆水|爽肤水|柔肤水|精华|乳液|面霜|眼霜|身体乳|沐浴露|洗发水|护发素|洁面|卸妆|防晒|视黄醇|烟酰胺|玻尿酸|透明质酸|神经酰胺|维生素\s?[ABCDEFK]?|甘油|香精|香料|防腐剂|表面活性剂|肽|果酸|水杨酸|乳酸|杏仁酸|曲酸|熊果苷|传明酸|壬二酸|杜鹃花酸|甘草|积雪草|马齿苋|痘|粉刺|黑头|白头|闭口|毛孔|皮肤|肤质|干皮|油皮|混油|混合(性|肌)|敏感|美白|保湿|补水|抗衰|抗老|抗氧化|修复|屏障|抗痘|祛痘|去角质|平替|替代|相似(产品|的产品)|类似(产品|的产品))/;
+const COSMETIC_DOMAIN_ZH = /(成分|配方|护肤|化妆|化妆品|化妆水|爽肤水|柔肤水|精华|乳液|面霜|眼霜|身体乳|沐浴露|洗发水|护发素|洁面|卸妆|防晒|视黄醇|烟酰胺|玻尿酸|透明质酸|神经酰胺|维生素\s?[ABCDEFK]?|甘油|香精|香料|防腐剂|表面活性剂|肽|果酸|水杨酸|乳酸|杏仁酸|曲酸|熊果苷|传明酸|壬二酸|杜鹃花酸|甘草|积雪草|马齿苋|痘|粉刺|黑头|白头|闭口|毛孔|皮肤|肤质|干皮|油皮|混油|混合(性|肌)|敏感|美白|保湿|补水|抗衰|抗老|抗氧化|修复|屏障|抗痘|祛痘|去角质|平替|替代|相似(产品|的产品)|类似(产品|的产品)|早[Cc]晚[Aa]|刷酸|以油养肤|成分党)/;
 
-const INGREDIENT_LIST_LIKELY = /,\s*[A-Za-z\u4e00-\u9fa5]/;
+// Ingredient lists arrive with ASCII commas OR CJK separators\uff08\uff0c\u3001\uff09\u2014
+// eval finding e2e-024: zh pastes use \u3001 and were never detected.
+const LIST_SEPARATORS = /[,\uff0c\u3001]/g;
+const INGREDIENT_LIST_LIKELY = /[,\uff0c\u3001]\s*[A-Za-z\u4e00-\u9fa5]/;
 
 function looksLikeIngredientList(text: string): boolean {
   if (!text) return false;
   if (text.length < 30) return false;
-  const commaCount = (text.match(/,/g) ?? []).length;
+  const commaCount = (text.match(LIST_SEPARATORS) ?? []).length;
   if (commaCount >= 4 && INGREDIENT_LIST_LIKELY.test(text)) return true;
   if (/^\s*\d*\s*[A-Z][a-z]+ [A-Z]/.test(text) && commaCount >= 3) return true;
   return false;
+}
+
+/**
+ * Title-cased, product-shaped short text ("Anua Heartleaf 77% Soothing
+ * Toner"). Used to keep the domain-term\u2192knowledge rule from eating product
+ * names that contain category words like "Toner"/"Serum" (eval finding
+ * int-011/012, e2e-005).
+ */
+function looksTitleCasedProductish(text: string): boolean {
+  if (text.length > 60) return false;
+  const capWords = (text.match(/\b[A-Z][A-Za-z0-9'%+.-]*/g) ?? []).length;
+  return capWords >= 2;
 }
 
 function hasCosmeticDomainTerm(text: string): boolean {
@@ -167,6 +182,11 @@ export function classifyIntent(
 
     return 'other';
   }
+
+  // Product-shaped names win over the bare domain-term rule: "Anua
+  // Heartleaf 77% Soothing Toner" is a product even though "Toner" is a
+  // domain word. Question-shaped text never reaches here (handled above).
+  if (productGuess === 'maybe' && looksTitleCasedProductish(text)) return 'product';
 
   if (domainTerm && text.length < 120) return 'knowledge';
 
