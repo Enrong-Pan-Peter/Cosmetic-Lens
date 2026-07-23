@@ -63,8 +63,8 @@ const evidenceLabel =
 
 const levelClasses: Record<string, string> = {
   avoid: 'border-destructive/30 bg-destructive/5 text-destructive',
-  caution: 'border-amber-300 bg-amber-50 text-amber-800',
-  synergy: 'border-emerald-300 bg-emerald-50 text-emerald-800',
+  caution: 'border-amber-300 bg-amber-50 text-amber-800 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-300',
+  synergy: 'border-emerald-300 bg-emerald-50 text-emerald-800 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-300',
   info: 'border-border bg-muted text-muted-foreground',
 };
 const levelLabel: Record<string, string> = {
@@ -161,7 +161,7 @@ const levelLabel: Record<string, string> = {
             <div class="flex flex-wrap items-center gap-1.5">
               <span class="text-sm text-muted-foreground mr-1">{t.ingredients.suited_for}:</span>
               {ing.skin_types.suited.map((s) => (
-                <span class="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-xs text-emerald-800">
+                <span class="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-xs text-emerald-800 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-300">
                   {skinTypeLabel(s)}
                 </span>
               ))}
@@ -171,7 +171,7 @@ const levelLabel: Record<string, string> = {
             <div class="flex flex-wrap items-center gap-1.5">
               <span class="text-sm text-muted-foreground mr-1">{t.ingredients.use_caution}:</span>
               {ing.skin_types.caution.map((s) => (
-                <span class="inline-flex items-center rounded-full border border-amber-200 bg-amber-50 px-2.5 py-0.5 text-xs text-amber-800">
+                <span class="inline-flex items-center rounded-full border border-amber-200 bg-amber-50 px-2.5 py-0.5 text-xs text-amber-800 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-300">
                   {skinTypeLabel(s)}
                 </span>
               ))}
@@ -255,7 +255,7 @@ const levelLabel: Record<string, string> = {
         <div class="rounded-lg border border-border bg-card px-3 py-2.5">
           <div class="text-xs text-muted-foreground">{t.ingredients.pregnancy}</div>
           <div
-            class={`text-sm font-medium mt-0.5 ${ing.pregnancy_safe ? 'text-emerald-700' : 'text-destructive'}`}
+            class={`text-sm font-medium mt-0.5 ${ing.pregnancy_safe ? 'text-emerald-700 dark:text-emerald-400' : 'text-destructive'}`}
           >
             {ing.pregnancy_safe
               ? t.ingredients.pregnancy_safe_yes

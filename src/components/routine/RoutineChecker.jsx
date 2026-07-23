@@ -3,13 +3,13 @@ import { supabase } from '../../lib/supabase';
 
 const LEVEL_STYLES = {
   avoid: 'border-destructive/30 bg-destructive/5 text-destructive',
-  caution: 'border-amber-300 bg-amber-50 text-amber-800',
+  caution: 'border-amber-300 bg-amber-50 text-amber-800 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-300',
   info: 'border-border bg-muted text-muted-foreground',
 };
 
 const TIMING_STYLES = {
-  am: 'border-sky-200 bg-sky-50 text-sky-800',
-  pm: 'border-indigo-200 bg-indigo-50 text-indigo-800',
+  am: 'border-sky-200 bg-sky-50 text-sky-800 dark:border-sky-500/30 dark:bg-sky-500/10 dark:text-sky-300',
+  pm: 'border-indigo-200 bg-indigo-50 text-indigo-800 dark:border-indigo-500/30 dark:bg-indigo-500/10 dark:text-indigo-300',
   either: 'border-border bg-muted text-muted-foreground',
 };
 
@@ -25,6 +25,7 @@ function emptyProduct() {
 
 export default function RoutineChecker({ lang, t }) {
   const [products, setProducts] = useState([emptyProduct(), emptyProduct()]);
+  const [isPregnant, setIsPregnant] = useState(false);
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
@@ -80,7 +81,7 @@ export default function RoutineChecker({ lang, t }) {
           'Content-Type': 'application/json',
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
-        body: JSON.stringify({ products, language: lang }),
+        body: JSON.stringify({ products, language: lang, isPregnant }),
       });
       const data = await res.json();
       if (!res.ok || !data.success) {
@@ -182,6 +183,16 @@ export default function RoutineChecker({ lang, t }) {
         </button>
       </div>
 
+      <label className="flex items-center gap-2 text-sm text-foreground cursor-pointer select-none">
+        <input
+          type="checkbox"
+          checked={isPregnant}
+          onChange={(e) => setIsPregnant(e.target.checked)}
+          className="h-4 w-4 rounded border-input text-primary focus:ring-2 focus:ring-ring"
+        />
+        {t.routine.pregnant_label}
+      </label>
+
       <p className="text-xs text-muted-foreground">{t.routine.min_products_note}</p>
 
       {error && (
@@ -190,8 +201,20 @@ export default function RoutineChecker({ lang, t }) {
         </div>
       )}
 
+      {/* Loading skeleton */}
+      {loading && (
+        <div className="space-y-3 border-t border-border pt-6" aria-hidden="true">
+          <div className="h-5 w-32 rounded bg-muted animate-pulse" />
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+            <div className="h-14 rounded-lg border border-border bg-muted/50 animate-pulse" />
+            <div className="h-14 rounded-lg border border-border bg-muted/50 animate-pulse" />
+          </div>
+          <div className="h-16 rounded-lg border border-border bg-muted/50 animate-pulse" />
+        </div>
+      )}
+
       {/* Results */}
-      {result && (
+      {!loading && result && (
         <div className="space-y-6 border-t border-border pt-6">
           <div className="flex items-center flex-wrap gap-2">
             <h2 className="text-lg font-semibold text-foreground mr-2">{t.routine.results_title}</h2>
@@ -238,7 +261,7 @@ export default function RoutineChecker({ lang, t }) {
 
           {/* Conflicts */}
           {result.conflicts.length === 0 ? (
-            <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+            <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-300">
               {t.routine.no_conflicts}
             </div>
           ) : (

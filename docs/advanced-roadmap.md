@@ -1,6 +1,7 @@
 # CosmeticLens — Advanced Roadmap (Phases 8–12)
 
 **Created:** 2026-07-08 · **Extends:** [`improvement-plan.md`](./improvement-plan.md) (P0–P7)
+**See also:** [`ui-roadmap.md`](./ui-roadmap.md) — Phases 13 (UI/UX polish: dark mode, motion/a11y, toasts, homepage) & 14 (features: quiz, PDF export, favorites, citations, barcode).
 **Goal (unchanged):** prove senior **AI/LLM application-engineer** skill — retrieval quality, inference cost/latency engineering, guardrails, eval rigor, and analytics — on a publicly deployed, commercial-looking product. Every item below must ship **a metric or an interview story**, and reuse existing infrastructure (`evals/`, `llm_calls`, `feedback`, `analysis_cache`) rather than adding surface area for its own sake.
 
 ## Where we are (2026-07-08 baseline)
@@ -62,6 +63,10 @@
 
 ## Phase 10 — Eval maturity & the feedback flywheel (highest signal per line)
 
+> **Status 2026-07-08 (cont.):** **10.5 coverage BUILT.** `evals/lib/coverage.mjs` (pure/tested `countBy`, `coverageMatrix` with gap flagging) + `node evals/run.mjs --coverage` (offline; intent×lang, retrieval content_type×lang, e2e category×lang matrices — already surfaced gaps: article/zh, dupe_uncurated/zh). `tests/coverage.test.ts`. Remaining P10: 10.2 online A/B (needs traffic), 10.6 model bake-off (needs egress).
+>
+> **Status 2026-07-08:** **10.1 + 10.3 + 10.4 BUILT** (164/164 tests, 0 type errors, clean build). **10.1 flywheel:** `evals/lib/feedback.mjs` (pure/tested `feedbackRowToCandidate` routes to intent/e2e suite, `dedupeCandidates` counts repeats) + `evals/feedback-to-cases.mjs` CLI (pulls 👎 from Supabase, writes `evals/triage/*.{md,json}` for promotion into golden sets). **10.3 gate:** `evals/lib/gate.mjs` (`checkThresholds`) + `evals/baseline.json` floors + `tests/regression-gate.test.ts` (computes offline intent accuracy overall/en/zh via the pure classifier, fails CI below floor — runs in existing `npm test`) + `.github/workflows/nightly-evals.yml` (weekly retrieval+sweep, secret-guarded). **10.4 rigor:** `wilsonInterval` in `evals/lib/stats.mjs` (95% CIs on small-N pass rates). `tests/eval-lib.test.ts` covers all three. **Pending user:** once 👎 accumulate, `node evals/feedback-to-cases.mjs` → review → promote. **Remaining:** 10.2 online A/B, 10.5 coverage report, 10.6 model bake-off.
+
 **Why:** the eval harness is the resume centerpiece; making it *close a loop with real users* is the strongest senior signal in the whole project.
 
 | # | Task | Why / what it shows | Effort | Depends on |
@@ -94,6 +99,10 @@
 ---
 
 ## Phase 12 — Feature depth (functionality, reusing infra)
+
+> **Status 2026-07-08:** **12.1 share links BUILT** (170/170 tests, typecheck 0 errors across 131 files; production build not re-run in-sandbox — a mount FD ceiling (`EMFILE`) exhausted late in the session, environmental not code; the identical pipeline passed for Phases 8/10 and Phase 12 added no new deps). Security-careful design: `supabase/migrations/20260710_shared_analyses.sql` = a dedicated public-read table (RLS `USING (true)` for SELECT only; service-role writes) that SNAPSHOTS one answer — `chats`/`chat_messages` stay owner-only, so sharing never exposes a conversation. `src/lib/share.ts` (pure/tested: `generateShareId`, `sanitizeSharePayload` whitelists+clips metadata, `shareDescription`). `/api/share` (rate-limited, JWT-optional). Public SSR `/[en|zh]/a/[id]` render read-only via `SharedAnalysisView.astro` (reuses `AnalysisDisplay`, no interactive buttons) + og/canonical tags + 404 state. `ShareButton.jsx` in the chat footer (next to feedback) POSTs + copies the link. i18n `share.*` EN/ZH. `tests/share.test.ts`. **Pending user:** run `20260710_shared_analyses.sql`; confirm the build locally (`npm run build`) — expected clean. **Remaining P12:** 12.2 concern search / barcode / compare tool, 12.3 routine v2, 12.4 ingredient references, 12.5 personalization.
+
+> **Status 2026-07-08 (cont.):** **12.2 + 12.3 BUILT** (190/190 tests, typecheck 0 errors/142 files; build still FD-blocked in-sandbox). **12.2 concern search (7.6):** `src/lib/concern-search.ts` (keyword→concern→DB, pure/tested) + `/api/concern-search` + `ConcernSearch.jsx` on both glossary pages, linking into ingredient pages; i18n `concern.*`. **12.2 compare tool (7.7):** `src/lib/compare.ts` (shared/unique + conflicts, reuses findIngredientData + analyzeRoutine) + `compare_products` agent tool (tools.ts now 6 tools; guide EN/ZH); `tests/compare.test.ts`. **12.3 routine v2:** `analyzeRoutine` gained `{isPregnant}` (re-enables pregnancy pairs as within-product avoid flags); wired through `/api/routine`, `check_routine` tool (`is_pregnant`), and a RoutineChecker checkbox; `tests/routine.test.ts` +2. **Guardrails (Phase 9): 9.3** `src/lib/redact.ts` (conservative PII scrub — emails/phones/long-digits, no false positives on concentrations) applied to stored feedback; **9.2** `src/lib/guardrails.ts` `detectInjection` + `injectionGuardNote`, wired into chat-agentic (re-anchor + log `injection_suspected`, never blocks). `tests/guardrails.test.ts`. **Deliberately NOT built:** 12.4 ingredient references (needs real vetted citations — fabrication risk), 12.5 personalization (larger), 7.5 barcode (browser-only, unverifiable here), 9.1 groundedness (needs LLM), 10.2 A/B (needs traffic), Phase 11 dashboard (large + internal-facing).
 
 **Why:** rounds out commercial completeness. Ordered by value-per-effort; most reuse existing backends.
 

@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { Microscope } from '@phosphor-icons/react';
 import ChatSidebar from './ChatSidebar';
+import BarcodeScanner from './BarcodeScanner';
 import ChatMessage from './ChatMessage';
 import ProductInput from './ProductInput';
 import ThinkingDots from './ThinkingDots';
@@ -243,6 +244,7 @@ export default function ChatInterface({ lang, translations: t }) {
   const [isExtracting, setIsExtracting] = useState(false);
   const [photoWarning, setPhotoWarning] = useState(null);
   const [pendingPhotoMeta, setPendingPhotoMeta] = useState(null);
+  const [scannerOpen, setScannerOpen] = useState(false);
 
   const messagesEndRef = useRef(null);
   const abortRef = useRef(null);
@@ -611,6 +613,33 @@ export default function ChatInterface({ lang, translations: t }) {
     el.dispatchEvent(
       new CustomEvent('cosmeticlens:set-text', { detail: { value: text } }),
     );
+  };
+
+  // Barcode scan (14.6): look up the scanned code in Open Beauty Facts and seed
+  // the composer with the product name + ingredients (same review-then-send
+  // flow as a photo extraction).
+  const handleBarcodeDetected = async (code) => {
+    setScannerOpen(false);
+    try {
+      const res = await fetch(
+        `/api/barcode?code=${encodeURIComponent(code)}&lang=${lang}`,
+        { headers: token ? { Authorization: `Bearer ${token}` } : {} },
+      );
+      const data = await res.json();
+      if (data.success && data.found) {
+        const parts = [];
+        if (data.product_name) {
+          parts.push(data.brand ? `${data.product_name} (${data.brand})` : data.product_name);
+        }
+        if (data.ingredients_text) parts.push(data.ingredients_text);
+        seedComposer(parts.join('\n') || `Barcode ${code}`);
+        setError(null);
+      } else {
+        setError(t.chat.scan_not_found);
+      }
+    } catch {
+      setError(t.chat.scan_error);
+    }
   };
 
   const handleUploadImage = async (file) => {
@@ -1048,13 +1077,33 @@ export default function ChatInterface({ lang, translations: t }) {
                       <button
                         key={i}
                         onClick={() => handleAnalyze(ex)}
-                        className="rounded-xl border border-border bg-card p-4 text-sm text-foreground hover:bg-accent transition-colors text-left shadow-sm"
+                        className="card-hover rounded-xl border border-border bg-card p-4 text-sm text-foreground hover:bg-accent text-left shadow-sm"
                       >
                         <div className="text-[11px] font-medium text-muted-foreground mb-1">
                           {lang === 'zh' ? '示例' : 'Example'}
                         </div>
                         <span className="leading-snug">{ex}</span>
                       </button>
+                    ))}
+                  </div>
+
+                  {/* Discover other tools (helps mobile users find features) */}
+                  <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
+                    <span className="text-xs text-muted-foreground">
+                      {lang === 'zh' ? '或探索：' : 'Or explore:'}
+                    </span>
+                    {[
+                      { href: `/${lang}/routine`, label: t.nav.routine },
+                      { href: `/${lang}/ingredients`, label: t.nav.ingredients },
+                      { href: `/${lang}/glossary`, label: t.nav.glossary },
+                    ].map((l) => (
+                      <a
+                        key={l.href}
+                        href={l.href}
+                        className="rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-foreground hover:bg-accent transition-colors"
+                      >
+                        {l.label}
+                      </a>
                     ))}
                   </div>
                 </div>
@@ -1124,6 +1173,7 @@ export default function ChatInterface({ lang, translations: t }) {
               onSubmit={handleAnalyze}
               onStop={handleStop}
               onUploadImage={handleUploadImage}
+              onScanBarcode={() => setScannerOpen(true)}
               onRemoveImage={handleRemoveImage}
               uploadedImagePreview={uploadedPreview}
               uploadedImageWarning={photoWarning}
@@ -1132,6 +1182,7 @@ export default function ChatInterface({ lang, translations: t }) {
               placeholder={t.chat.placeholder}
               stopLabel={stopLabel}
               uploadLabel={t.chat.upload_photo}
+              scanLabel={t.chat.scan_label}
               removeLabel={t.chat.remove_photo}
               extractingLabel={t.chat.extracting_photo}
               photoAlt={t.chat.photo_preview_alt}
@@ -1145,6 +1196,13 @@ export default function ChatInterface({ lang, translations: t }) {
           </div>
         </div>
       </div>
+
+      <BarcodeScanner
+        open={scannerOpen}
+        onClose={() => setScannerOpen(false)}
+        onDetected={handleBarcodeDetected}
+        t={t}
+      />
     </div>
   );
 }

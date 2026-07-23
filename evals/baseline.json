@@ -1,0 +1,12 @@
+{
+  "_note": "Metric floors for the CI regression gate (tests/regression-gate.test.ts). Deterministic intent accuracy over the 60-case golden set runs offline on every push. Retrieval recall + e2e judge floors are checked manually / nightly via evals/run.mjs because they need OpenAI + Supabase egress. Raise these floors as the numbers improve; a drop below a floor fails CI.",
+  "intent": {
+    "overall": 0.95,
+    "en": 0.95,
+    "zh": 0.9
+  },
+  "retrieval_manual": {
+    "recall_at_6": 0.9,
+    "note": "not enforced in CI — run: node evals/run.mjs --suite retrieval"
+  }
+}

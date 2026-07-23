@@ -53,14 +53,14 @@ export default function MessageFeedback({ lang, t, token, chatId, query, answer,
 
   if (done) {
     return (
-      <div className="mt-2 text-xs text-muted-foreground select-none" aria-live="polite">
+      <div className="text-xs text-muted-foreground select-none" aria-live="polite">
         {t.feedback.thanks}
       </div>
     );
   }
 
   return (
-    <div className="mt-2">
+    <div>
       <div className="flex items-center gap-1.5">
         <span className="text-[11px] text-muted-foreground mr-1">{t.feedback.prompt}</span>
         <button

@@ -2,6 +2,7 @@ import { Microscope, SealCheck, BookOpen, TreeStructure, ClockCounterClockwise }
 import AnalysisDisplay from './AnalysisDisplay';
 import AgentTrace from './AgentTrace';
 import MessageFeedback from './MessageFeedback';
+import ShareButton from './ShareButton';
 
 export default function ChatMessage({
   message,
@@ -23,7 +24,7 @@ export default function ChatMessage({
         <div className="max-w-[80%] flex flex-col items-end gap-1.5">
           {message.fromPhoto && (
             <span
-              className="inline-flex items-center gap-1 rounded-full bg-amber-50 border border-amber-200 px-2 py-0.5 text-[11px] font-medium text-amber-700"
+              className="inline-flex items-center gap-1 rounded-full bg-amber-50 border border-amber-200 px-2 py-0.5 text-[11px] font-medium text-amber-700 dark:bg-amber-500/10 dark:border-amber-500/30 dark:text-amber-300"
               title={lang === 'zh' ? '此消息的成分由照片自动识别' : 'Ingredients in this message were extracted from a photo'}
             >
               <svg className="w-3 h-3" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">
@@ -32,7 +33,7 @@ export default function ChatMessage({
               {lang === 'zh' ? '已从照片识别' : 'Extracted from photo'}
             </span>
           )}
-          <div className="rounded-2xl rounded-tr-sm bg-primary/10 px-4 py-2.5 text-sm text-foreground whitespace-pre-wrap">
+          <div className="rounded-2xl rounded-tr-sm bg-primary/10 px-4 py-2.5 text-sm text-foreground whitespace-pre-wrap break-words">
             {message.content}
           </div>
         </div>
@@ -136,22 +137,40 @@ export default function ChatMessage({
           </div>
         )}
 
-        {/* Answer feedback (7.3) — only on completed, non-empty answers */}
+        {/* Answer footer: feedback (7.3) + share (12.1) — completed answers only */}
         {t?.feedback &&
           !message._streaming &&
           !message.stopped &&
           typeof message.content === 'string' &&
           message.content.trim().length > 0 && (
-            <MessageFeedback
-              lang={lang}
-              t={t}
-              token={token}
-              chatId={chatId}
-              query={prevUserContent}
-              answer={message.content}
-              intent={message.intent}
-              pipeline={message.mode || message.source}
-            />
+            <div className="mt-2 flex items-start justify-between gap-3">
+              <MessageFeedback
+                lang={lang}
+                t={t}
+                token={token}
+                chatId={chatId}
+                query={prevUserContent}
+                answer={message.content}
+                intent={message.intent}
+                pipeline={message.mode || message.source}
+              />
+              {t?.share && (
+                <ShareButton
+                  lang={lang}
+                  t={t}
+                  token={token}
+                  content={message.content}
+                  title={message.product?.name || prevUserContent}
+                  metadata={{
+                    source: message.source,
+                    intent: message.intent,
+                    product: message.product,
+                    dupes: message.dupes,
+                    sources: message.sources,
+                  }}
+                />
+              )}
+            </div>
           )}
       </div>
     </div>

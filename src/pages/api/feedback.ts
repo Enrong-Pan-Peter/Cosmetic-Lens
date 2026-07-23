@@ -11,6 +11,7 @@ import type { APIRoute } from 'astro';
 import { createServerClient } from '../../lib/supabase';
 import { getUserFromRequest } from '../../lib/auth';
 import { enforceRateLimit, getClientIp } from '../../lib/rate-limit';
+import { redactPII } from '../../lib/redact';
 
 export const prerender = false;
 
@@ -61,12 +62,13 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
       user_id: authedUser?.id ?? null,
       chat_id: clip(body?.chatId, 128),
       rating,
-      reason: clip(body?.reason, MAX_REASON),
+      // PII minimization (9.3): scrub emails/phones/ids from stored free text.
+      reason: redactPII(clip(body?.reason, MAX_REASON)),
       intent: clip(body?.intent, 40),
       pipeline: clip(body?.pipeline, 40),
       language: body?.language === 'zh' ? 'zh' : 'en',
-      query: clip(body?.query, MAX_TEXT),
-      answer: clip(body?.answer, MAX_TEXT),
+      query: redactPII(clip(body?.query, MAX_TEXT)),
+      answer: redactPII(clip(body?.answer, MAX_TEXT)),
     });
     if (error) throw new Error(error.message);
   } catch (err) {

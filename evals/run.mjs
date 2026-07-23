@@ -27,6 +27,7 @@ import { runChatCase } from './lib/sse.mjs';
 import { embed, judge } from './lib/openai.mjs';
 import { mean, percentile, round, pct, ms, mdTable } from './lib/stats.mjs';
 import { recallAtK, survivalAtThreshold, SWEEP_KS, SWEEP_THRESHOLDS } from './lib/sweep.mjs';
+import { coverageMatrix } from './lib/coverage.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const RESULTS_DIR = join(HERE, 'results');
@@ -54,6 +55,8 @@ function parseArgs(argv) {
     retrieval: 'hybrid',
     // Tuning sweep (8.7): one retrieval run → recall@k + threshold grids.
     sweep: false,
+    // Coverage report (10.5): dataset shape, no egress.
+    coverage: false,
   };
   for (let i = 2; i < argv.length; i++) {
     const a = argv[i];
@@ -63,6 +66,7 @@ function parseArgs(argv) {
     else if (a === '--limit') args.limit = Number(argv[++i]);
     else if (a === '--retrieval') args.retrieval = argv[++i];
     else if (a === '--sweep') args.sweep = true;
+    else if (a === '--coverage') args.coverage = true;
     else if (a === '--no-judge') args.judge = false;
     else if (a === '--dry-run') args.dryRun = true;
     else if (a === '--base-url') CONFIG.baseUrl = argv[++i];
@@ -465,6 +469,59 @@ async function runSweep(args) {
 }
 
 // ---------------------------------------------------------------------------
+// Coverage report (10.5): manage the eval set as a dataset. No egress.
+// ---------------------------------------------------------------------------
+function printMatrix(label, m) {
+  console.log(`\n${label}`);
+  const pad = (s, n) => String(s).padEnd(n);
+  const w = Math.max(12, ...m.rows.map((r) => r.length + 1));
+  console.log('  ' + pad('', w) + m.cols.map((c) => pad(c, 8)).join(''));
+  for (const r of m.rows) {
+    console.log('  ' + pad(r, w) + m.cols.map((c) => pad(m.cell(r, c) || '·', 8)).join(''));
+  }
+  if (m.thin.length) {
+    console.log(`  gaps (no cases): ${m.thin.map((t) => `${t.row}/${t.col}`).join(', ')}`);
+  }
+}
+
+function runCoverage() {
+  const intent = loadDataset('intent-cases.json').cases;
+  const retrieval = loadDataset('retrieval-cases.json').cases;
+  const e2e = loadDataset('e2e-cases.json').cases;
+
+  const intentM = coverageMatrix(intent, (c) => c.expected, (c) => c.language);
+  const retrievalM = coverageMatrix(retrieval, (c) => c.expect?.[0]?.content_type, (c) => c.language);
+  const e2eM = coverageMatrix(e2e, (c) => c.category, (c) => c.language);
+
+  console.log(`\n[coverage] intent=${intent.length} retrieval=${retrieval.length} e2e=${e2e.length}`);
+  printMatrix('Intent — expected × language', intentM);
+  printMatrix('Retrieval — content_type × language', retrievalM);
+  printMatrix('E2E — category × language', e2eM);
+
+  const toMd = (label, m) => {
+    const header = `| ${label} | ${m.cols.join(' | ')} |`;
+    const sep = `|${' --- |'.repeat(m.cols.length + 1)}`;
+    const body = m.rows.map((r) => `| ${r} | ${m.cols.map((c) => m.cell(r, c) || 0).join(' | ')} |`).join('\n');
+    const gaps = m.thin.length ? `\n\nGaps: ${m.thin.map((t) => `${t.row}/${t.col}`).join(', ')}` : '';
+    return `### ${label}\n\n${header}\n${sep}\n${body}${gaps}`;
+  };
+  const result = {
+    suite: 'coverage',
+    totals: { intent: intent.length, retrieval: retrieval.length, e2e: e2e.length },
+    intent: { rows: intentM.rows, cols: intentM.cols, thin: intentM.thin },
+    retrieval: { rows: retrievalM.rows, cols: retrievalM.cols, thin: retrievalM.thin },
+    e2e: { rows: e2eM.rows, cols: e2eM.cols, thin: e2eM.thin },
+  };
+  const file = saveResults('coverage', result);
+  console.log(`\nsaved → ${file}`);
+  writeSummaryMd([
+    `## Eval coverage\n\n${toMd('Intent — expected × language', intentM)}\n\n${toMd('Retrieval — content_type × language', retrievalM)}\n\n${toMd('E2E — category × language', e2eM)}`,
+  ]);
+  console.log('summary → evals/results/latest-summary.md');
+  return result;
+}
+
+// ---------------------------------------------------------------------------
 // Suite: e2e
 // ---------------------------------------------------------------------------
 const JUDGE_DIM_GUIDE = `
@@ -654,6 +711,11 @@ async function main() {
   }
   if (args.dryRun) {
     console.log('Dry run OK — datasets valid. Nothing executed.');
+    return;
+  }
+
+  if (args.coverage) {
+    runCoverage();
     return;
   }
 

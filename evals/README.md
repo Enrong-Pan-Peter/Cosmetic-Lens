@@ -28,6 +28,14 @@ Flags: `--lang en|zh|all`, `--limit N`, `--no-judge`, `--base-url https://...` (
 
 Tuning sweep (8.7): `node evals/run.mjs --sweep [--retrieval dense|hybrid]` runs retrieval once at max-k and tabulates **recall@{3,4,6,8}** and **first-hit survival at similarity thresholds {0.2…0.4}** by language — the data behind the app's `matchCount=6` and `0.3` threshold choices.
 
+## The flywheel + gate (Phase 10)
+
+- **Feedback → eval cases (10.1):** `node evals/feedback-to-cases.mjs [--rating down|up|all] [--limit N] [--since YYYY-MM-DD]` pulls 👎 rows from the `feedback` table, dedupes them, and writes `evals/triage/feedback-<ts>.{md,json}`. Review the markdown, then promote the real failures into `datasets/intent-cases.json` or `datasets/e2e-cases.json`. That's the loop: user feedback → eval set → measured fix.
+- **Regression gate (10.3):** `tests/regression-gate.test.ts` computes aggregate intent accuracy (overall + per language) from the golden set via the pure classifier and fails CI if any metric drops below the floor in `baseline.json`. Runs offline on every push (no egress). Raise the floors as numbers improve.
+- **Nightly (10.3):** `.github/workflows/nightly-evals.yml` runs the retrieval suite + sweep weekly (needs repo secrets; skips gracefully otherwise). LLM-judge e2e stays manual.
+- **Wilson intervals (10.4):** `wilsonInterval()` in `lib/stats.mjs` gives honest 95% CIs on pass rates — report the interval, not just the point estimate (N is small).
+- **Coverage report (10.5):** `node evals/run.mjs --coverage` prints intent×language, retrieval content_type×language, and e2e category×language matrices (with gap cells flagged). No egress — treats the eval set as a dataset to manage.
+
 ## Reading results
 
 - Console prints per-suite metrics + failure lists; `x` = failed case, `~` = partial recall, `E` = transport error.

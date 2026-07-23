@@ -1,7 +1,8 @@
 # CI: unit tests (incl. the deterministic intent eval — the same 60 golden
-# cases the eval harness uses), typecheck, and a production build.
-# LLM-judge evals stay manual (evals/run.mjs) — they cost money and have
-# run-to-run variance; CI runs everything deterministic.
+# cases the eval harness uses — AND the regression gate that fails the build if
+# aggregate intent accuracy drops below the floors in evals/baseline.json),
+# typecheck, and a production build. LLM-judge + retrieval evals stay out of
+# push CI (they need egress / cost money) — see .github/workflows/nightly-evals.yml.
 name: CI
 
 on:
@@ -31,7 +32,7 @@ jobs:
       - name: Install
         run: npm ci
 
-      - name: Unit tests + deterministic evals
+      - name: Unit tests + deterministic evals + regression gate
         run: npm run test
 
       - name: Typecheck

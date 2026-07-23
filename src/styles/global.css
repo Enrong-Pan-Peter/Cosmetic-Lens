@@ -41,6 +41,44 @@
   --brand-foreground: 0 0% 100%;
 }
 
+/* =============================================
+   Dark Theme — applied via class="dark" on <html> (13.1)
+   ============================================= */
+.dark {
+  --background: 240 10% 4%;
+  --foreground: 0 0% 96%;
+
+  --card: 240 8% 7%;
+  --card-foreground: 0 0% 96%;
+
+  --popover: 240 8% 7%;
+  --popover-foreground: 0 0% 96%;
+
+  /* In dark, "primary" flips to near-white so primary buttons stay high-contrast */
+  --primary: 0 0% 96%;
+  --primary-foreground: 240 6% 10%;
+
+  --secondary: 240 5% 15%;
+  --secondary-foreground: 0 0% 96%;
+
+  --muted: 240 5% 14%;
+  --muted-foreground: 240 5% 65%;
+
+  --accent: 240 5% 16%;
+  --accent-foreground: 0 0% 96%;
+
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 0 0% 98%;
+
+  --border: 240 5% 18%;
+  --input: 240 5% 20%;
+  --ring: 0 0% 83%;
+
+  /* Brand blue reads better a touch lighter on dark */
+  --brand: 217 91% 60%;
+  --brand-foreground: 0 0% 100%;
+}
+
 @layer base {
   * {
     @apply border-border;
@@ -218,4 +256,49 @@
 }
 .prose-analysis .katex {
   font-size: 1.05em;
+}
+
+/* =============================================
+   Micro-interactions + accessibility (13.4)
+   ============================================= */
+@layer components {
+  /* Subtle lift on interactive cards. */
+  .card-hover {
+    @apply transition-all duration-200;
+  }
+  .card-hover:hover {
+    @apply -translate-y-0.5 shadow-md;
+  }
+}
+
+/* Respect reduced-motion: kill entrance/loop animations + transitions. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .card-hover:hover {
+    transform: none !important;
+  }
+}
+
+/* Print: strip chrome so shared analyses (and any page) print cleanly (14.4). */
+@media print {
+  header,
+  footer,
+  .gradient-divider,
+  .print-hide {
+    display: none !important;
+  }
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  a[href]::after {
+    content: '';
+  }
 }

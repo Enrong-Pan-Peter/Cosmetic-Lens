@@ -1,5 +1,28 @@
 /** Tiny stats + formatting helpers for eval reports. */
 
+/**
+ * Wilson score interval for a binomial proportion (improvement-plan 10.4).
+ * Honest error bars on pass rates — matters because our eval N is small, where
+ * the naive normal approximation is unreliable near 0/1.
+ * @param {number} successes
+ * @param {number} n
+ * @param {number} z  z-score (default 1.96 = 95%)
+ * @returns {{ phat: number, low: number, high: number }}
+ */
+export function wilsonInterval(successes, n, z = 1.96) {
+  if (!n || n <= 0) return { phat: 0, low: 0, high: 0 };
+  const phat = successes / n;
+  const z2 = z * z;
+  const denom = 1 + z2 / n;
+  const center = phat + z2 / (2 * n);
+  const margin = z * Math.sqrt((phat * (1 - phat)) / n + z2 / (4 * n * n));
+  return {
+    phat,
+    low: Math.max(0, (center - margin) / denom),
+    high: Math.min(1, (center + margin) / denom),
+  };
+}
+
 export function mean(nums) {
   const xs = nums.filter((n) => Number.isFinite(n));
   if (xs.length === 0) return null;

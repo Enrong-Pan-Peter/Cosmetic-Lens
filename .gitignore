@@ -46,3 +46,7 @@ pnpm-debug.log*
 
 # Eval outputs (JSON runs are local; latest-summary.md may be committed intentionally)
 evals/results/*.json
+
+# Feedback triage output (generated from the feedback table; review, then
+# promote real cases into evals/datasets/ — the raw triage isn't committed)
+evals/triage/

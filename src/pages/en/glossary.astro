@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../components/layout/BaseLayout.astro';
 import GlossaryTable from '../../components/glossary/GlossaryTable.jsx';
+import ConcernSearch from '../../components/glossary/ConcernSearch.jsx';
 import { getTranslations } from '../../i18n/utils';
 import glossaryData from '../../data/glossary-data.json';
 import { idByInci, ingredientSlug } from '../../lib/ingredients';
@@ -34,6 +35,10 @@ const entries = glossaryData.entries.map((e) => {
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
           </svg>
         </a>
+      </div>
+
+      <div class="mb-6">
+        <ConcernSearch client:load lang={lang} t={t} />
       </div>
 
       <GlossaryTable

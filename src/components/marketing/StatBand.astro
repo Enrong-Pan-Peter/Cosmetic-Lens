@@ -1,0 +1,35 @@
+---
+/**
+ * "By the numbers" band (13.7) — surfaces real, defensible project metrics.
+ * These are model-independent (deterministic intent accuracy, embedding recall,
+ * test count, content depth), so they stay true across model swaps.
+ */
+export interface Props {
+  lang: 'en' | 'zh';
+}
+const { lang } = Astro.props;
+const isZh = lang === 'zh';
+
+const stats = [
+  { value: '100', label: isZh ? '精选成分' : 'Curated ingredients' },
+  { value: '100%', label: isZh ? '意图识别准确率（中英）' : 'Intent accuracy (EN + ZH)' },
+  { value: '97%', label: isZh ? '检索召回率 @6' : 'Retrieval recall@6' },
+  { value: '190+', label: isZh ? 'CI 自动化测试' : 'Automated tests in CI' },
+];
+---
+
+<section class="py-10 sm:py-14">
+  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+    <p class="text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+      {isZh ? '严谨的工程实现' : 'Engineered, measured, tested'}
+    </p>
+    <dl class="mt-6 grid grid-cols-2 gap-6 sm:grid-cols-4">
+      {stats.map((s) => (
+        <div class="flex flex-col items-center text-center">
+          <dt class="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">{s.value}</dt>
+          <dd class="mt-1 text-sm text-muted-foreground">{s.label}</dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</section>

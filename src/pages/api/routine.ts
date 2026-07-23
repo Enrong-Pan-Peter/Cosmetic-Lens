@@ -59,6 +59,6 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     return rateLimitResponse('light', language, Boolean(authedUser));
   }
 
-  const result = analyzeRoutine(products, language);
+  const result = analyzeRoutine(products, language, { isPregnant: body?.isPregnant === true });
   return json({ success: true, result });
 };

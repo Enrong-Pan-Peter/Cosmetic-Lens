@@ -95,3 +95,22 @@ describe('analyzeRoutine — localization', () => {
     expect(r.tips.length).toBeGreaterThan(0);
   });
 });
+
+describe('analyzeRoutine — pregnancy awareness (12.3)', () => {
+  it('flags a retinoid to avoid when isPregnant is set', () => {
+    const r = analyzeRoutine(
+      [{ ingredients: 'Aqua, Retinol' }, { ingredients: 'Aqua, Glycerin' }],
+      'en',
+      { isPregnant: true },
+    );
+    const flag = r.conflicts.find((c) => /pregnancy/i.test(c.termB) && /retinol/i.test(c.termA));
+    expect(flag).toBeTruthy();
+    expect(flag?.level).toBe('avoid');
+    expect(flag?.a).toBe(flag?.b); // within-product pregnancy flag
+  });
+
+  it('does NOT surface pregnancy flags by default', () => {
+    const r = analyzeRoutine([{ ingredients: 'Aqua, Retinol' }, { ingredients: 'Aqua, Glycerin' }], 'en');
+    expect(r.conflicts.some((c) => /pregnancy/i.test(c.termB))).toBe(false);
+  });
+});

@@ -6,10 +6,10 @@
   },
   "nav": {
     "home": "首页",
-    "analyze": "分析产品",
-    "routine": "护肤流程检查",
-    "education": "成分科普",
-    "glossary": "成分词典",
+    "analyze": "分析",
+    "routine": "护肤流程",
+    "education": "科普",
+    "glossary": "词典",
     "ingredients": "成分库",
     "profile": "我的",
     "history": "历史分析",
@@ -85,6 +85,13 @@
     "send": "发送",
     "upload_photo": "上传产品照片",
     "upload_short": "照片",
+    "scan_label": "扫描条形码",
+    "scan_title": "扫描产品条形码",
+    "scan_hint": "将相机对准产品上的条形码。",
+    "scan_close": "关闭",
+    "scan_permission": "相机权限被拒绝。请开启相机权限后重试。",
+    "scan_error": "无法启动扫描器，你可以改为输入产品名称。",
+    "scan_not_found": "未找到该条形码，请尝试输入产品名称或粘贴成分表。",
     "extracting_photo": "正在从照片识别成分…",
     "extracted_from_photo": "已从照片识别",
     "extracted_review_hint": "请确认识别到的成分后点击发送。",
@@ -363,6 +370,7 @@
     "remove": "删除",
     "min_products_note": "至少添加 2 个产品才能检查冲突。",
     "max_products_note": "一次最多可检查 5 个产品。",
+    "pregnant_label": "我在孕期或哺乳期（标记需避免的成分）",
     "check_button": "检查我的流程",
     "checking": "检查中…",
     "example_button": "载入示例",
@@ -398,5 +406,22 @@
     "submit": "发送",
     "skip": "跳过",
     "thanks": "感谢你的反馈！"
+  },
+  "share": {
+    "share": "分享",
+    "sharing": "分享中…",
+    "copied": "链接已复制",
+    "error": "分享失败",
+    "copy_prompt": "复制此分享链接："
+  },
+  "concern": {
+    "title": "想改善什么问题？",
+    "subtitle": "描述一个肌肤问题，查看能改善它的成分。",
+    "placeholder": "例如 泛红、色斑、出油…",
+    "search": "搜索",
+    "searching": "搜索中…",
+    "results_prefix": "可能有帮助的成分 ·",
+    "no_results": "未找到匹配的问题——试试「泛红」「痘痘」「干燥」「抗老」等词。",
+    "strong": "证据充分"
   }
 }

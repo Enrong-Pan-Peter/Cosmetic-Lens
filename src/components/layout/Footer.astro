@@ -11,7 +11,10 @@ const t = getTranslations(lang);
 const footerLinks = [
   { href: `/${lang}/`, label: t.nav.home },
   { href: `/${lang}/chat`, label: t.nav.analyze },
+  { href: `/${lang}/routine`, label: t.nav.routine },
   { href: `/${lang}/glossary`, label: t.nav.glossary },
+  { href: `/${lang}/ingredients`, label: t.nav.ingredients },
+  { href: `/${lang}/education`, label: t.nav.education },
 ];
 ---
 
@@ -30,11 +33,11 @@ const footerLinks = [
       </a>
 
       <!-- Links -->
-      <div class="flex items-center gap-6 lg:gap-12">
+      <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 lg:gap-x-10">
         {footerLinks.map(link => (
           <a
             href={link.href}
-            class="text-base font-medium text-muted-foreground hover:text-foreground transition-colors"
+            class="whitespace-nowrap text-base font-medium text-muted-foreground hover:text-foreground transition-colors"
           >
             {link.label}
           </a>

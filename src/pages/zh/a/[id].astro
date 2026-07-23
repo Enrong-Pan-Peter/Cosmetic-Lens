@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../../../components/layout/BaseLayout.astro';
+import SharedAnalysisView from '../../../components/share/SharedAnalysisView.astro';
+import { createServerClient } from '../../../lib/supabase';
+import { shareDescription } from '../../../lib/share';
+
+export const prerender = false;
+
+const lang = 'zh';
+const { id } = Astro.params;
+
+let row: any = null;
+if (id) {
+  try {
+    const supabase = createServerClient();
+    const { data, error } = await supabase.from('shared_analyses').select('*').eq('id', id).single();
+    row = error ? null : data;
+  } catch {
+    row = null;
+  }
+}
+
+if (!row) Astro.response.status = 404;
+
+const title = row ? row.title || '分享的分析' : '未找到分享';
+const description = row ? shareDescription(row.content) : '此分享链接无效或已被移除。';
+---
+
+<BaseLayout title={title} description={description} lang={lang}>
+  {row ? (
+    <SharedAnalysisView row={row} lang={lang} />
+  ) : (
+    <section class="mx-auto max-w-2xl px-4 py-20 text-center">
+      <h1 class="text-2xl font-semibold text-foreground">未找到分享</h1>
+      <p class="text-muted-foreground mt-2">此分享链接无效或已被移除。</p>
+      <a
+        href={`/${lang}/chat`}
+        class="mt-6 inline-flex items-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+      >
+        去分析产品
+      </a>
+    </section>
+  )}
+</BaseLayout>

@@ -48,6 +48,7 @@ import {
   storeCachedAnswer,
 } from '../../lib/semantic-cache';
 import { routeIntent, isFastRoutingEnabled, fastPathSystemPrompt } from '../../lib/router';
+import { detectInjection, injectionGuardNote } from '../../lib/guardrails';
 
 export const prerender = false;
 
@@ -442,8 +443,15 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
         const systemPrompt = buildSystemPrompt(lang, userProfile);
         const agenticGuide = buildAgenticInstructions(lang);
 
+        // Prompt-injection guardrail (9.2): re-anchor + log, never block.
+        const injectionSuspected = detectInjection(lastUserMsg.content);
+        const guardNote = injectionSuspected ? injectionGuardNote(lang) : '';
+        if (injectionSuspected) {
+          logLlmCall({ endpoint: 'chat-agentic', model: 'guardrail', ok: false, error: 'injection_suspected' });
+        }
+
         const messages: OpenAIMessage[] = [
-          { role: 'system', content: `${systemPrompt}\n\n${agenticGuide}` },
+          { role: 'system', content: `${systemPrompt}\n\n${agenticGuide}${guardNote}` },
         ];
 
         const history = clientMessages.slice(-MAX_HISTORY_MESSAGES);
@@ -678,6 +686,7 @@ You have access to the following tools and may call any of them. Plan first, the
 3. **get_ingredient_interactions(ingredients[], is_pregnant?)** — Rule engine for safety warnings. Call AFTER you have an ingredient list (from search_product OR pasted by user) so you can surface concrete warnings instead of speculating.
 4. **search_knowledge_base(query, limit?)** — RAG over our curated ingredient & interaction docs. Call for general "is X safe?" / "what does Y do?" questions.
 5. **check_routine(products[])** — Deterministic cross-product conflict matrix + AM/PM placement + layering tips. Call when the user lists or describes MULTIPLE products (a routine) and asks whether they can be combined, layered, or used together.
+6. **compare_products(product_a, product_b)** — Deterministic two-product comparison (shared / unique ingredients + conflicts). Call when the user asks to compare or choose between exactly TWO products.
 
 Guidelines:
 - **MANDATORY GROUNDING.** When the latest user message is tagged \`[intent: knowledge]\`, you MUST call \`search_knowledge_base\` before answering — no exceptions for safety, pregnancy, or interaction topics, even when you are confident. When tagged \`[intent: product]\`, you MUST call \`search_product\` first. Our curated database is the source of truth, and the UI shows the user which sources grounded your answer — an answer from memory alone shows no sources and looks untrustworthy.
@@ -695,6 +704,7 @@ Guidelines:
 3. **get_ingredient_interactions(ingredients[], is_pregnant?)** — 成分相互作用规则引擎。在你已有成分列表（来自 search_product 或用户粘贴）后调用，给出具体警告而非猜测。
 4. **search_knowledge_base(query, limit?)** — 在精选成分与相互作用知识库中检索。通用「X 安全吗？」「Y 有什么作用？」类问题时调用。
 5. **check_routine(products[])** — 确定性的多产品冲突矩阵 + 早晚使用建议 + 叠加顺序提示。当用户列出或描述【多个】一起使用的产品（护肤流程）并询问能否搭配、叠加或同时使用时调用。
+6. **compare_products(product_a, product_b)** — 确定性的两款产品对比（共有/各自独有成分 + 冲突）。当用户要求对比或在【两款】产品之间做选择时调用。
 
 规则：
 - **强制检索。** 最新用户消息标注 \`[intent: knowledge]\` 时，回答前【必须】先调用 \`search_knowledge_base\`——涉及安全、孕期、成分冲突的话题绝无例外，即使你很有把握。标注 \`[intent: product]\` 时【必须】先调用 \`search_product\`。精选知识库才是事实来源，且界面会向用户展示回答的资料来源——凭记忆作答将不显示任何来源，显得不可信。

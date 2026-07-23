@@ -128,7 +128,16 @@ function normalizeLevel(level: string | undefined): ConflictLevel {
  * list (also flags within-product conflicts), a severity summary, and layering
  * tips — all localized to `lang`.
  */
-export function analyzeRoutine(rawProducts: RoutineProductInput[], lang: Language = 'en'): RoutineResult {
+export interface RoutineOptions {
+  /** When true, also surface pregnancy-avoid ingredients (retinoids, etc.). */
+  isPregnant?: boolean;
+}
+
+export function analyzeRoutine(
+  rawProducts: RoutineProductInput[],
+  lang: Language = 'en',
+  opts: RoutineOptions = {},
+): RoutineResult {
   const isZh = lang === 'zh';
 
   const products = rawProducts
@@ -154,8 +163,37 @@ export function analyzeRoutine(rawProducts: RoutineProductInput[], lang: Languag
   const seenConflict = new Set<string>();
 
   for (const pair of PAIRS) {
-    if (pair.context) continue; // pregnancy / prolonged-use etc. handled elsewhere, not routine layering
     if (pair.level === 'synergy' || pair.level === 'good') continue; // positive pairs aren't conflicts
+
+    // Pregnancy pairs are single-ingredient "avoid during pregnancy" flags.
+    // Only surface them when the user indicated pregnancy (12.3).
+    if (pair.context === 'pregnancy') {
+      if (!opts.isPregnant) continue;
+      const term = (pair.ingredients ?? [])[0];
+      if (!term) continue;
+      const termDisp = isZh ? pair.ingredients_zh?.[0] || term : term;
+      const level = normalizeLevel(pair.level);
+      const warning = isZh ? pair.warning_zh || pair.warning_en || '' : pair.warning_en || pair.warning_zh || '';
+      for (let i = 0; i < products.length; i++) {
+        if (!productHasIngredient(products[i].tokens, term)) continue;
+        const key = `preg-${i}-${term}`;
+        if (seenConflict.has(key)) continue;
+        seenConflict.add(key);
+        conflicts.push({
+          level,
+          a: i,
+          b: i,
+          productA: products[i].name,
+          productB: products[i].name,
+          termA: termDisp,
+          termB: isZh ? '孕期' : 'pregnancy',
+          warning,
+        });
+      }
+      continue;
+    }
+
+    if (pair.context) continue; // other contexts (prolonged_use, …) not routine layering
     const terms = pair.ingredients ?? [];
     if (terms.length < 2) continue;
     const [termAEn, termBEn] = terms;

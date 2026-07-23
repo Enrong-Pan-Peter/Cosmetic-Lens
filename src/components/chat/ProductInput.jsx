@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { isBarcodeScanSupported } from './BarcodeScanner';
 
 /**
  * Composer for the chat page.
@@ -26,6 +27,7 @@ export default function ProductInput({
   onSubmit,
   onStop,
   onUploadImage,
+  onScanBarcode,
   isLoading,
   isExtracting = false,
   uploadedImagePreview = null,
@@ -34,6 +36,7 @@ export default function ProductInput({
   placeholder,
   stopLabel = 'Stop',
   uploadLabel = 'Upload photo',
+  scanLabel = 'Scan barcode',
   removeLabel = 'Remove photo',
   extractingLabel = 'Reading photo…',
   photoAlt = 'Uploaded photo preview',
@@ -46,6 +49,13 @@ export default function ProductInput({
 }) {
   const [input, setInput] = useState('');
   const [isDragging, setIsDragging] = useState(false);
+  const [scanSupported, setScanSupported] = useState(false);
+
+  // BarcodeDetector support is client-only — decide after mount so SSR/unsupported
+  // browsers simply never show the scan button (progressive enhancement).
+  useEffect(() => {
+    setScanSupported(isBarcodeScanSupported());
+  }, []);
   const localTextareaRef = useRef(null);
   const fileInputRef = useRef(null);
 
@@ -157,29 +167,29 @@ export default function ProductInput({
     <form onSubmit={handleSubmit}>
       <div
         className={
-          'relative flex flex-col gap-2 rounded-2xl border bg-white shadow-sm px-4 py-2.5 transition-shadow ' +
+          'relative flex flex-col gap-2 rounded-2xl border bg-card shadow-sm px-4 py-2.5 transition-shadow ' +
           (isDragging
-            ? 'border-stone-500 ring-2 ring-stone-400'
-            : 'border-stone-300 focus-within:border-stone-400 focus-within:ring-1 focus-within:ring-stone-300')
+            ? 'border-ring ring-2 ring-ring'
+            : 'border-input focus-within:border-ring focus-within:ring-1 focus-within:ring-ring')
         }
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
       >
         {showImageChip && (
-          <div className="flex items-center gap-3 rounded-lg bg-stone-50 border border-stone-200 px-2.5 py-2">
+          <div className="flex items-center gap-3 rounded-lg bg-muted border border-border px-2.5 py-2">
             {uploadedImagePreview ? (
               <img
                 src={uploadedImagePreview}
                 alt={photoAlt}
-                className="h-12 w-12 rounded-md object-cover border border-stone-200 shrink-0"
+                className="h-12 w-12 rounded-md object-cover border border-border shrink-0"
               />
             ) : (
-              <div className="h-12 w-12 rounded-md bg-stone-200 shrink-0 animate-pulse" />
+              <div className="h-12 w-12 rounded-md bg-muted shrink-0 animate-pulse" />
             )}
             <div className="min-w-0 flex-1">
               {isExtracting ? (
-                <div className="flex items-center gap-2 text-sm text-stone-700">
+                <div className="flex items-center gap-2 text-sm text-foreground">
                   <span className="thinking-dots">
                     <span></span>
                     <span></span>
@@ -189,11 +199,11 @@ export default function ProductInput({
                 </div>
               ) : (
                 <>
-                  <p className="text-xs font-medium text-stone-700 truncate">
+                  <p className="text-xs font-medium text-foreground truncate">
                     {photoAlt}
                   </p>
                   {uploadedImageWarning && (
-                    <p className="text-[11px] text-amber-700 mt-0.5 leading-snug">
+                    <p className="text-[11px] text-amber-700 dark:text-amber-400 mt-0.5 leading-snug">
                       {uploadedImageWarning}
                     </p>
                   )}
@@ -204,7 +214,7 @@ export default function ProductInput({
               <button
                 type="button"
                 onClick={onRemoveImage}
-                className="shrink-0 inline-flex items-center justify-center h-7 w-7 rounded-md text-stone-500 hover:text-stone-800 hover:bg-stone-200 transition-colors"
+                className="shrink-0 inline-flex items-center justify-center h-7 w-7 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
                 aria-label={removeLabel}
                 title={removeLabel}
               >
@@ -223,7 +233,7 @@ export default function ProductInput({
             type="button"
             onClick={handlePickFile}
             disabled={disabled}
-            className="shrink-0 self-end flex items-center justify-center h-8 w-8 rounded-lg text-stone-500 hover:text-stone-800 hover:bg-stone-100 disabled:opacity-40 disabled:hover:bg-transparent transition-colors"
+            className="shrink-0 self-end flex items-center justify-center h-9 w-9 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent disabled:opacity-40 disabled:hover:bg-transparent transition-colors"
             aria-label={uploadLabel}
             title={uploadLabel}
           >
@@ -231,6 +241,22 @@ export default function ProductInput({
               <path d="M208,56H180.28L166.65,35.56A8,8,0,0,0,160,32H96a8,8,0,0,0-6.65,3.56L75.71,56H48A24,24,0,0,0,24,80V192a24,24,0,0,0,24,24H208a24,24,0,0,0,24-24V80A24,24,0,0,0,208,56Zm8,136a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V80a8,8,0,0,1,8-8H80a8,8,0,0,0,6.66-3.56L100.28,48h55.43l13.63,20.44A8,8,0,0,0,176,72h32a8,8,0,0,1,8,8ZM128,88a44,44,0,1,0,44,44A44.05,44.05,0,0,0,128,88Zm0,72a28,28,0,1,1,28-28A28,28,0,0,1,128,160Z" />
             </svg>
           </button>
+
+          {/* Barcode scan (14.6) — only where BarcodeDetector is supported */}
+          {scanSupported && onScanBarcode && (
+            <button
+              type="button"
+              onClick={onScanBarcode}
+              disabled={disabled}
+              className="shrink-0 self-end flex items-center justify-center h-9 w-9 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent disabled:opacity-40 disabled:hover:bg-transparent transition-colors"
+              aria-label={scanLabel}
+              title={scanLabel}
+            >
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M3 5v14M7 5v14M11 5v14M15 5v14M19 5v14M22 5v14" />
+              </svg>
+            </button>
+          )}
 
           <input
             ref={fileInputRef}
@@ -251,14 +277,14 @@ export default function ProductInput({
             onPaste={handlePaste}
             placeholder={placeholder}
             rows={1}
-            className="flex-1 resize-none bg-transparent text-sm leading-6 text-stone-800 placeholder:text-stone-400 focus:outline-none max-h-[200px] py-1"
+            className="flex-1 resize-none bg-transparent text-sm leading-6 text-foreground placeholder:text-muted-foreground focus:outline-none max-h-[200px] py-1"
           />
 
           {isLoading ? (
             <button
               type="button"
               onClick={onStop}
-              className="shrink-0 self-end flex items-center justify-center h-8 w-8 rounded-lg bg-stone-800 text-white hover:bg-stone-700 transition-colors"
+              className="shrink-0 self-end flex items-center justify-center h-9 w-9 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
               aria-label={stopLabel}
               title={stopLabel}
             >
@@ -270,7 +296,7 @@ export default function ProductInput({
             <button
               type="submit"
               disabled={!canSubmit}
-              className="shrink-0 self-end flex items-center justify-center h-8 w-8 rounded-lg bg-stone-800 text-white disabled:opacity-25 hover:bg-stone-700 transition-colors"
+              className="shrink-0 self-end flex items-center justify-center h-9 w-9 rounded-lg bg-primary text-primary-foreground disabled:opacity-25 hover:bg-primary/90 transition-colors"
               aria-label="Send"
             >
               <svg

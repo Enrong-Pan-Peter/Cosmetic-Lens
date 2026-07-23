@@ -10,7 +10,7 @@
  *   3. `summarize`— produces a short human-readable string for the UI agent
  *                   trace ("Found CeraVe Moisturizing Cream · 25 ingredients").
  *
- * The set of tools is intentionally small (5) so the model rarely needs more
+ * The set of tools is intentionally small (6) so the model rarely needs more
  * than 1–2 calls per turn — keeps cost + latency low for a portfolio demo.
  *
  * To add a tool:
@@ -28,6 +28,7 @@ import { findDupes } from './dupe-finder';
 import { searchKnowledge } from './embeddings';
 import { getInteractionWarnings, type InteractionWarning } from './prompt';
 import { analyzeRoutine, type RoutineProductInput } from './routine';
+import { compareProducts, type CompareProductInput } from './compare';
 import { expandQuery } from './query-expansion';
 
 // ---------------------------------------------------------------------------
@@ -42,7 +43,8 @@ export type ToolName =
   | 'find_dupes'
   | 'get_ingredient_interactions'
   | 'search_knowledge_base'
-  | 'check_routine';
+  | 'check_routine'
+  | 'compare_products';
 
 export interface ToolCallRequest {
   /** OpenAI-issued tool call id (round-trips back to the model). */
@@ -391,6 +393,11 @@ const toolDefinitions: ToolDefinition[] = [
                 additionalProperties: false,
               },
             },
+            is_pregnant: {
+              type: 'boolean',
+              description: 'Set true to also flag ingredients to avoid during pregnancy. Defaults to false.',
+              default: false,
+            },
           },
           required: ['products'],
           additionalProperties: false,
@@ -414,7 +421,7 @@ const toolDefinitions: ToolDefinition[] = [
         };
       }
 
-      const routine = analyzeRoutine(products, ctx.language);
+      const routine = analyzeRoutine(products, ctx.language, { isPregnant: Boolean(args.is_pregnant) });
       const { avoid, caution, info } = routine.summary;
       const total = avoid + caution + info;
 
@@ -423,6 +430,69 @@ const toolDefinitions: ToolDefinition[] = [
         summary: total
           ? `Checked ${products.length} products · ${avoid} avoid / ${caution} caution / ${info} note`
           : `Checked ${products.length} products · no conflicts found`,
+      };
+    },
+  },
+
+  // -------------------------------------------------------------------------
+  // 6. compare_products — two-product ingredient comparison (deterministic)
+  // -------------------------------------------------------------------------
+  {
+    name: 'compare_products',
+    schema: {
+      type: 'function',
+      function: {
+        name: 'compare_products',
+        description:
+          'Compare TWO products by their INCI ingredient lists: shared ingredients, ingredients unique to each, and any interaction conflicts between them. Call when the user asks to compare, contrast, or choose between two named products (e.g. "which is better, A or B?", "compare A vs B").',
+        parameters: {
+          type: 'object',
+          properties: {
+            product_a: {
+              type: 'object',
+              properties: {
+                name: { type: 'string', description: 'Product A name (optional).' },
+                ingredients: { type: 'string', description: 'Product A comma-separated INCI list.' },
+              },
+              required: ['ingredients'],
+              additionalProperties: false,
+            },
+            product_b: {
+              type: 'object',
+              properties: {
+                name: { type: 'string', description: 'Product B name (optional).' },
+                ingredients: { type: 'string', description: 'Product B comma-separated INCI list.' },
+              },
+              required: ['ingredients'],
+              additionalProperties: false,
+            },
+          },
+          required: ['product_a', 'product_b'],
+          additionalProperties: false,
+        },
+      },
+    },
+    async execute(args, ctx) {
+      const toInput = (v: unknown): CompareProductInput => {
+        const o = (v && typeof v === 'object' ? v : {}) as Record<string, unknown>;
+        return {
+          name: typeof o.name === 'string' ? o.name : '',
+          ingredients: typeof o.ingredients === 'string' ? o.ingredients : '',
+        };
+      };
+      const a = toInput(args.product_a);
+      const b = toInput(args.product_b);
+      if (!a.ingredients.trim() || !b.ingredients.trim()) {
+        return {
+          result: { error: 'both products need ingredient lists' },
+          summary: 'Compare needs two ingredient lists',
+        };
+      }
+
+      const cmp = compareProducts(a, b, ctx.language);
+      return {
+        result: cmp,
+        summary: `${cmp.shared.length} shared · ${cmp.onlyA.length}/${cmp.onlyB.length} unique · ${cmp.conflicts.length} conflict${cmp.conflicts.length === 1 ? '' : 's'}`,
       };
     },
   },

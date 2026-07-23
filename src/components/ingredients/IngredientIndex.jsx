@@ -70,7 +70,7 @@ export default function IngredientIndex({ items, categories, lang, t }) {
             <a
               key={it.id}
               href={`/${lang}/ingredients/${it.slug}`}
-              className="group flex flex-col rounded-xl border border-border bg-card p-4 shadow-sm transition-colors hover:border-primary/40 hover:bg-accent/40"
+              className="card-hover group flex flex-col rounded-xl border border-border bg-card p-4 shadow-sm hover:border-primary/40 hover:bg-accent/40"
             >
               <div className="flex items-baseline justify-between gap-2">
                 <span className="font-medium text-card-foreground">

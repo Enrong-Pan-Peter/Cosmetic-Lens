@@ -1,0 +1,47 @@
+# Nightly/weekly evals (improvement-plan 10.3).
+# Runs the retrieval suite + tuning sweep, which talk directly to Supabase +
+# OpenAI (no app server needed). LLM-judge e2e stays manual (`evals/run.mjs
+# --suite e2e`) — it needs the app running and costs money per run.
+# Skips gracefully when the eval secrets aren't configured, so forks don't fail.
+name: Nightly evals
+
+on:
+  schedule:
+    - cron: '0 7 * * 1' # Mondays 07:00 UTC
+  workflow_dispatch: {}
+
+jobs:
+  evals:
+    runs-on: ubuntu-latest
+    env:
+      PUBLIC_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Retrieval eval + tuning sweep
+        run: |
+          if [ -z "$OPENAI_API_KEY" ] || [ -z "$SUPABASE_SERVICE_ROLE_KEY" ]; then
+            echo "Eval secrets not configured — skipping."
+            echo "Set OPENAI_API_KEY, SUPABASE_SERVICE_ROLE_KEY, PUBLIC_SUPABASE_URL as repo secrets to enable."
+            exit 0
+          fi
+          node evals/run.mjs --suite retrieval --retrieval hybrid
+          node evals/run.mjs --sweep
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-results
+          path: evals/results/
+          if-no-files-found: ignore

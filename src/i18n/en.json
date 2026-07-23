@@ -6,10 +6,10 @@
   },
   "nav": {
     "home": "Home",
-    "analyze": "Analyze Product",
-    "routine": "Routine Checker",
+    "analyze": "Analyze",
+    "routine": "Routine",
     "education": "Learn",
-    "glossary": "Ingredient Glossary",
+    "glossary": "Glossary",
     "ingredients": "Ingredients",
     "profile": "My Profile",
     "history": "My History",
@@ -85,6 +85,13 @@
     "send": "Send",
     "upload_photo": "Upload product photo",
     "upload_short": "Photo",
+    "scan_label": "Scan barcode",
+    "scan_title": "Scan a product barcode",
+    "scan_hint": "Point your camera at the barcode on the product.",
+    "scan_close": "Close",
+    "scan_permission": "Camera access was blocked. Enable camera permission and try again.",
+    "scan_error": "Couldn't start the scanner. You can type the product name instead.",
+    "scan_not_found": "We couldn't find that barcode. Try typing the product name or pasting the ingredients.",
     "extracting_photo": "Reading ingredients from photo…",
     "extracted_from_photo": "Extracted from photo",
     "extracted_review_hint": "Review the extracted ingredients, then click Send.",
@@ -363,6 +370,7 @@
     "remove": "Remove",
     "min_products_note": "Add at least 2 products to check for conflicts.",
     "max_products_note": "You can check up to 5 products at a time.",
+    "pregnant_label": "I'm pregnant or breastfeeding (flag ingredients to avoid)",
     "check_button": "Check my routine",
     "checking": "Checking…",
     "example_button": "Load an example",
@@ -398,5 +406,22 @@
     "submit": "Send",
     "skip": "Skip",
     "thanks": "Thanks for the feedback!"
+  },
+  "share": {
+    "share": "Share",
+    "sharing": "Sharing…",
+    "copied": "Link copied",
+    "error": "Couldn't share",
+    "copy_prompt": "Copy this share link:"
+  },
+  "concern": {
+    "title": "What helps with…?",
+    "subtitle": "Describe a skin concern and see the ingredients that address it.",
+    "placeholder": "e.g. redness, dark spots, oily skin…",
+    "search": "Search",
+    "searching": "Searching…",
+    "results_prefix": "Ingredients that may help ·",
+    "no_results": "No matching concern found — try a word like redness, acne, dryness, or aging.",
+    "strong": "Strong evidence"
   }
 }
