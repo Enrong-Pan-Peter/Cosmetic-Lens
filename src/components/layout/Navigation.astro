@@ -206,7 +206,9 @@ const navLinks = [
         mobileAuth?.classList.add('hidden');
         mobileProfile?.classList.remove('hidden');
       } else {
-        authButtons?.classList.remove('hidden');
+        // Keep the desktop auth buttons OFF on mobile (auth lives in the drawer):
+        // `hidden md:flex` — never remove `hidden`, only toggle the md variant.
+        authButtons?.classList.add('hidden');
         authButtons?.classList.add('md:flex');
         profileMenu?.classList.add('hidden');
         mobileAuth?.classList.remove('hidden');

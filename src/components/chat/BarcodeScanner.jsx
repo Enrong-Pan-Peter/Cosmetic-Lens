@@ -3,17 +3,24 @@ import { useEffect, useRef, useState } from 'react';
 /**
  * Barcode scanner modal (improvement-plan 14.6) — progressive enhancement.
  *
- * Uses the native `BarcodeDetector` API + the rear camera. Only ever mounted
- * when `open` is true; the caller (ProductInput) hides the trigger entirely on
- * browsers without support, so there's no broken affordance. On a successful
- * read it stops the camera and hands the raw code back via `onDetected`.
+ * Two paths:
+ *   1. Native `BarcodeDetector` (Android Chrome, desktop Chrome/Edge) — fast,
+ *      zero-download.
+ *   2. ZXing fallback, dynamically imported from a CDN only when the native API
+ *      is missing (notably iOS Safari). No bundled dependency; the ~200 KB lib
+ *      loads on demand for the small slice of users that need it.
+ *
+ * The trigger (in ProductInput) is shown whenever a camera is available, so the
+ * button now appears on iOS too. On a read it stops the camera and returns the
+ * raw code via `onDetected`.
  */
+
+// Loaded from CDN at runtime (no CSP restriction on this site). The `@vite-ignore`
+// keeps the bundler from trying to resolve it at build time.
+const ZXING_CDN = 'https://esm.sh/@zxing/browser@0.1.5';
+
 export function isBarcodeScanSupported() {
-  return (
-    typeof window !== 'undefined' &&
-    'BarcodeDetector' in window &&
-    Boolean(navigator.mediaDevices?.getUserMedia)
-  );
+  return typeof navigator !== 'undefined' && Boolean(navigator.mediaDevices?.getUserMedia);
 }
 
 export default function BarcodeScanner({ open, onClose, onDetected, t }) {
@@ -22,52 +29,79 @@ export default function BarcodeScanner({ open, onClose, onDetected, t }) {
 
   useEffect(() => {
     if (!open) return;
-    let stream = null;
-    let interval = null;
     let cancelled = false;
+    let stream = null; // native path
+    let interval = null; // native path
+    let zxingControls = null; // fallback path
 
     const stop = () => {
       cancelled = true;
       if (interval) clearInterval(interval);
       if (stream) stream.getTracks().forEach((tr) => tr.stop());
+      if (zxingControls) {
+        try {
+          zxingControls.stop();
+        } catch {
+          /* noop */
+        }
+      }
+    };
+
+    const succeed = (value) => {
+      if (cancelled || !value) return;
+      stop();
+      onDetected(value);
+    };
+
+    const failed = (err) => {
+      if (cancelled) return;
+      setError(err?.name === 'NotAllowedError' ? 'permission' : 'generic');
     };
 
     (async () => {
       setError(null);
       try {
-        stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: 'environment' },
-          audio: false,
-        });
-        if (cancelled) {
-          stream.getTracks().forEach((tr) => tr.stop());
-          return;
-        }
-        const video = videoRef.current;
-        if (!video) return;
-        video.srcObject = stream;
-        await video.play().catch(() => {});
+        if ('BarcodeDetector' in window) {
+          // ---- Native path ----
+          stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: 'environment' },
+            audio: false,
+          });
+          if (cancelled) return stop();
+          const video = videoRef.current;
+          if (!video) return;
+          video.srcObject = stream;
+          await video.play().catch(() => {});
 
-        // eslint-disable-next-line no-undef
-        const detector = new window.BarcodeDetector({
-          formats: ['ean_13', 'ean_8', 'upc_a', 'upc_e', 'code_128', 'code_39'],
-        });
-
-        interval = setInterval(async () => {
-          if (cancelled || !videoRef.current) return;
-          try {
-            const codes = await detector.detect(videoRef.current);
-            const val = codes?.[0]?.rawValue;
-            if (val) {
-              stop();
-              onDetected(val);
+          // eslint-disable-next-line no-undef
+          const detector = new window.BarcodeDetector({
+            formats: ['ean_13', 'ean_8', 'upc_a', 'upc_e', 'code_128', 'code_39'],
+          });
+          interval = setInterval(async () => {
+            if (cancelled || !videoRef.current) return;
+            try {
+              const codes = await detector.detect(videoRef.current);
+              if (codes?.[0]?.rawValue) succeed(codes[0].rawValue);
+            } catch {
+              /* transient — keep polling */
             }
-          } catch {
-            /* transient detect error — keep polling */
-          }
-        }, 300);
+          }, 300);
+        } else {
+          // ---- ZXing fallback (iOS Safari etc.) ----
+          const mod = await import(/* @vite-ignore */ ZXING_CDN);
+          if (cancelled) return;
+          const Reader = mod.BrowserMultiFormatReader;
+          const reader = new Reader();
+          zxingControls = await reader.decodeFromConstraints(
+            { video: { facingMode: 'environment' } },
+            videoRef.current,
+            (result) => {
+              if (result) succeed(typeof result.getText === 'function' ? result.getText() : result.text);
+            },
+          );
+        }
       } catch (err) {
-        setError(err?.name === 'NotAllowedError' ? 'permission' : 'generic');
+        failed(err);
       }
     })();
 
