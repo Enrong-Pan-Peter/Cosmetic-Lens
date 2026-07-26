@@ -29,8 +29,24 @@ const created = row.created_at ? new Date(row.created_at).toISOString().slice(0,
     <span class="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
       {lang === 'zh' ? '来自 成分透视 的分享' : 'Shared from CosmeticLens'}
     </span>
-    {created && <span class="text-xs text-muted-foreground">{created}</span>}
+    <div class="flex items-center gap-3">
+      {created && <span class="text-xs text-muted-foreground">{created}</span>}
+      <button
+        id="download-pdf"
+        type="button"
+        class="print-hide inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground hover:bg-accent transition-colors"
+      >
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3" />
+        </svg>
+        {lang === 'zh' ? '下载 PDF' : 'Download PDF'}
+      </button>
+    </div>
   </div>
+
+  <script>
+    document.getElementById('download-pdf')?.addEventListener('click', () => window.print());
+  </script>
 
   {row.title && (
     <h1 class="text-xl font-semibold text-foreground mb-1">{row.title}</h1>

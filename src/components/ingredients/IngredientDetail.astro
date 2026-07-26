@@ -8,6 +8,7 @@ import {
   idByInci,
   interactionLevel,
 } from '../../lib/ingredients';
+import FavoriteButton from './FavoriteButton.jsx';
 import { getTranslations } from '../../i18n/utils';
 
 interface Props {
@@ -105,6 +106,9 @@ const levelLabel: Record<string, string> = {
         {aliases.join(', ')}
       </p>
     )}
+    <div class="mt-4">
+      <FavoriteButton client:load id={ing.id} t={t} />
+    </div>
   </header>
 
   <div class="space-y-8">

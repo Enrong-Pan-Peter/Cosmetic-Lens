@@ -12,6 +12,7 @@
     "glossary": "Glossary",
     "ingredients": "Ingredients",
     "quiz": "Skin Quiz",
+    "shelf": "My Shelf",
     "profile": "My Profile",
     "history": "My History",
     "login": "Log In",
@@ -413,7 +414,8 @@
     "sharing": "Sharing…",
     "copied": "Link copied",
     "error": "Couldn't share",
-    "copy_prompt": "Copy this share link:"
+    "copy_prompt": "Copy this share link:",
+    "download_pdf": "Download PDF"
   },
   "concern": {
     "title": "What helps with…?",
@@ -446,5 +448,16 @@
     "done_desc_anon": "Saved on this device — analyses are now personalized. Sign in to sync it across devices.",
     "done_cta": "Analyze a product",
     "retake": "Retake"
+  },
+  "favorites": {
+    "title": "My Shelf",
+    "subtitle": "Ingredients you've saved for quick reference.",
+    "save": "Save",
+    "saved": "Saved",
+    "add": "Save to My Shelf",
+    "remove": "Remove from My Shelf",
+    "empty": "No saved ingredients yet. Tap the star on any ingredient to add it here.",
+    "browse": "Browse ingredients",
+    "count_label": "saved ingredient(s)"
   }
 }

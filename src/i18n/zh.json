@@ -12,6 +12,7 @@
     "glossary": "词典",
     "ingredients": "成分库",
     "quiz": "测肤",
+    "shelf": "收藏夹",
     "profile": "我的",
     "history": "历史分析",
     "login": "登录",
@@ -413,7 +414,8 @@
     "sharing": "分享中…",
     "copied": "链接已复制",
     "error": "分享失败",
-    "copy_prompt": "复制此分享链接："
+    "copy_prompt": "复制此分享链接：",
+    "download_pdf": "下载 PDF"
   },
   "concern": {
     "title": "想改善什么问题？",
@@ -446,5 +448,16 @@
     "done_desc_anon": "已保存到本设备——分析已个性化。登录可在多设备间同步。",
     "done_cta": "分析产品",
     "retake": "重新测试"
+  },
+  "favorites": {
+    "title": "我的收藏夹",
+    "subtitle": "你收藏的成分，方便随时查阅。",
+    "save": "收藏",
+    "saved": "已收藏",
+    "add": "加入收藏夹",
+    "remove": "从收藏夹移除",
+    "empty": "还没有收藏的成分。点击任意成分上的星标即可加入这里。",
+    "browse": "浏览成分",
+    "count_label": "个已收藏成分"
   }
 }

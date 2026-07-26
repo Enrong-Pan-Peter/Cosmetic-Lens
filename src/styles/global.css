@@ -301,4 +301,20 @@
   a[href]::after {
     content: '';
   }
+
+  /* Single-answer PDF export from chat (14.2): print only #print-region. */
+  body.print-single * {
+    visibility: hidden !important;
+  }
+  body.print-single #print-region,
+  body.print-single #print-region * {
+    visibility: visible !important;
+  }
+  body.print-single #print-region {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    display: block !important;
+  }
 }

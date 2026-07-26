@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { Microscope } from '@phosphor-icons/react';
 import ChatSidebar from './ChatSidebar';
 import BarcodeScanner from './BarcodeScanner';
+import AnalysisDisplay from './AnalysisDisplay';
 import { readLocalProfile } from '../../lib/profile-store';
 import ChatMessage from './ChatMessage';
 import ProductInput from './ProductInput';
@@ -246,6 +247,7 @@ export default function ChatInterface({ lang, translations: t }) {
   const [photoWarning, setPhotoWarning] = useState(null);
   const [pendingPhotoMeta, setPendingPhotoMeta] = useState(null);
   const [scannerOpen, setScannerOpen] = useState(false);
+  const [pdfMsg, setPdfMsg] = useState(null);
 
   const messagesEndRef = useRef(null);
   const abortRef = useRef(null);
@@ -614,6 +616,23 @@ export default function ChatInterface({ lang, translations: t }) {
     el.dispatchEvent(
       new CustomEvent('cosmeticlens:set-text', { detail: { value: text } }),
     );
+  };
+
+  // PDF export (14.2): render just this answer into #print-region and print it
+  // (browser "Save as PDF"). No dependency; the print-single CSS isolates it.
+  const handleDownloadPdf = (msg) => {
+    if (!msg?.content) return;
+    setPdfMsg(msg);
+    const cleanup = () => {
+      document.body.classList.remove('print-single');
+      window.removeEventListener('afterprint', cleanup);
+      setPdfMsg(null);
+    };
+    window.addEventListener('afterprint', cleanup);
+    setTimeout(() => {
+      document.body.classList.add('print-single');
+      window.print();
+    }, 80);
   };
 
   // Barcode scan (14.6): look up the scanned code in Open Beauty Facts and seed
@@ -1136,6 +1155,7 @@ export default function ChatInterface({ lang, translations: t }) {
                       t={t}
                       token={token}
                       chatId={activeChatId}
+                      onDownloadPdf={msg.role === 'assistant' ? handleDownloadPdf : undefined}
                       onFindDupes={msg.role === 'assistant' ? handleFindDupes : undefined}
                       onSimilarIngredients={
                         msg.role === 'assistant' ? handleSimilarIngredients : undefined
@@ -1209,6 +1229,42 @@ export default function ChatInterface({ lang, translations: t }) {
         onDetected={handleBarcodeDetected}
         t={t}
       />
+
+      {/* Off-screen single-answer render for PDF export (14.2) */}
+      {pdfMsg && (
+        <div id="print-region" className="hidden print:block p-8 text-foreground">
+          <div className="mb-4 border-b border-border pb-3">
+            <div className="text-lg font-semibold">{lang === 'zh' ? '成分透视' : 'CosmeticLens'}</div>
+            {pdfMsg._query && <div className="mt-1 text-sm text-muted-foreground">{pdfMsg._query}</div>}
+            {pdfMsg.product?.name && (
+              <div className="text-sm text-muted-foreground">
+                {pdfMsg.product.name}
+                {pdfMsg.product.brand ? ` · ${pdfMsg.product.brand}` : ''}
+              </div>
+            )}
+          </div>
+          <AnalysisDisplay
+            content={pdfMsg.content}
+            lang={lang}
+            dupes={pdfMsg.dupes}
+            intent={pdfMsg.intent}
+            stopped={false}
+            streaming={false}
+            prevUserContent={pdfMsg.product?.name || pdfMsg._query}
+            onFindDupes={undefined}
+            onSimilarIngredients={undefined}
+          />
+          {Array.isArray(pdfMsg.sources) && pdfMsg.sources.length > 0 && (
+            <div className="mt-3 text-[11px] text-muted-foreground">
+              {lang === 'zh' ? '资料来源：' : 'Sources: '}
+              {pdfMsg.sources.slice(0, 8).map((s) => `${s.type ? `${s.type} · ` : ''}${s.name}`).join('  |  ')}
+            </div>
+          )}
+          <p className="mt-6 text-xs text-muted-foreground">
+            cosmetic-lens.vercel.app · {new Date().toLocaleDateString()}
+          </p>
+        </div>
+      )}
     </div>
   );
 }

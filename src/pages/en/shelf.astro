@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../../components/layout/BaseLayout.astro';
+import MyShelf from '../../components/ingredients/MyShelf.jsx';
+import { getTranslations } from '../../i18n/utils';
+import { ALL_INGREDIENTS, ingredientSlug } from '../../lib/ingredients';
+
+const lang = 'en';
+const t = getTranslations(lang);
+
+const items = ALL_INGREDIENTS.map((i) => ({
+  id: i.id,
+  slug: ingredientSlug(i.id),
+  inci_name: i.inci_name,
+  chinese_name: i.chinese_name,
+  blurb: i.functions?.en?.[0] || i.notes_en || '',
+}));
+---
+
+<BaseLayout title={t.favorites.title} description={t.favorites.subtitle} lang={lang}>
+  <section class="py-8 sm:py-10 lg:py-14">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <div class="mb-8 space-y-2">
+        <h1 class="text-2xl font-semibold text-foreground sm:text-3xl">{t.favorites.title}</h1>
+        <p class="text-muted-foreground">{t.favorites.subtitle}</p>
+      </div>
+      <MyShelf client:load items={items} lang={lang} t={t} />
+    </div>
+  </section>
+</BaseLayout>

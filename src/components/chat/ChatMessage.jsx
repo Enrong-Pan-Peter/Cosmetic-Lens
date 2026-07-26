@@ -14,6 +14,7 @@ export default function ChatMessage({
   t,
   token,
   chatId,
+  onDownloadPdf,
 }) {
   const isUser = message.role === 'user';
 
@@ -154,22 +155,38 @@ export default function ChatMessage({
                 intent={message.intent}
                 pipeline={message.mode || message.source}
               />
-              {t?.share && (
-                <ShareButton
-                  lang={lang}
-                  t={t}
-                  token={token}
-                  content={message.content}
-                  title={message.product?.name || prevUserContent}
-                  metadata={{
-                    source: message.source,
-                    intent: message.intent,
-                    product: message.product,
-                    dupes: message.dupes,
-                    sources: message.sources,
-                  }}
-                />
-              )}
+              <div className="flex items-center gap-3 shrink-0">
+                {onDownloadPdf && (
+                  <button
+                    type="button"
+                    onClick={() => onDownloadPdf({ ...message, _query: prevUserContent })}
+                    aria-label={t.share?.download_pdf}
+                    title={t.share?.download_pdf}
+                    className="inline-flex items-center gap-1 text-[11px] font-medium text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3" />
+                    </svg>
+                    PDF
+                  </button>
+                )}
+                {t?.share && (
+                  <ShareButton
+                    lang={lang}
+                    t={t}
+                    token={token}
+                    content={message.content}
+                    title={message.product?.name || prevUserContent}
+                    metadata={{
+                      source: message.source,
+                      intent: message.intent,
+                      product: message.product,
+                      dupes: message.dupes,
+                      sources: message.sources,
+                    }}
+                  />
+                )}
+              </div>
             </div>
           )}
       </div>
