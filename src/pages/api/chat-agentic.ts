@@ -49,6 +49,7 @@ import {
 } from '../../lib/semantic-cache';
 import { routeIntent, isFastRoutingEnabled, fastPathSystemPrompt } from '../../lib/router';
 import { detectInjection, injectionGuardNote } from '../../lib/guardrails';
+import { sanitizeProfileInput } from '../../lib/profile-store';
 
 export const prerender = false;
 
@@ -425,6 +426,11 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
           } catch {
             /* continue without profile */
           }
+        } else if (body?.profile) {
+          // Anonymous personalization (14.1): use the self-supplied profile
+          // sent from localStorage. Whitelisted + only ever used for anon
+          // requests — authed always reads the DB above (never the body).
+          userProfile = sanitizeProfileInput(body.profile);
         }
 
         // ---------------------------------------------------------------

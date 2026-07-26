@@ -11,6 +11,7 @@
     "education": "科普",
     "glossary": "词典",
     "ingredients": "成分库",
+    "quiz": "测肤",
     "profile": "我的",
     "history": "历史分析",
     "login": "登录",
@@ -423,5 +424,27 @@
     "results_prefix": "可能有帮助的成分 ·",
     "no_results": "未找到匹配的问题——试试「泛红」「痘痘」「干燥」「抗老」等词。",
     "strong": "证据充分"
+  },
+  "quiz": {
+    "title": "建立你的肌肤档案",
+    "subtitle": "回答四个小问题，让每次分析都为你的肌肤量身定制。",
+    "step": "第 {n} / {total} 步",
+    "q_skin": "你的肤质是？",
+    "q_sensitivity": "你的肌肤有多敏感？",
+    "q_concerns": "你主要想改善哪些问题？",
+    "q_concerns_hint": "可多选。",
+    "q_pregnancy": "你是否处于孕期或哺乳期？",
+    "pregnancy_yes": "是",
+    "pregnancy_no": "否",
+    "back": "上一步",
+    "next": "下一步",
+    "finish": "完成",
+    "saving": "保存中…",
+    "save_error": "已保存到本设备，但同步到账户失败。",
+    "done_title": "全部完成！",
+    "done_desc": "档案已保存。成分分析与平替建议将根据你的肌肤个性化。",
+    "done_desc_anon": "已保存到本设备——分析已个性化。登录可在多设备间同步。",
+    "done_cta": "分析产品",
+    "retake": "重新测试"
   }
 }

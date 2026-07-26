@@ -11,6 +11,7 @@
     "education": "Learn",
     "glossary": "Glossary",
     "ingredients": "Ingredients",
+    "quiz": "Skin Quiz",
     "profile": "My Profile",
     "history": "My History",
     "login": "Log In",
@@ -423,5 +424,27 @@
     "results_prefix": "Ingredients that may help ·",
     "no_results": "No matching concern found — try a word like redness, acne, dryness, or aging.",
     "strong": "Strong evidence"
+  },
+  "quiz": {
+    "title": "Build your skin profile",
+    "subtitle": "Four quick questions so every analysis is tailored to your skin.",
+    "step": "Step {n} of {total}",
+    "q_skin": "What's your skin type?",
+    "q_sensitivity": "How sensitive is your skin?",
+    "q_concerns": "What are your main concerns?",
+    "q_concerns_hint": "Pick any that apply.",
+    "q_pregnancy": "Are you pregnant or breastfeeding?",
+    "pregnancy_yes": "Yes",
+    "pregnancy_no": "No",
+    "back": "Back",
+    "next": "Next",
+    "finish": "Finish",
+    "saving": "Saving…",
+    "save_error": "Saved on this device, but syncing to your account failed.",
+    "done_title": "You're all set!",
+    "done_desc": "Your profile is saved. Analyses and dupe suggestions are now personalized to your skin.",
+    "done_desc_anon": "Saved on this device — analyses are now personalized. Sign in to sync it across devices.",
+    "done_cta": "Analyze a product",
+    "retake": "Retake"
   }
 }

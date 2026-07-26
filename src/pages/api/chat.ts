@@ -21,6 +21,7 @@ import { findDupes } from '../../lib/dupe-finder';
 import { searchProduct, extractIngredients } from '../../lib/openbeautyfacts';
 import { createServerClient } from '../../lib/supabase';
 import { getUserFromRequest } from '../../lib/auth';
+import { sanitizeProfileInput } from '../../lib/profile-store';
 import { enforceRateLimit, getClientIp, rateLimitResponse } from '../../lib/rate-limit';
 
 const MAX_HISTORY_MESSAGES = 10;
@@ -125,7 +126,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
         // -----------------------------------------------------------------
         // 1. Load profile if authenticated (best-effort)
         // -----------------------------------------------------------------
-        let userProfile = null;
+        let userProfile: any = null;
         if (authedUser) {
           try {
             const supabase = createServerClient();
@@ -138,6 +139,10 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
           } catch {
             /* continue without profile */
           }
+        } else if (body?.profile) {
+          // Anonymous personalization (14.1): whitelisted self-supplied profile,
+          // used for anon requests only (authed always reads the DB above).
+          userProfile = sanitizeProfileInput(body.profile);
         }
 
         // -----------------------------------------------------------------

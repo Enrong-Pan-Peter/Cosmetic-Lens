@@ -4,20 +4,25 @@ import { useEffect, useRef, useState } from 'react';
  * Barcode scanner modal (improvement-plan 14.6) — progressive enhancement.
  *
  * Two paths:
- *   1. Native `BarcodeDetector` (Android Chrome, desktop Chrome/Edge) — fast,
- *      zero-download.
+ *   1. Native `BarcodeDetector` (Android Chrome, desktop Chrome/Edge).
  *   2. ZXing fallback, dynamically imported from a CDN only when the native API
- *      is missing (notably iOS Safari). No bundled dependency; the ~200 KB lib
- *      loads on demand for the small slice of users that need it.
+ *      is missing (notably iOS Safari). No bundled dependency.
  *
- * The trigger (in ProductInput) is shown whenever a camera is available, so the
- * button now appears on iOS too. On a read it stops the camera and returns the
- * raw code via `onDetected`.
+ * Reliability tuning (from field testing): request a HIGH-RES rear camera with
+ * continuous autofocus (low-res + fixed focus is why small retail barcodes
+ * wouldn't decode), and restrict ZXing to retail 1-D formats with TRY_HARDER —
+ * decoding every possible symbology at low res never converged.
  */
 
-// Loaded from CDN at runtime (no CSP restriction on this site). The `@vite-ignore`
-// keeps the bundler from trying to resolve it at build time.
-const ZXING_CDN = 'https://esm.sh/@zxing/browser@0.1.5';
+const ZXING_BROWSER_CDN = 'https://esm.sh/@zxing/browser@0.1.5';
+const ZXING_LIB_CDN = 'https://esm.sh/@zxing/library@0.21.3';
+
+// Higher resolution dramatically improves small-barcode decode rates.
+const VIDEO_CONSTRAINTS = {
+  facingMode: 'environment',
+  width: { ideal: 1920 },
+  height: { ideal: 1080 },
+};
 
 export function isBarcodeScanSupported() {
   return typeof navigator !== 'undefined' && Boolean(navigator.mediaDevices?.getUserMedia);
@@ -58,24 +63,32 @@ export default function BarcodeScanner({ open, onClose, onDetected, t }) {
       setError(err?.name === 'NotAllowedError' ? 'permission' : 'generic');
     };
 
+    // Best-effort continuous autofocus (ignored where unsupported, e.g. some iOS).
+    const requestContinuousFocus = () => {
+      try {
+        const track = videoRef.current?.srcObject?.getVideoTracks?.()[0];
+        track?.applyConstraints?.({ advanced: [{ focusMode: 'continuous' }] }).catch(() => {});
+      } catch {
+        /* noop */
+      }
+    };
+
     (async () => {
       setError(null);
       try {
         if ('BarcodeDetector' in window) {
           // ---- Native path ----
-          stream = await navigator.mediaDevices.getUserMedia({
-            video: { facingMode: 'environment' },
-            audio: false,
-          });
+          stream = await navigator.mediaDevices.getUserMedia({ video: VIDEO_CONSTRAINTS, audio: false });
           if (cancelled) return stop();
           const video = videoRef.current;
           if (!video) return;
           video.srcObject = stream;
           await video.play().catch(() => {});
+          requestContinuousFocus();
 
           // eslint-disable-next-line no-undef
           const detector = new window.BarcodeDetector({
-            formats: ['ean_13', 'ean_8', 'upc_a', 'upc_e', 'code_128', 'code_39'],
+            formats: ['ean_13', 'ean_8', 'upc_a', 'upc_e', 'code_128'],
           });
           interval = setInterval(async () => {
             if (cancelled || !videoRef.current) return;
@@ -85,20 +98,35 @@ export default function BarcodeScanner({ open, onClose, onDetected, t }) {
             } catch {
               /* transient — keep polling */
             }
-          }, 300);
+          }, 200);
         } else {
           // ---- ZXing fallback (iOS Safari etc.) ----
-          const mod = await import(/* @vite-ignore */ ZXING_CDN);
+          const [{ BrowserMultiFormatReader }, zx] = await Promise.all([
+            import(/* @vite-ignore */ ZXING_BROWSER_CDN),
+            import(/* @vite-ignore */ ZXING_LIB_CDN),
+          ]);
           if (cancelled) return;
-          const Reader = mod.BrowserMultiFormatReader;
-          const reader = new Reader();
+
+          const { DecodeHintType, BarcodeFormat } = zx;
+          const hints = new Map();
+          hints.set(DecodeHintType.POSSIBLE_FORMATS, [
+            BarcodeFormat.EAN_13,
+            BarcodeFormat.EAN_8,
+            BarcodeFormat.UPC_A,
+            BarcodeFormat.UPC_E,
+            BarcodeFormat.CODE_128,
+          ]);
+          hints.set(DecodeHintType.TRY_HARDER, true);
+
+          const reader = new BrowserMultiFormatReader(hints);
           zxingControls = await reader.decodeFromConstraints(
-            { video: { facingMode: 'environment' } },
+            { video: VIDEO_CONSTRAINTS },
             videoRef.current,
             (result) => {
               if (result) succeed(typeof result.getText === 'function' ? result.getText() : result.text);
             },
           );
+          requestContinuousFocus();
         }
       } catch (err) {
         failed(err);

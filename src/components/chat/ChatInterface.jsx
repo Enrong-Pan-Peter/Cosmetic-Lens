@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { Microscope } from '@phosphor-icons/react';
 import ChatSidebar from './ChatSidebar';
 import BarcodeScanner from './BarcodeScanner';
+import { readLocalProfile } from '../../lib/profile-store';
 import ChatMessage from './ChatMessage';
 import ProductInput from './ProductInput';
 import ThinkingDots from './ThinkingDots';
@@ -825,6 +826,10 @@ export default function ChatInterface({ lang, translations: t }) {
         body: JSON.stringify({
           messages: apiMessages,
           language: lang,
+          // Anonymous personalization (14.1): send the local skin profile so
+          // logged-out users get tailored answers. Authed users' server-side
+          // profile always takes precedence (the server ignores this then).
+          ...(session ? {} : { profile: readLocalProfile() || undefined }),
         }),
         signal: controller.signal,
       });
@@ -1093,6 +1098,7 @@ export default function ChatInterface({ lang, translations: t }) {
                       {lang === 'zh' ? '或探索：' : 'Or explore:'}
                     </span>
                     {[
+                      { href: `/${lang}/quiz`, label: t.nav.quiz },
                       { href: `/${lang}/routine`, label: t.nav.routine },
                       { href: `/${lang}/ingredients`, label: t.nav.ingredients },
                       { href: `/${lang}/glossary`, label: t.nav.glossary },
