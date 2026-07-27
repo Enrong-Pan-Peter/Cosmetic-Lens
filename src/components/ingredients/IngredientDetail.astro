@@ -7,6 +7,7 @@ import {
   ingredientSlug,
   idByInci,
   interactionLevel,
+  getReferences,
 } from '../../lib/ingredients';
 import FavoriteButton from './FavoriteButton.jsx';
 import { getTranslations } from '../../i18n/utils';
@@ -54,6 +55,9 @@ const concEntries = Object.entries(ing.effective_concentration ?? {}).filter(
 
 const aliases = isZh ? ing.aliases_zh : ing.aliases_en;
 const related = relatedIngredients(ing, 6);
+const references = getReferences(ing.id);
+const compoundRefs = references.filter((r) => r.type !== 'literature');
+const literatureRefs = references.filter((r) => r.type === 'literature');
 
 const evidenceLabel =
   ing.evidence_level === 'strong'
@@ -278,6 +282,61 @@ const levelLabel: Record<string, string> = {
       <section class="rounded-xl border border-border bg-muted/40 p-4">
         <h2 class="text-sm font-semibold text-foreground mb-1">{t.ingredients.notes}</h2>
         <p class="text-sm text-muted-foreground">{notes}</p>
+      </section>
+    )}
+
+    <!-- References (14.5) — real, verified sources only -->
+    {references.length > 0 && (
+      <section>
+        <h2 class="text-lg font-semibold text-foreground mb-3">{t.ingredients.references}</h2>
+
+        {compoundRefs.length > 0 && (
+          <Fragment>
+            <ul class="space-y-1.5">
+              {compoundRefs.map((ref) => (
+                <li>
+                  <a
+                    href={ref.url}
+                    target="_blank"
+                    rel="noopener noreferrer nofollow"
+                    class="inline-flex items-center gap-1.5 text-sm text-primary hover:underline underline-offset-2"
+                  >
+                    {ref.label}
+                    {ref.cid ? ` · CID ${ref.cid}` : ''}
+                    <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <p class="mt-2 text-xs text-muted-foreground/80">{t.ingredients.references_note}</p>
+          </Fragment>
+        )}
+
+        {literatureRefs.length > 0 && (
+          <div class="mt-5">
+            <h3 class="text-sm font-semibold text-foreground mb-2">{t.ingredients.further_reading}</h3>
+            <ul class="space-y-2.5">
+              {literatureRefs.map((ref) => (
+                <li class="text-sm leading-snug">
+                  <a
+                    href={ref.url}
+                    target="_blank"
+                    rel="noopener noreferrer nofollow"
+                    class="text-primary hover:underline underline-offset-2"
+                  >
+                    {ref.title}
+                  </a>
+                  <span class="text-muted-foreground">
+                    {ref.journal ? ` — ${ref.journal}` : ''}{ref.year ? ` (${ref.year})` : ''}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <p class="mt-2 text-xs text-muted-foreground/80">{t.ingredients.further_reading_note}</p>
+          </div>
+        )}
       </section>
     )}
 

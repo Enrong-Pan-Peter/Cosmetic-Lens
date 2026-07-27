@@ -1,0 +1,1046 @@
+{
+  "_note": "Ingredient citations (improvement-plan 14.5). Each entry links to the authoritative PubChem compound page, resolved by name -> CID via PubChem PUG REST. Generated/refreshed by scripts/fetch-references.mjs — do NOT hand-edit CIDs; re-run the script to extend to more ingredients. Values here are real, verified compound pages, not hand-written guesses.",
+  "niacinamide": [
+    {
+      "type": "compound",
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/936",
+      "cid": 936
+    },
+    {
+      "type": "literature",
+      "title": "Nicotinamide for Skin Cancer Chemoprevention: The Jury Was Out and Still is",
+      "journal": "Am J Clin Dermatol",
+      "year": "2026",
+      "pmid": "41505062",
+      "url": "https://europepmc.org/article/MED/41505062",
+      "doi": "10.1007/s40257-025-01005-y"
+    },
+    {
+      "type": "literature",
+      "title": "Managing Skin Side Effects Associated With Oncology Treatments: Asian Perspective on Use of Dermocosmetics",
+      "journal": "Asia Pac J Clin Oncol",
+      "year": "2026",
+      "pmid": "41578116",
+      "url": "https://europepmc.org/article/MED/41578116",
+      "doi": "10.1111/ajco.70081"
+    }
+  ],
+  "retinol": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/445354",
+      "cid": 445354
+    },
+    {
+      "type": "literature",
+      "title": "Round Table Discussion: Aesthetic Treatment Considerations for the Perimenopausal &amp; Menopausal Patient",
+      "journal": "J Cosmet Dermatol",
+      "year": "2026",
+      "pmid": "41461019",
+      "url": "https://europepmc.org/article/MED/41461019",
+      "doi": "10.1111/jocd.70626"
+    },
+    {
+      "type": "literature",
+      "title": "The Next Generation of Skin Care: Transforming Retinoid Therapeutics",
+      "journal": "Cells",
+      "year": "2025",
+      "pmid": "41227299",
+      "url": "https://europepmc.org/article/MED/41227299",
+      "doi": "10.3390/cells14211650"
+    }
+  ],
+  "ascorbic_acid": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/54670067",
+      "cid": 54670067
+    },
+    {
+      "type": "literature",
+      "title": "Ferulic Acid: Mechanistic Insights and Multifaceted Applications in Metabolic Syndrome, Food Preservation, and Cosmetics",
+      "journal": "Molecules",
+      "year": "2025",
+      "pmid": "41011611",
+      "url": "https://europepmc.org/article/MED/41011611",
+      "doi": "10.3390/molecules30183716"
+    },
+    {
+      "type": "literature",
+      "title": "Vitamin C Supplementation Accelerates Healing in Diabetic Foot Ulcers: Insights From a Systematic Review of Clinical Evidence",
+      "journal": "Cureus",
+      "year": "2026",
+      "pmid": "42326242",
+      "url": "https://europepmc.org/article/MED/42326242",
+      "doi": "10.7759/cureus.109297"
+    }
+  ],
+  "glycolic_acid": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/757",
+      "cid": 757
+    },
+    {
+      "type": "literature",
+      "title": "Poly (lactic-co-glycolic acid)-based microneedles for drug delivery across different biological barriers",
+      "journal": "Int J Pharm",
+      "year": "2026",
+      "pmid": "41468991",
+      "url": "https://europepmc.org/article/MED/41468991",
+      "doi": "10.1016/j.ijpharm.2025.126529"
+    },
+    {
+      "type": "literature",
+      "title": "The Effectiveness of Topical Keratolytics (Alpha Hydroxy Acids/Beta Hydroxy Acids/Urea) in Treating Keratosis Pilaris: A Review of the Literature",
+      "journal": "Cureus",
+      "year": "2025",
+      "pmid": "41631232",
+      "url": "https://europepmc.org/article/MED/41631232",
+      "doi": "10.7759/cureus.100507"
+    }
+  ],
+  "glycerin": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/753",
+      "cid": 753
+    }
+  ],
+  "panthenol": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/4678",
+      "cid": 4678
+    },
+    {
+      "type": "literature",
+      "title": "A new therapeutic horizon in diaper dermatitis: Novel agents with novel action",
+      "journal": "Int J Womens Dermatol",
+      "year": "2021",
+      "pmid": "34621960",
+      "url": "https://europepmc.org/article/MED/34621960",
+      "doi": "10.1016/j.ijwd.2021.02.003"
+    },
+    {
+      "type": "literature",
+      "title": "Electromigration Techniques in the Analysis of Selected Cosmetic Ingredients: A Review",
+      "journal": "Molecules",
+      "year": "2025",
+      "pmid": "39795217",
+      "url": "https://europepmc.org/article/MED/39795217",
+      "doi": "10.3390/molecules30010161"
+    }
+  ],
+  "squalane": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/8089",
+      "cid": 8089
+    },
+    {
+      "type": "literature",
+      "title": "From Sharks to Yeasts: Squalene in the Development of Vaccine Adjuvants",
+      "journal": "Pharmaceuticals (Basel)",
+      "year": "2022",
+      "pmid": "35337064",
+      "url": "https://europepmc.org/article/MED/35337064",
+      "doi": "10.3390/ph15030265"
+    },
+    {
+      "type": "literature",
+      "title": "A review of therapeutic potentials of milk thistle (<i>Silybum marianum</i> L.) and its main constituent, silymarin, on cancer, and their related patents",
+      "journal": "Iran J Basic Med Sci",
+      "year": "2022",
+      "pmid": "36311193",
+      "url": "https://europepmc.org/article/MED/36311193",
+      "doi": "10.22038/ijbms.2022.63200.13961"
+    }
+  ],
+  "salicylic_acid": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/338",
+      "cid": 338
+    },
+    {
+      "type": "literature",
+      "title": "[Application of salicylic acid in inflammatory skin diseases and the effect on skin microbiome]",
+      "journal": "Zhonghua Yu Fang Yi Xue Za Zhi",
+      "year": "2026",
+      "pmid": "42331541",
+      "url": "https://europepmc.org/article/MED/42331541",
+      "doi": "10.3760/cma.j.cn112150-20250708-00634"
+    },
+    {
+      "type": "literature",
+      "title": "The Effectiveness of Topical Keratolytics (Alpha Hydroxy Acids/Beta Hydroxy Acids/Urea) in Treating Keratosis Pilaris: A Review of the Literature",
+      "journal": "Cureus",
+      "year": "2025",
+      "pmid": "41631232",
+      "url": "https://europepmc.org/article/MED/41631232",
+      "doi": "10.7759/cureus.100507"
+    }
+  ],
+  "sodium_lauryl_sulfate": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/3423265",
+      "cid": 3423265
+    }
+  ],
+  "phenoxyethanol": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/31236",
+      "cid": 31236
+    }
+  ],
+  "azelaic_acid": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/2266",
+      "cid": 2266
+    },
+    {
+      "type": "literature",
+      "title": "A Comprehensive Review of Azelaic Acid Pharmacological Properties, Clinical Applications, and Innovative Topical Formulations",
+      "journal": "Pharmaceuticals (Basel)",
+      "year": "2025",
+      "pmid": "41011144",
+      "url": "https://europepmc.org/article/MED/41011144",
+      "doi": "10.3390/ph18091273"
+    },
+    {
+      "type": "literature",
+      "title": "Azelaic Acid in Dermatology: A Review of Its Mechanism of Action",
+      "journal": "Cureus",
+      "year": "2025",
+      "pmid": "41089572",
+      "url": "https://europepmc.org/article/MED/41089572",
+      "doi": "10.7759/cureus.94491"
+    }
+  ],
+  "zinc_oxide": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/3007857",
+      "cid": 3007857
+    },
+    {
+      "type": "literature",
+      "title": "Luminescence lifetime imaging of three-dimensional biological objects",
+      "journal": "J Cell Sci",
+      "year": "2021",
+      "pmid": "33961054",
+      "url": "https://europepmc.org/article/MED/33961054",
+      "doi": "10.1242/jcs.254763"
+    }
+  ],
+  "benzoyl_peroxide": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/7187",
+      "cid": 7187
+    },
+    {
+      "type": "literature",
+      "title": "Topical Zinc Oxide Nanoparticle Formulations for Acne Vulgaris: A Systematic Review of Pre-Clinical and Early-Phase Clinical Evidence",
+      "journal": "Biomedicines",
+      "year": "2025",
+      "pmid": "41007718",
+      "url": "https://europepmc.org/article/MED/41007718",
+      "doi": "10.3390/biomedicines13092156"
+    },
+    {
+      "type": "literature",
+      "title": "Truncal Acne: Pathophysiology, Clinical Features, and Management Strategies",
+      "journal": "J Cosmet Dermatol",
+      "year": "2026",
+      "pmid": "41689165",
+      "url": "https://europepmc.org/article/MED/41689165",
+      "doi": "10.1111/jocd.70715"
+    }
+  ],
+  "alpha_arbutin": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/158637",
+      "cid": 158637
+    },
+    {
+      "type": "literature",
+      "title": "Phospholipid-Based Vesicular Systems as Carriers for the Delivery of Active Cosmeceutical Ingredients",
+      "journal": "Int J Mol Sci",
+      "year": "2025",
+      "pmid": "40141127",
+      "url": "https://europepmc.org/article/MED/40141127",
+      "doi": "10.3390/ijms26062484"
+    },
+    {
+      "type": "literature",
+      "title": "Medicinal Plants for Skin Disorders: Phytochemistry and Pharmacological Insights",
+      "journal": "Molecules",
+      "year": "2025",
+      "pmid": "40807461",
+      "url": "https://europepmc.org/article/MED/40807461",
+      "doi": "10.3390/molecules30153281"
+    }
+  ],
+  "methylparaben": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/7456",
+      "cid": 7456
+    }
+  ],
+  "propylparaben": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/7175",
+      "cid": 7175
+    }
+  ],
+  "methylisothiazolinone": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/39800",
+      "cid": 39800
+    }
+  ],
+  "sodium_benzoate": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/517055",
+      "cid": 517055
+    }
+  ],
+  "potassium_sorbate": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/23676745",
+      "cid": 23676745
+    }
+  ],
+  "ethylhexylglycerin": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/9859093",
+      "cid": 9859093
+    }
+  ],
+  "bakuchiol": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/5468522",
+      "cid": 5468522
+    },
+    {
+      "type": "literature",
+      "title": "From Phytochemistry to Oncology: The Role of Bakuchiol in the Treatment of Breast Cancer",
+      "journal": "Biomolecules",
+      "year": "2026",
+      "pmid": "41594634",
+      "url": "https://europepmc.org/article/MED/41594634",
+      "doi": "10.3390/biom16010094"
+    },
+    {
+      "type": "literature",
+      "title": "Human Clinical Trials Using Topical Bakuchiol Formulations for the Treatment of Skin Disorders: A Systematic Review",
+      "journal": "J Drugs Dermatol",
+      "year": "2024",
+      "pmid": "38564402",
+      "url": "https://europepmc.org/article/MED/38564402",
+      "doi": "10.36849/jdd.7763"
+    }
+  ],
+  "tranexamic_acid": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/5526",
+      "cid": 5526
+    },
+    {
+      "type": "literature",
+      "title": "Translation of Polymeric Microneedles for Treatment of Human Diseases: Recent Trends, Progress, and Challenges",
+      "journal": "Pharmaceutics",
+      "year": "2021",
+      "pmid": "34452093",
+      "url": "https://europepmc.org/article/MED/34452093",
+      "doi": "10.3390/pharmaceutics13081132"
+    }
+  ],
+  "kojic_acid": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/3840",
+      "cid": 3840
+    },
+    {
+      "type": "literature",
+      "title": "Tranexamic Acid for Hyperpigmentation Disorders: A Literature Review on Efficacy and Safety in Melasma and PIH",
+      "journal": "J Cosmet Dermatol",
+      "year": "2026",
+      "pmid": "41601401",
+      "url": "https://europepmc.org/article/MED/41601401",
+      "doi": "10.1111/jocd.70692"
+    },
+    {
+      "type": "literature",
+      "title": "An Insight on Ellagic Acid Formulations for the Management of Skin Diseases",
+      "journal": "Molecules",
+      "year": "2025",
+      "pmid": "41375091",
+      "url": "https://europepmc.org/article/MED/41375091",
+      "doi": "10.3390/molecules30234493"
+    }
+  ],
+  "adapalene": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/60164",
+      "cid": 60164
+    },
+    {
+      "type": "literature",
+      "title": "Adapalene as an anticancer agent: A systematic review and meta-analysis of in vitro and in vivo studies",
+      "journal": "Eur J Pharmacol",
+      "year": "2025",
+      "pmid": "41093226",
+      "url": "https://europepmc.org/article/MED/41093226",
+      "doi": "10.1016/j.ejphar.2025.178243"
+    },
+    {
+      "type": "literature",
+      "title": "The Next Generation of Skin Care: Transforming Retinoid Therapeutics",
+      "journal": "Cells",
+      "year": "2025",
+      "pmid": "41227299",
+      "url": "https://europepmc.org/article/MED/41227299",
+      "doi": "10.3390/cells14211650"
+    }
+  ],
+  "lactic_acid": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/612",
+      "cid": 612
+    },
+    {
+      "type": "literature",
+      "title": "Poly-l-Lactic Acid as a Regenerative Treatment for the Glucagon-like Peptide-1 Receptor Agonist User Population",
+      "journal": "Dermatol Surg",
+      "year": "2026",
+      "pmid": "42210881",
+      "url": "https://europepmc.org/article/MED/42210881",
+      "doi": "10.1097/dss.0000000000005171"
+    },
+    {
+      "type": "literature",
+      "title": "Mechanisms of Cytokine Modulation and Inflammatory Cascade in Bio-stimulatory Skin Rejuvenation: A Comprehensive Literature Review of Poly-L-Lactic Acid, Calcium Hydroxyapatite, Polycaprolactone, and Poly-D, L-Lactic Acid",
+      "journal": "Cureus",
+      "year": "2026",
+      "pmid": "42211639",
+      "url": "https://europepmc.org/article/MED/42211639",
+      "doi": "10.7759/cureus.107800"
+    }
+  ],
+  "mandelic_acid": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/1292",
+      "cid": 1292
+    },
+    {
+      "type": "literature",
+      "title": "Biosynthesis Strategies and Application Progress of Mandelic Acid Based on Biomechanical Properties",
+      "journal": "Microorganisms",
+      "year": "2025",
+      "pmid": "40871226",
+      "url": "https://europepmc.org/article/MED/40871226",
+      "doi": "10.3390/microorganisms13081722"
+    },
+    {
+      "type": "literature",
+      "title": "Azelaic Acid: Mechanisms of Action and Clinical Applications",
+      "journal": "Clin Cosmet Investig Dermatol",
+      "year": "2024",
+      "pmid": "39464747",
+      "url": "https://europepmc.org/article/MED/39464747",
+      "doi": "10.2147/ccid.s485237"
+    }
+  ],
+  "polyhydroxy_acid": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/7027",
+      "cid": 7027
+    }
+  ],
+  "sodium_laureth_sulfate": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/23665884",
+      "cid": 23665884
+    }
+  ],
+  "decyl_glucoside": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/62142",
+      "cid": 62142
+    }
+  ],
+  "butylene_glycol": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/7896",
+      "cid": 7896
+    }
+  ],
+  "propanediol": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/134919",
+      "cid": 134919
+    }
+  ],
+  "urea": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/1176",
+      "cid": 1176
+    },
+    {
+      "type": "literature",
+      "title": "Supportive Treatments for Patients with Cancer",
+      "journal": "Dtsch Arztebl Int",
+      "year": "2017",
+      "pmid": "28764837",
+      "url": "https://europepmc.org/article/MED/28764837",
+      "doi": "10.3238/arztebl.2017.0481"
+    },
+    {
+      "type": "literature",
+      "title": "The dark side of beauty: an in-depth analysis of the health hazards and toxicological impact of synthetic cosmetics and personal care products",
+      "journal": "Front Public Health",
+      "year": "2024",
+      "pmid": "39253281",
+      "url": "https://europepmc.org/article/MED/39253281",
+      "doi": "10.3389/fpubh.2024.1439027"
+    }
+  ],
+  "sodium_pca": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/23666346",
+      "cid": 23666346
+    }
+  ],
+  "cetearyl_alcohol": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/62238",
+      "cid": 62238
+    }
+  ],
+  "titanium_dioxide": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/26042",
+      "cid": 26042
+    },
+    {
+      "type": "literature",
+      "title": "A work group report on ultrafine particles (American Academy of Allergy, Asthma & Immunology): Why ambient ultrafine and engineered nanoparticles should receive special attention for possible adverse health outcomes in human subjects",
+      "journal": "J Allergy Clin Immunol",
+      "year": "2016",
+      "pmid": "27130856",
+      "url": "https://europepmc.org/article/MED/27130856",
+      "doi": "10.1016/j.jaci.2016.02.023"
+    },
+    {
+      "type": "literature",
+      "title": "A Zebrafish Embryo as an Animal Model for the Treatment of Hyperpigmentation in Cosmetic Dermatology Medicine",
+      "journal": "Medicina (Kaunas)",
+      "year": "2018",
+      "pmid": "30344266",
+      "url": "https://europepmc.org/article/MED/30344266",
+      "doi": "10.3390/medicina54030035"
+    }
+  ],
+  "avobenzone": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/51040",
+      "cid": 51040
+    }
+  ],
+  "octinoxate": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/5355130",
+      "cid": 5355130
+    }
+  ],
+  "homosalate": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/8362",
+      "cid": 8362
+    }
+  ],
+  "tocopherol": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/14986",
+      "cid": 14986
+    }
+  ],
+  "resveratrol": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/445154",
+      "cid": 445154
+    },
+    {
+      "type": "literature",
+      "title": "The impact of resveratrol on skin wound healing, scarring, and aging",
+      "journal": "Int Wound J",
+      "year": "2022",
+      "pmid": "33949795",
+      "url": "https://europepmc.org/article/MED/33949795",
+      "doi": "10.1111/iwj.13601"
+    },
+    {
+      "type": "literature",
+      "title": "The bioactivities of resveratrol and its naturally occurring derivatives on skin",
+      "journal": "J Food Drug Anal",
+      "year": "2021",
+      "pmid": "35696226",
+      "url": "https://europepmc.org/article/MED/35696226",
+      "doi": "10.38212/2224-6614.1151"
+    }
+  ],
+  "ferulic_acid": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/445858",
+      "cid": 445858
+    },
+    {
+      "type": "literature",
+      "title": "Ferulic Acid: Mechanistic Insights and Multifaceted Applications in Metabolic Syndrome, Food Preservation, and Cosmetics",
+      "journal": "Molecules",
+      "year": "2025",
+      "pmid": "41011611",
+      "url": "https://europepmc.org/article/MED/41011611",
+      "doi": "10.3390/molecules30183716"
+    },
+    {
+      "type": "literature",
+      "title": "Ferulic Acid Use for Skin Applications: A Systematic Review",
+      "journal": "J Clin Aesthet Dermatol",
+      "year": "2025",
+      "pmid": "40538529",
+      "url": "https://europepmc.org/article/MED/40538529"
+    }
+  ],
+  "tea_tree_oil": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/22833361",
+      "cid": 22833361
+    },
+    {
+      "type": "literature",
+      "title": "Efficacy and Safety of Melaleuca alternifolia (Tea Tree) Oil for Acne-A Systematic Review and Meta-Analysis",
+      "journal": "Phytother Res",
+      "year": "2026",
+      "pmid": "42098589",
+      "url": "https://europepmc.org/article/MED/42098589",
+      "doi": "10.1002/ptr.70344"
+    },
+    {
+      "type": "literature",
+      "title": "Cosmeceuticals in photoaging: A review",
+      "journal": "Skin Res Technol",
+      "year": "2024",
+      "pmid": "39233460",
+      "url": "https://europepmc.org/article/MED/39233460",
+      "doi": "10.1111/srt.13730"
+    }
+  ],
+  "allantoin": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/204",
+      "cid": 204
+    },
+    {
+      "type": "literature",
+      "title": "A Recent Insight into Research Pertaining to Collagen-Based Hydrogels as Dressings for Chronic Skin Wounds",
+      "journal": "Gels",
+      "year": "2025",
+      "pmid": "40710689",
+      "url": "https://europepmc.org/article/MED/40710689",
+      "doi": "10.3390/gels11070527"
+    },
+    {
+      "type": "literature",
+      "title": "Implication of xanthine oxidoreductase in oxidative stress-related chronic diseases",
+      "journal": "Front Endocrinol (Lausanne)",
+      "year": "2025",
+      "pmid": "41684448",
+      "url": "https://europepmc.org/article/MED/41684448",
+      "doi": "10.3389/fendo.2025.1662037"
+    }
+  ],
+  "alcohol_denat": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/702",
+      "cid": 702
+    }
+  ],
+  "hydroquinone": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/785",
+      "cid": 785
+    },
+    {
+      "type": "literature",
+      "title": "Hydroquinone and Emerging Depigmenting Agents: Clinical Guidelines, Regulatory History, and Global Safety Considerations",
+      "journal": "J Drugs Dermatol",
+      "year": "2026",
+      "pmid": "41931693",
+      "url": "https://europepmc.org/article/MED/41931693",
+      "doi": "10.36849/jdd.9353"
+    },
+    {
+      "type": "literature",
+      "title": "Tranexamic Acid for Hyperpigmentation Disorders: A Literature Review on Efficacy and Safety in Melasma and PIH",
+      "journal": "J Cosmet Dermatol",
+      "year": "2026",
+      "pmid": "41601401",
+      "url": "https://europepmc.org/article/MED/41601401",
+      "doi": "10.1111/jocd.70692"
+    }
+  ],
+  "tretinoin": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/444795",
+      "cid": 444795
+    },
+    {
+      "type": "literature",
+      "title": "An Updated Review of Topical Tretinoin in Dermatology: From Acne and Photoaging to Skin Cancer",
+      "journal": "J Clin Med",
+      "year": "2025",
+      "pmid": "41302994",
+      "url": "https://europepmc.org/article/MED/41302994",
+      "doi": "10.3390/jcm14227958"
+    },
+    {
+      "type": "literature",
+      "title": "Optimizing Rhinoplasty Outcomes: The Role of Isotretinoin and Patient Management Strategies: Systematic Review",
+      "journal": "J Cosmet Dermatol",
+      "year": "2025",
+      "pmid": "41307186",
+      "url": "https://europepmc.org/article/MED/41307186",
+      "doi": "10.1111/jocd.70575"
+    }
+  ],
+  "retinal": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/638015",
+      "cid": 638015
+    },
+    {
+      "type": "literature",
+      "title": "Top weapons in skin aging and actives to target the consequences of skin cell senescence",
+      "journal": "J Eur Acad Dermatol Venereol",
+      "year": "2024",
+      "pmid": "38881445",
+      "url": "https://europepmc.org/article/MED/38881445",
+      "doi": "10.1111/jdv.19648"
+    },
+    {
+      "type": "literature",
+      "title": "Comparing Tretinoin to Other Topical Therapies in the Treatment of Skin Photoaging: A Systematic Review",
+      "journal": "Am J Clin Dermatol",
+      "year": "2024",
+      "pmid": "39348007",
+      "url": "https://europepmc.org/article/MED/39348007",
+      "doi": "10.1007/s40257-024-00893-w"
+    }
+  ],
+  "retinyl_palmitate": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/5280531",
+      "cid": 5280531
+    },
+    {
+      "type": "literature",
+      "title": "Use of Retinoids in Topical Antiaging Treatments: A Focused Review of Clinical Evidence for Conventional and Nanoformulations",
+      "journal": "Adv Ther",
+      "year": "2022",
+      "pmid": "36220974",
+      "url": "https://europepmc.org/article/MED/36220974",
+      "doi": "10.1007/s12325-022-02319-7"
+    },
+    {
+      "type": "literature",
+      "title": "A Comprehensive Review of the Strategies to Reduce Retinoid-Induced Skin Irritation in Topical Formulation",
+      "journal": "Dermatol Res Pract",
+      "year": "2024",
+      "pmid": "39184919",
+      "url": "https://europepmc.org/article/MED/39184919",
+      "doi": "10.1155/2024/5551774"
+    }
+  ],
+  "vitamin_c_ethyl": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/150736",
+      "cid": 150736
+    },
+    {
+      "type": "literature",
+      "title": "Ascorbic Acid (Vitamin C) as a Cosmeceutical to Increase Dermal Collagen for Skin Antiaging Purposes: Emerging Combination Therapies",
+      "journal": "Antioxidants (Basel)",
+      "year": "2022",
+      "pmid": "36139737",
+      "url": "https://europepmc.org/article/MED/36139737",
+      "doi": "10.3390/antiox11091663"
+    },
+    {
+      "type": "literature",
+      "title": "Biomolecular and cellular effects in skin wound healing: the association between ascorbic acid and hypoxia-induced factor",
+      "journal": "J Biol Eng",
+      "year": "2023",
+      "pmid": "37784137",
+      "url": "https://europepmc.org/article/MED/37784137",
+      "doi": "10.1186/s13036-023-00380-6"
+    }
+  ],
+  "ascorbyl_glucoside": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/54693473",
+      "cid": 54693473
+    },
+    {
+      "type": "literature",
+      "title": "Safety Assessment of Ascorbyl Glucoside and Sodium Ascorbyl Glucoside as Used in Cosmetics",
+      "journal": "Int J Toxicol",
+      "year": "2025",
+      "pmid": "39513541",
+      "url": "https://europepmc.org/article/MED/39513541",
+      "doi": "10.1177/10915818241297075"
+    },
+    {
+      "type": "literature",
+      "title": "The Roles of Vitamin C in Skin Health",
+      "journal": "Nutrients",
+      "year": "2017",
+      "pmid": "28805671",
+      "url": "https://europepmc.org/article/MED/28805671",
+      "doi": "10.3390/nu9080866"
+    }
+  ],
+  "sodium_ascorbyl_phosphate": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/10990876",
+      "cid": 10990876
+    },
+    {
+      "type": "literature",
+      "title": "Oxidative stress and antioxidant strategies in dermatology",
+      "journal": "Redox Rep",
+      "year": "2016",
+      "pmid": "26020527",
+      "url": "https://europepmc.org/article/MED/26020527",
+      "doi": "10.1179/1351000215y.0000000015"
+    },
+    {
+      "type": "literature",
+      "title": "Vehicles for Drug Delivery and Cosmetic Moisturizers: Review and Comparison",
+      "journal": "Pharmaceutics",
+      "year": "2021",
+      "pmid": "34959294",
+      "url": "https://europepmc.org/article/MED/34959294",
+      "doi": "10.3390/pharmaceutics13122012"
+    }
+  ],
+  "bisabolol": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/1549992",
+      "cid": 1549992
+    },
+    {
+      "type": "literature",
+      "title": "Advances of liposomal mediated nanocarriers for the treatment of dermatophyte infections",
+      "journal": "Heliyon",
+      "year": "2023",
+      "pmid": "37583758",
+      "url": "https://europepmc.org/article/MED/37583758",
+      "doi": "10.1016/j.heliyon.2023.e18960"
+    },
+    {
+      "type": "literature",
+      "title": "World Association for Veterinary Dermatology Consensus Statement for Diagnosis, and Evidence-Based Clinical Practice Guidelines for Treatment and Prevention of Canine Leishmaniosis",
+      "journal": "Vet Dermatol",
+      "year": "2025",
+      "pmid": "40745695",
+      "url": "https://europepmc.org/article/MED/40745695",
+      "doi": "10.1111/vde.70006"
+    }
+  ],
+  "madecassoside": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/24825675",
+      "cid": 24825675
+    },
+    {
+      "type": "literature",
+      "title": "Therapeutic properties and pharmacological activities of asiaticoside and madecassoside: A review",
+      "journal": "J Cell Mol Med",
+      "year": "2023",
+      "pmid": "36756687",
+      "url": "https://europepmc.org/article/MED/36756687",
+      "doi": "10.1111/jcmm.17635"
+    },
+    {
+      "type": "literature",
+      "title": "Pharmacological Effects of <i>Centella asiatica</i> on Skin Diseases: Evidence and Possible Mechanisms",
+      "journal": "Evid Based Complement Alternat Med",
+      "year": "2021",
+      "pmid": "34845411",
+      "url": "https://europepmc.org/article/MED/34845411",
+      "doi": "10.1155/2021/5462633"
+    }
+  ],
+  "citric_acid": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/311",
+      "cid": 311
+    }
+  ],
+  "sodium_hydroxide": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/14798",
+      "cid": 14798
+    }
+  ],
+  "triethanolamine": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/7618",
+      "cid": 7618
+    }
+  ],
+  "edta": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/13020083",
+      "cid": 13020083
+    }
+  ],
+  "cyclopentasiloxane": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/10913",
+      "cid": 10913
+    }
+  ],
+  "isopropyl_myristate": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/8042",
+      "cid": 8042
+    }
+  ],
+  "sulfur": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/5362487",
+      "cid": 5362487
+    }
+  ],
+  "ectoin": [
+    {
+      "label": "PubChem",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/126041",
+      "cid": 126041
+    },
+    {
+      "type": "literature",
+      "title": "Topical Ectoine Application in Children and Adults to Treat Inflammatory Diseases Associated with an Impaired Skin Barrier: A Systematic Review",
+      "journal": "Dermatol Ther (Heidelb)",
+      "year": "2022",
+      "pmid": "35038127",
+      "url": "https://europepmc.org/article/MED/35038127",
+      "doi": "10.1007/s13555-021-00676-9"
+    },
+    {
+      "type": "literature",
+      "title": "Bioactivity profiling of the extremolyte ectoine as a promising protectant and its heterologous production",
+      "journal": "3 Biotech",
+      "year": "2022",
+      "pmid": "36311375",
+      "url": "https://europepmc.org/article/MED/36311375",
+      "doi": "10.1007/s13205-022-03370-5"
+    }
+  ],
+  "hyaluronic_acid": [
+    {
+      "type": "literature",
+      "title": "Hyaluronic Acid Dermal Filler-Associated Vascular Occlusion-A Review of Prevention and Management Strategies",
+      "journal": "J Cosmet Dermatol",
+      "year": "2026",
+      "pmid": "42087426",
+      "url": "https://europepmc.org/article/MED/42087426",
+      "doi": "10.1111/jocd.70884"
+    },
+    {
+      "type": "literature",
+      "title": "Hyaluronic acid fillers in systemic sclerosis and localized scleroderma: A systematic review",
+      "journal": "Autoimmun Rev",
+      "year": "2026",
+      "pmid": "41730404",
+      "url": "https://europepmc.org/article/MED/41730404",
+      "doi": "10.1016/j.autrev.2026.104009"
+    }
+  ],
+  "centella_asiatica": [
+    {
+      "type": "literature",
+      "title": "&lt;i&gt;Centella asiatica&lt;/i&gt;: Advances in Extraction Technologies, Phytochemistry, and Therapeutic Applications",
+      "journal": "Life (Basel)",
+      "year": "2025",
+      "pmid": "40724583",
+      "url": "https://europepmc.org/article/MED/40724583",
+      "doi": "10.3390/life15071081"
+    },
+    {
+      "type": "literature",
+      "title": "Targeting oxidative stress, senescence, and neurodegeneration: anti-aging perspectives of Urtica dioica and Centella asiatica",
+      "journal": "Inflammopharmacology",
+      "year": "2026",
+      "pmid": "42343000",
+      "url": "https://europepmc.org/article/MED/42343000",
+      "doi": "10.1007/s10787-026-02309-z"
+    }
+  ]
+}

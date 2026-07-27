@@ -6,6 +6,7 @@
  * this module means the boundary cast to `IngredientFull` happens once.
  */
 import rawIngredientsDatabase from '../data/ingredients-database.json';
+import rawReferences from '../data/ingredient-references.json';
 import type { Language } from './prompt';
 
 export interface IngredientInteractionNote {
@@ -64,6 +65,29 @@ const db = rawIngredientsDatabase as unknown as {
 
 export const ALL_INGREDIENTS: IngredientFull[] = db.ingredients;
 export const INGREDIENT_CATEGORIES: IngredientCategory[] = db.categories;
+
+export interface IngredientReference {
+  /** 'compound' = PubChem identity; 'literature' = a peer-reviewed article. */
+  type?: 'compound' | 'literature';
+  url: string;
+  // compound (PubChem)
+  label?: string;
+  cid?: number;
+  // literature (Europe PMC / PubMed)
+  title?: string;
+  journal?: string;
+  year?: string | number;
+  doi?: string;
+  pmid?: string;
+}
+
+const REFERENCES = rawReferences as unknown as Record<string, IngredientReference[]>;
+
+/** Verified external citations (PubChem, …) for an ingredient, if any (14.5). */
+export function getReferences(id: string): IngredientReference[] {
+  const r = REFERENCES[id];
+  return Array.isArray(r) ? r : [];
+}
 
 const BY_ID = new Map<string, IngredientFull>(db.ingredients.map((i) => [i.id, i]));
 const BY_INCI = new Map<string, IngredientFull>(
