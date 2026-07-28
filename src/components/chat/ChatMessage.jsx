@@ -138,6 +138,41 @@ export default function ChatMessage({
           </div>
         )}
 
+        {/* Further reading (14.5c): peer-reviewed reviews for ingredients named
+            in the answer. Deterministically matched server-side — never invented. */}
+        {!message._streaming &&
+          Array.isArray(message.citations) &&
+          message.citations.length > 0 && (
+            <div className="mt-2 border-t border-border/60 pt-2">
+              <div className="text-[11px] font-medium text-muted-foreground mb-1">
+                {lang === 'zh' ? '延伸阅读' : 'Further reading'}
+              </div>
+              <ul className="space-y-1">
+                {message.citations.map((c) => (
+                  <li key={c.id} className="text-[11px] leading-snug text-muted-foreground">
+                    <span className="text-foreground font-medium">{c.name}</span>
+                    {' — '}
+                    {(c.refs || []).map((r, i) => (
+                      <span key={r.pmid || r.url || i}>
+                        {i > 0 && '; '}
+                        <a
+                          href={r.url}
+                          target="_blank"
+                          rel="noopener noreferrer nofollow"
+                          title={r.title}
+                          className="text-primary hover:underline underline-offset-2"
+                        >
+                          {r.journal || r.title}
+                          {r.year ? ` (${r.year})` : ''}
+                        </a>
+                      </span>
+                    ))}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
         {/* Answer footer: feedback (7.3) + share (12.1) — completed answers only */}
         {t?.feedback &&
           !message._streaming &&

@@ -15,6 +15,7 @@
  *   event: tool_result       data: { id, name, success, durationMs, summary }
  *                                                                   (after each tool finishes)
  *   event: delta             data: { delta }                        (final answer tokens)
+ *   event: citations         data: { citations }                    (before done, when the answer names cited ingredients)
  *   event: done              data: {}
  *   event: error             data: { error }
  *
@@ -50,6 +51,7 @@ import {
 import { routeIntent, isFastRoutingEnabled, fastPathSystemPrompt } from '../../lib/router';
 import { detectInjection, injectionGuardNote } from '../../lib/guardrails';
 import { sanitizeProfileInput } from '../../lib/profile-store';
+import { extractCitations } from '../../lib/citations';
 
 export const prerender = false;
 
@@ -84,6 +86,26 @@ function sseError(
     controller.close();
   } catch {
     /* idem */
+  }
+}
+
+/**
+ * Emit a `citations` event (before `done`) listing peer-reviewed "further
+ * reading" for the ingredients the answer named. Deterministic and fail-open:
+ * best-effort, never throws into the answer stream.
+ */
+function emitCitations(
+  controller: ReadableStreamDefaultController<Uint8Array>,
+  text: string,
+  lang: Language,
+) {
+  try {
+    const citations = extractCitations(text, lang);
+    if (citations.length > 0) {
+      controller.enqueue(sseEvent('citations', { citations }));
+    }
+  } catch {
+    /* citations are best-effort — never break the stream */
   }
 }
 
@@ -362,6 +384,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
               sseEvent('meta', { source: hit.source ?? 'agentic', cached: true }),
             );
             controller.enqueue(sseEvent('delta', { delta: hit.answer }));
+            emitCitations(controller, hit.answer, lang);
             controller.enqueue(sseEvent('done', {}));
             logLlmCall({
               endpoint: 'chat-agentic',
@@ -644,6 +667,8 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
           });
         }
 
+        // Answer-level citations (14.5c) — "further reading" for named ingredients.
+        emitCitations(controller, finalAnswerText, lang);
         controller.enqueue(sseEvent('done', {}));
         try {
           controller.close();

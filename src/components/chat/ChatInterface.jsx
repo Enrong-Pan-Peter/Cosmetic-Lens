@@ -65,6 +65,7 @@ function sanitizeMessagesForServer(messages) {
     if (m.fromPhoto) out.fromPhoto = true;
     if (Array.isArray(m.dupes) && m.dupes.length) out.dupes = m.dupes;
     if (Array.isArray(m.sources) && m.sources.length) out.sources = m.sources;
+    if (Array.isArray(m.citations) && m.citations.length) out.citations = m.citations;
     if (Array.isArray(m.toolCalls) && m.toolCalls.length) {
       out.toolCalls = m.toolCalls.map((tc) => ({
         id: tc.id,
@@ -185,6 +186,9 @@ async function consumeChatStream(response, handlers) {
           break;
         case 'tool_result':
           handlers.onToolResult?.(payload);
+          break;
+        case 'citations':
+          handlers.onCitations?.(payload);
           break;
         case 'delta':
           if (payload.delta) handlers.onDelta?.(payload.delta);
@@ -790,6 +794,7 @@ export default function ChatInterface({ lang, translations: t }) {
     let source = null;
     let dupes;
     let sources;
+    let citations;
     let mode = null;
     let cached = false;
     // Live tool-call trace — accumulated locally so we can update statuses
@@ -921,6 +926,11 @@ export default function ChatInterface({ lang, translations: t }) {
           }
           upsertAssistantMessage();
         },
+        onCitations: (payload) => {
+          if (Array.isArray(payload.citations) && payload.citations.length > 0) {
+            citations = payload.citations;
+          }
+        },
         onDeltaReset: () => {
           assistantContent = '';
           upsertAssistantMessage();
@@ -940,6 +950,7 @@ export default function ChatInterface({ lang, translations: t }) {
               source,
               dupes,
               sources,
+              citations,
               intent,
               mode,
               cached,
@@ -971,6 +982,7 @@ export default function ChatInterface({ lang, translations: t }) {
               source,
               dupes,
               sources,
+              citations,
               intent,
               mode,
               toolCalls: toolCalls.length ? [...toolCalls] : undefined,
@@ -1258,6 +1270,16 @@ export default function ChatInterface({ lang, translations: t }) {
             <div className="mt-3 text-[11px] text-muted-foreground">
               {lang === 'zh' ? '资料来源：' : 'Sources: '}
               {pdfMsg.sources.slice(0, 8).map((s) => `${s.type ? `${s.type} · ` : ''}${s.name}`).join('  |  ')}
+            </div>
+          )}
+          {Array.isArray(pdfMsg.citations) && pdfMsg.citations.length > 0 && (
+            <div className="mt-3 text-[11px] text-muted-foreground">
+              <div className="font-medium">{lang === 'zh' ? '延伸阅读：' : 'Further reading:'}</div>
+              {pdfMsg.citations.map((c) => (
+                <div key={c.id}>
+                  {c.name} — {(c.refs || []).map((r) => `${r.journal || r.title}${r.year ? ` (${r.year})` : ''}`).join('; ')}
+                </div>
+              ))}
             </div>
           )}
           <p className="mt-6 text-xs text-muted-foreground">
