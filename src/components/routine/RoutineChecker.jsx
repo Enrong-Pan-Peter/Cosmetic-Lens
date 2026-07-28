@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { supabase } from '../../lib/supabase';
+import { readRoutines, saveRoutine, removeRoutine, ROUTINES_EVENT } from '../../lib/routine-store';
 
 const LEVEL_STYLES = {
   avoid: 'border-destructive/30 bg-destructive/5 text-destructive',
@@ -30,6 +31,9 @@ export default function RoutineChecker({ lang, t }) {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
+  const [savedRoutines, setSavedRoutines] = useState([]);
+  const [saveName, setSaveName] = useState('');
+  const [justSaved, setJustSaved] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -42,6 +46,14 @@ export default function RoutineChecker({ lang, t }) {
     return () => {
       active = false;
     };
+  }, []);
+
+  // Saved routines (14.7) — localStorage-backed, synced across islands.
+  useEffect(() => {
+    const sync = () => setSavedRoutines(readRoutines());
+    sync();
+    window.addEventListener(ROUTINES_EVENT, sync);
+    return () => window.removeEventListener(ROUTINES_EVENT, sync);
   }, []);
 
   const filledCount = useMemo(
@@ -64,6 +76,28 @@ export default function RoutineChecker({ lang, t }) {
     setProducts([emptyProduct(), emptyProduct()]);
     setResult(null);
     setError(null);
+  };
+  const loadRoutine = (r) => {
+    const next = r.products.map((p) => ({ name: p.name || '', ingredients: p.ingredients || '' }));
+    while (next.length < 2) next.push(emptyProduct());
+    setProducts(next);
+    setIsPregnant(!!r.isPregnant);
+    setResult(null);
+    setError(null);
+  };
+  const saveCurrent = () => {
+    if (filledCount < 2) {
+      setError(t.routine.error_need_two);
+      return;
+    }
+    const name =
+      saveName.trim() || products.find((p) => p.name.trim())?.name || t.routine.saved_default;
+    const saved = saveRoutine({ name, products, isPregnant });
+    if (saved) {
+      setSaveName('');
+      setJustSaved(true);
+      setTimeout(() => setJustSaved(false), 2000);
+    }
   };
 
   const submit = async () => {
@@ -108,6 +142,42 @@ export default function RoutineChecker({ lang, t }) {
 
   return (
     <div className="space-y-8">
+      {/* Saved routines (14.7) — reopen and re-check as products change */}
+      {savedRoutines.length > 0 && (
+        <div className="rounded-xl border border-border bg-muted/30 p-4">
+          <div className="text-sm font-medium text-foreground mb-2">{t.routine.saved_title}</div>
+          <ul className="flex flex-wrap gap-2">
+            {savedRoutines.map((r) => (
+              <li
+                key={r.id}
+                className="inline-flex items-center rounded-full border border-border bg-card pl-3 pr-1 py-1 text-sm shadow-sm"
+              >
+                <button
+                  type="button"
+                  onClick={() => loadRoutine(r)}
+                  title={t.routine.saved_load}
+                  className="font-medium text-foreground hover:text-primary transition-colors"
+                >
+                  {r.name}
+                  <span className="ml-1 text-xs text-muted-foreground">({r.products.length})</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => removeRoutine(r.id)}
+                  aria-label={t.routine.saved_delete}
+                  title={t.routine.saved_delete}
+                  className="ml-1.5 inline-flex h-5 w-5 items-center justify-center rounded-full text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors"
+                >
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       {/* Product inputs */}
       <div className="space-y-4">
         {products.map((p, i) => (
@@ -194,6 +264,33 @@ export default function RoutineChecker({ lang, t }) {
       </label>
 
       <p className="text-xs text-muted-foreground">{t.routine.min_products_note}</p>
+
+      {/* Save current routine (14.7) */}
+      <div className="flex flex-wrap items-center gap-2">
+        <input
+          type="text"
+          value={saveName}
+          onChange={(e) => setSaveName(e.target.value)}
+          placeholder={t.routine.save_name_placeholder}
+          aria-label={t.routine.save_routine}
+          maxLength={80}
+          className="h-9 flex-grow min-w-[180px] rounded-md border border-input bg-background px-3 text-sm text-foreground shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        />
+        <button
+          type="button"
+          onClick={saveCurrent}
+          disabled={filledCount < 2}
+          className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-2 text-sm font-medium text-foreground hover:bg-accent transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 3h11l3 3v13a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z M7 3v5h8M7 21v-7h10v7" />
+          </svg>
+          {t.routine.save_routine}
+        </button>
+        {justSaved && (
+          <span className="text-sm text-emerald-600 dark:text-emerald-400">{t.routine.saved_confirmation}</span>
+        )}
+      </div>
 
       {error && (
         <div role="alert" className="rounded-lg border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive">

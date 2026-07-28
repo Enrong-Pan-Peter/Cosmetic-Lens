@@ -402,7 +402,14 @@
     "and": "与",
     "disclaimer": "基于成分相互作用的一般性建议，不能替代专业意见。新组合请先做皮肤测试。",
     "error_generic": "检查流程时出错，请重试。",
-    "error_need_two": "请至少输入 2 个含成分的产品。"
+    "error_need_two": "请至少输入 2 个含成分的产品。",
+    "save_routine": "保存方案",
+    "save_name_placeholder": "为此方案命名（可选）",
+    "saved_title": "已保存的方案",
+    "saved_load": "载入此方案",
+    "saved_delete": "删除",
+    "saved_default": "我的方案",
+    "saved_confirmation": "已保存"
   },
   "feedback": {
     "prompt": "这个回答有帮助吗？",

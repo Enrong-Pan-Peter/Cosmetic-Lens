@@ -402,7 +402,14 @@
     "and": "and",
     "disclaimer": "General guidance based on ingredient interactions — not a substitute for professional advice. Patch test new combinations.",
     "error_generic": "Something went wrong checking your routine. Please try again.",
-    "error_need_two": "Please enter at least 2 products with ingredients."
+    "error_need_two": "Please enter at least 2 products with ingredients.",
+    "save_routine": "Save routine",
+    "save_name_placeholder": "Name this routine (optional)",
+    "saved_title": "Saved routines",
+    "saved_load": "Load this routine",
+    "saved_delete": "Delete",
+    "saved_default": "My routine",
+    "saved_confirmation": "Saved"
   },
   "feedback": {
     "prompt": "Was this helpful?",
