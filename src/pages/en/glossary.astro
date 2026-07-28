@@ -12,7 +12,7 @@ const t = getTranslations(lang);
 // Link each glossary row to its detail page when a matching entry exists.
 const entries = glossaryData.entries.map((e) => {
   const id = idByInci(e.inci_name);
-  return { ...e, href: id ? `/${lang}/ingredients/${ingredientSlug(id)}` : null };
+  return { ...e, id: id ?? null, href: id ? `/${lang}/ingredients/${ingredientSlug(id)}` : null };
 });
 ---
 

@@ -124,6 +124,11 @@ export function readRoutines(): SavedRoutine[] {
   }
 }
 
+/** Replace the whole saved-routines list (used by cloud-sync reconciliation). */
+export function writeRoutines(routines: SavedRoutine[]): void {
+  persist(routines);
+}
+
 function persist(routines: SavedRoutine[]): void {
   if (typeof window === 'undefined') return;
   try {

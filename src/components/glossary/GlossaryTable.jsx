@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import FavoriteButton from '../ingredients/FavoriteButton';
 
 export default function GlossaryTable({ entries, categories, lang, translations: t }) {
   const [search, setSearch] = useState('');
@@ -160,20 +161,25 @@ export default function GlossaryTable({ entries, categories, lang, translations:
                   className="border-b border-border last:border-0 hover:bg-muted/50 transition-colors"
                 >
                   <td className="px-4 py-3">
-                    {entry.href ? (
-                      <a
-                        href={entry.href}
-                        className="font-medium text-card-foreground hover:text-primary hover:underline underline-offset-2"
-                      >
-                        {entry.inci_name}
-                      </a>
-                    ) : (
-                      <div className="font-medium text-card-foreground">
-                        {entry.inci_name}
-                      </div>
-                    )}
+                    <div className="flex items-center gap-1.5">
+                      {entry.id && (
+                        <FavoriteButton id={entry.id} t={t} variant="mini" />
+                      )}
+                      {entry.href ? (
+                        <a
+                          href={entry.href}
+                          className="font-medium text-card-foreground hover:text-primary hover:underline underline-offset-2"
+                        >
+                          {entry.inci_name}
+                        </a>
+                      ) : (
+                        <div className="font-medium text-card-foreground">
+                          {entry.inci_name}
+                        </div>
+                      )}
+                    </div>
                     {entry.aliases_en?.length > 0 && (
-                      <div className="text-xs text-muted-foreground mt-0.5">
+                      <div className="text-xs text-muted-foreground mt-0.5 ml-8">
                         {entry.aliases_en.join(', ')}
                       </div>
                     )}

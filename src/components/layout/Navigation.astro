@@ -190,6 +190,11 @@ const navLinks = [
 
 <script>
   import { supabase } from '../../lib/supabase';
+  import { initCloudSync } from '../../lib/cloud-sync';
+
+  // Reconcile localStorage favorites + saved routines with the per-user cloud
+  // copy (14.3b / 14.7). No-ops when logged out. Present on every page.
+  initCloudSync();
 
   async function updateAuthUI() {
     try {

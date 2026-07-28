@@ -39,6 +39,23 @@ export default function FavoriteButton({ id, t, variant = 'label' }) {
     </svg>
   );
 
+  if (variant === 'mini') {
+    return (
+      <button
+        type="button"
+        onClick={onClick}
+        aria-pressed={fav}
+        aria-label={fav ? t.favorites.remove : t.favorites.add}
+        title={fav ? t.favorites.remove : t.favorites.add}
+        className={`inline-flex h-7 w-7 items-center justify-center rounded-md transition-colors ${
+          fav ? 'text-primary' : 'text-muted-foreground/40 hover:text-foreground'
+        }`}
+      >
+        {Star}
+      </button>
+    );
+  }
+
   if (variant === 'icon') {
     return (
       <button

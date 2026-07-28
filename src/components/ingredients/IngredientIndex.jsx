@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import FavoriteButton from './FavoriteButton';
 
 /**
  * Client-side searchable grid of ingredient cards linking to the prerendered
@@ -67,29 +68,33 @@ export default function IngredientIndex({ items, categories, lang, t }) {
       ) : (
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((it) => (
-            <a
-              key={it.id}
-              href={`/${lang}/ingredients/${it.slug}`}
-              className="card-hover group flex flex-col rounded-xl border border-border bg-card p-4 shadow-sm hover:border-primary/40 hover:bg-accent/40"
-            >
-              <div className="flex items-baseline justify-between gap-2">
-                <span className="font-medium text-card-foreground">
-                  {isZh ? it.chinese_name : it.inci_name}
+            <div key={it.id} className="relative">
+              <a
+                href={`/${lang}/ingredients/${it.slug}`}
+                className="card-hover group flex h-full flex-col rounded-xl border border-border bg-card p-4 pr-12 shadow-sm hover:border-primary/40 hover:bg-accent/40"
+              >
+                <div className="flex flex-col gap-0.5">
+                  <span className="font-medium text-card-foreground">
+                    {isZh ? it.chinese_name : it.inci_name}
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    {isZh ? it.inci_name : it.chinese_name}
+                  </span>
+                </div>
+                {it.blurb && (
+                  <p className="mt-1.5 text-sm text-muted-foreground line-clamp-2">{it.blurb}</p>
+                )}
+                <span className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-primary opacity-0 transition-opacity group-hover:opacity-100">
+                  {t.ingredients.view_details}
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                  </svg>
                 </span>
-                <span className="text-xs text-muted-foreground shrink-0">
-                  {isZh ? it.inci_name : it.chinese_name}
-                </span>
+              </a>
+              <div className="absolute top-3 right-3">
+                <FavoriteButton id={it.id} t={t} variant="icon" />
               </div>
-              {it.blurb && (
-                <p className="mt-1.5 text-sm text-muted-foreground line-clamp-2">{it.blurb}</p>
-              )}
-              <span className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-primary opacity-0 transition-opacity group-hover:opacity-100">
-                {t.ingredients.view_details}
-                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                </svg>
-              </span>
-            </a>
+            </div>
           ))}
         </div>
       )}

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import FavoriteButton from '../ingredients/FavoriteButton';
 
 /**
  * "What helps with…?" concern search (7.6). Calls /api/concern-search and links
@@ -91,21 +92,25 @@ export default function ConcernSearch({ lang, t }) {
               </p>
               <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                 {result.ingredients.map((it) => (
-                  <a
-                    key={it.id}
-                    href={`/${lang}/ingredients/${it.slug}`}
-                    className="card-hover flex flex-col rounded-lg border border-border bg-background p-3 hover:border-primary/40 hover:bg-accent/40"
-                  >
-                    <div className="flex items-baseline justify-between gap-2">
-                      <span className="text-sm font-medium text-card-foreground">
-                        {isZh ? it.chinese_name : it.inci_name}
-                      </span>
-                      {it.evidence_level === 'strong' && (
-                        <span className="text-[10px] text-emerald-700 dark:text-emerald-400">{t.concern.strong}</span>
-                      )}
+                  <div key={it.id} className="relative">
+                    <a
+                      href={`/${lang}/ingredients/${it.slug}`}
+                      className="card-hover flex h-full flex-col rounded-lg border border-border bg-background p-3 pr-11 hover:border-primary/40 hover:bg-accent/40"
+                    >
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-sm font-medium text-card-foreground">
+                          {isZh ? it.chinese_name : it.inci_name}
+                        </span>
+                        {it.evidence_level === 'strong' && (
+                          <span className="text-[10px] text-emerald-700 dark:text-emerald-400">{t.concern.strong}</span>
+                        )}
+                      </div>
+                      {it.blurb && <span className="text-xs text-muted-foreground line-clamp-2 mt-0.5">{it.blurb}</span>}
+                    </a>
+                    <div className="absolute top-2 right-2">
+                      <FavoriteButton id={it.id} t={t} variant="icon" />
                     </div>
-                    {it.blurb && <span className="text-xs text-muted-foreground line-clamp-2 mt-0.5">{it.blurb}</span>}
-                  </a>
+                  </div>
                 ))}
               </div>
             </>
