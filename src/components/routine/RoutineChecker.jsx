@@ -34,15 +34,21 @@ export default function RoutineChecker({ lang, t }) {
   const [savedRoutines, setSavedRoutines] = useState([]);
   const [saveName, setSaveName] = useState('');
   const [justSaved, setJustSaved] = useState(false);
+  const [sessionChecked, setSessionChecked] = useState(false);
 
   useEffect(() => {
     let active = true;
     supabase.auth
       .getSession()
       .then(({ data }) => {
-        if (active) setToken(data?.session?.access_token || null);
+        if (active) {
+          setToken(data?.session?.access_token || null);
+          setSessionChecked(true);
+        }
       })
-      .catch(() => {});
+      .catch(() => {
+        if (active) setSessionChecked(true);
+      });
     return () => {
       active = false;
     };
@@ -291,6 +297,15 @@ export default function RoutineChecker({ lang, t }) {
           <span className="text-sm text-emerald-600 dark:text-emerald-400">{t.routine.saved_confirmation}</span>
         )}
       </div>
+
+      {sessionChecked && !token && (
+        <a
+          href={`/${lang}/login`}
+          className="block text-xs text-muted-foreground hover:text-foreground underline underline-offset-2"
+        >
+          {t.routine.sync_hint}
+        </a>
+      )}
 
       {error && (
         <div role="alert" className="rounded-lg border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive">

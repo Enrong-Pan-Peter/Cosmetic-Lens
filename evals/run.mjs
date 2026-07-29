@@ -32,7 +32,9 @@ import { coverageMatrix } from './lib/coverage.mjs';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const RESULTS_DIR = join(HERE, 'results');
 
-// Models per pipeline (for output-cost estimates only; keep in sync with src/).
+// Pricing proxy per pipeline for output-cost ESTIMATES only. Production now runs
+// gpt-5.4-mini; until its public price is added to lib/env.mjs we keep the prior
+// models here so the cost column stays populated (see PRICES_PER_MTOK).
 const PIPELINE_MODEL = { agentic: 'gpt-4o-mini', classic: 'gpt-4.1-mini' };
 
 // The app's retrieval settings (mirrored so evals measure what prod does).

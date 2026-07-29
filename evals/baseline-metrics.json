@@ -1,0 +1,14 @@
+{
+  "_note": "Baseline snapshot for evals/compare.mjs (intent + e2e). From real recorded runs in evals/results/. Regenerate: node evals/compare.mjs --save-baseline",
+  "captured_at": "2026-07-29T03:22:29.012Z",
+  "source": "earliest recorded run per suite",
+  "metrics": {
+    "Intent accuracy": 0.7667,
+    "Intent EN": 0.875,
+    "Intent ZH": 0.55,
+    "E2E agentic struct pass": 0.8462,
+    "E2E agentic judge pass": 1,
+    "E2E classic struct pass": 0.8077,
+    "E2E classic judge pass": 0.9231
+  }
+}

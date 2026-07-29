@@ -28,6 +28,18 @@ Flags: `--lang en|zh|all`, `--limit N`, `--no-judge`, `--base-url https://...` (
 
 Tuning sweep (8.7): `node evals/run.mjs --sweep [--retrieval dense|hybrid]` runs retrieval once at max-k and tabulates **recall@{3,4,6,8}** and **first-hit survival at similarity thresholds {0.2…0.4}** by language — the data behind the app's `matchCount=6` and `0.3` threshold choices.
 
+## Before / after comparison
+
+`run.mjs` saves one JSON per suite. `compare.mjs` turns those into a readable before → after table (no network calls, no invented numbers — it only reads the recorded results):
+
+```bash
+node evals/compare.mjs --save-baseline   # snapshot the latest run as the baseline
+#   ... make changes, then re-run the suites ...
+node evals/compare.mjs                    # print before → after + write results/comparison.md
+```
+
+The temporal table covers intent and the e2e suites, which compare cleanly across code changes. Retrieval is reported separately as hybrid vs dense on the same run, because the retrieval dataset itself grows over time, so a raw temporal recall delta would compare two different tests. Add `--pick first` to `--save-baseline` to seed the baseline from the earliest recorded run instead of the latest.
+
 ## The flywheel + gate (Phase 10)
 
 - **Feedback → eval cases (10.1):** `node evals/feedback-to-cases.mjs [--rating down|up|all] [--limit N] [--since YYYY-MM-DD]` pulls 👎 rows from the `feedback` table, dedupes them, and writes `evals/triage/feedback-<ts>.{md,json}`. Review the markdown, then promote the real failures into `datasets/intent-cases.json` or `datasets/e2e-cases.json`. That's the loop: user feedback → eval set → measured fix.

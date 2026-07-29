@@ -13,6 +13,7 @@
 import type { APIRoute } from 'astro';
 import { createServerClient } from '../../../lib/supabase';
 import { getUserFromRequest } from '../../../lib/auth';
+import { enforceRateLimit, getClientIp, rateLimitResponse } from '../../../lib/rate-limit';
 
 export const prerender = false;
 
@@ -33,11 +34,19 @@ async function ownerOf(supabase: ReturnType<typeof createServerClient>, chatId: 
   return data?.user_id ?? null;
 }
 
-export const GET: APIRoute = async ({ request, params }) => {
+export const GET: APIRoute = async ({ request, params, clientAddress }) => {
   const user = await getUserFromRequest(request);
   if (!user) return json(401, { success: false, error: 'unauthorized' });
   const chatId = params.id ?? '';
   if (!ID_PATTERN.test(chatId)) return json(400, { success: false, error: 'bad_id' });
+
+  const rl = await enforceRateLimit({
+    cls: 'light',
+    userId: user.id,
+    ip: getClientIp(request, clientAddress),
+    request,
+  });
+  if (!rl.allowed) return rateLimitResponse('light', 'en', true);
 
   try {
     const supabase = createServerClient();
@@ -77,11 +86,19 @@ export const GET: APIRoute = async ({ request, params }) => {
   }
 };
 
-export const PUT: APIRoute = async ({ request, params }) => {
+export const PUT: APIRoute = async ({ request, params, clientAddress }) => {
   const user = await getUserFromRequest(request);
   if (!user) return json(401, { success: false, error: 'unauthorized' });
   const chatId = params.id ?? '';
   if (!ID_PATTERN.test(chatId)) return json(400, { success: false, error: 'bad_id' });
+
+  const rl = await enforceRateLimit({
+    cls: 'light',
+    userId: user.id,
+    ip: getClientIp(request, clientAddress),
+    request,
+  });
+  if (!rl.allowed) return rateLimitResponse('light', 'en', true);
 
   let body: any;
   try {
@@ -148,11 +165,19 @@ export const PUT: APIRoute = async ({ request, params }) => {
   }
 };
 
-export const DELETE: APIRoute = async ({ request, params }) => {
+export const DELETE: APIRoute = async ({ request, params, clientAddress }) => {
   const user = await getUserFromRequest(request);
   if (!user) return json(401, { success: false, error: 'unauthorized' });
   const chatId = params.id ?? '';
   if (!ID_PATTERN.test(chatId)) return json(400, { success: false, error: 'bad_id' });
+
+  const rl = await enforceRateLimit({
+    cls: 'light',
+    userId: user.id,
+    ip: getClientIp(request, clientAddress),
+    request,
+  });
+  if (!rl.allowed) return rateLimitResponse('light', 'en', true);
 
   try {
     const supabase = createServerClient();

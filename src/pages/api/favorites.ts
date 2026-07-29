@@ -9,6 +9,7 @@
 import type { APIRoute } from 'astro';
 import { createServerClient } from '../../lib/supabase';
 import { getUserFromRequest } from '../../lib/auth';
+import { enforceRateLimit, getClientIp, rateLimitResponse } from '../../lib/rate-limit';
 
 export const prerender = false;
 
@@ -36,9 +37,17 @@ function normalizeIds(raw: unknown): string[] {
   return out;
 }
 
-export const GET: APIRoute = async ({ request }) => {
+export const GET: APIRoute = async ({ request, clientAddress }) => {
   const user = await getUserFromRequest(request);
   if (!user) return json({ success: false, error: 'unauthorized' }, 401);
+
+  const rl = await enforceRateLimit({
+    cls: 'light',
+    userId: user.id,
+    ip: getClientIp(request, clientAddress),
+    request,
+  });
+  if (!rl.allowed) return rateLimitResponse('light', 'en', true);
 
   try {
     const supabase = createServerClient();
@@ -54,9 +63,17 @@ export const GET: APIRoute = async ({ request }) => {
   }
 };
 
-export const PUT: APIRoute = async ({ request }) => {
+export const PUT: APIRoute = async ({ request, clientAddress }) => {
   const user = await getUserFromRequest(request);
   if (!user) return json({ success: false, error: 'unauthorized' }, 401);
+
+  const rl = await enforceRateLimit({
+    cls: 'light',
+    userId: user.id,
+    ip: getClientIp(request, clientAddress),
+    request,
+  });
+  if (!rl.allowed) return rateLimitResponse('light', 'en', true);
 
   try {
     const body = await request.json().catch(() => ({}));

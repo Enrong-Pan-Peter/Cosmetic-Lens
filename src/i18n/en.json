@@ -409,7 +409,8 @@
     "saved_load": "Load this routine",
     "saved_delete": "Delete",
     "saved_default": "My routine",
-    "saved_confirmation": "Saved"
+    "saved_confirmation": "Saved",
+    "sync_hint": "Sign in to sync your saved routines across your devices."
   },
   "feedback": {
     "prompt": "Was this helpful?",
@@ -469,6 +470,7 @@
     "remove": "Remove from My Shelf",
     "empty": "No saved ingredients yet. Tap the star on any ingredient to add it here.",
     "browse": "Browse ingredients",
-    "count_label": "saved ingredient(s)"
+    "count_label": "saved ingredient(s)",
+    "sync_hint": "Sign in to sync your shelf across your devices."
   }
 }

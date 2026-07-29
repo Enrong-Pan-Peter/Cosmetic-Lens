@@ -1,7 +1,8 @@
 import type { APIRoute } from 'astro';
 import { createServerClient } from '../../lib/supabase';
+import { enforceRateLimit, getClientIp, rateLimitResponse } from '../../lib/rate-limit';
 
-export const GET: APIRoute = async ({ request }) => {
+export const GET: APIRoute = async ({ request, clientAddress }) => {
   try {
     const authHeader = request.headers.get('Authorization');
     if (!authHeader) {
@@ -15,6 +16,14 @@ export const GET: APIRoute = async ({ request }) => {
     if (authError || !user) {
       return new Response(JSON.stringify({ success: false, error: 'unauthorized' }), { status: 401 });
     }
+
+    const rl = await enforceRateLimit({
+      cls: 'light',
+      userId: user.id,
+      ip: getClientIp(request, clientAddress),
+      request,
+    });
+    if (!rl.allowed) return rateLimitResponse('light', 'en', true);
 
     const url = new URL(request.url);
     const limit = parseInt(url.searchParams.get('limit') || '20');
@@ -45,7 +54,7 @@ export const GET: APIRoute = async ({ request }) => {
   }
 };
 
-export const DELETE: APIRoute = async ({ request }) => {
+export const DELETE: APIRoute = async ({ request, clientAddress }) => {
   try {
     const authHeader = request.headers.get('Authorization');
     if (!authHeader) {
@@ -59,6 +68,14 @@ export const DELETE: APIRoute = async ({ request }) => {
     if (authError || !user) {
       return new Response(JSON.stringify({ success: false, error: 'unauthorized' }), { status: 401 });
     }
+
+    const rl = await enforceRateLimit({
+      cls: 'light',
+      userId: user.id,
+      ip: getClientIp(request, clientAddress),
+      request,
+    });
+    if (!rl.allowed) return rateLimitResponse('light', 'en', true);
 
     const url = new URL(request.url);
     const id = url.searchParams.get('id');

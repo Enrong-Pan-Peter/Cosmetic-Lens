@@ -409,7 +409,8 @@
     "saved_load": "载入此方案",
     "saved_delete": "删除",
     "saved_default": "我的方案",
-    "saved_confirmation": "已保存"
+    "saved_confirmation": "已保存",
+    "sync_hint": "登录后即可在多个设备间同步你保存的方案。"
   },
   "feedback": {
     "prompt": "这个回答有帮助吗？",
@@ -469,6 +470,7 @@
     "remove": "从收藏夹移除",
     "empty": "还没有收藏的成分。点击任意成分上的星标即可加入这里。",
     "browse": "浏览成分",
-    "count_label": "个已收藏成分"
+    "count_label": "个已收藏成分",
+    "sync_hint": "登录后即可在多个设备间同步你的收藏夹。"
   }
 }

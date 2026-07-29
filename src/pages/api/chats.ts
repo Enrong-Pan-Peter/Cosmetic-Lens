@@ -5,6 +5,7 @@
 import type { APIRoute } from 'astro';
 import { createServerClient } from '../../lib/supabase';
 import { getUserFromRequest } from '../../lib/auth';
+import { enforceRateLimit, getClientIp, rateLimitResponse } from '../../lib/rate-limit';
 
 export const prerender = false;
 
@@ -14,9 +15,17 @@ const json = (status: number, body: unknown) =>
     headers: { 'Content-Type': 'application/json' },
   });
 
-export const GET: APIRoute = async ({ request }) => {
+export const GET: APIRoute = async ({ request, clientAddress }) => {
   const user = await getUserFromRequest(request);
   if (!user) return json(401, { success: false, error: 'unauthorized' });
+
+  const rl = await enforceRateLimit({
+    cls: 'light',
+    userId: user.id,
+    ip: getClientIp(request, clientAddress),
+    request,
+  });
+  if (!rl.allowed) return rateLimitResponse('light', 'en', true);
 
   try {
     const supabase = createServerClient();

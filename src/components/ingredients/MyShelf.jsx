@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { readFavorites, FAVORITES_EVENT } from '../../lib/favorites-store';
+import { supabase } from '../../lib/supabase';
 import FavoriteButton from './FavoriteButton';
 
 /**
@@ -10,6 +11,8 @@ import FavoriteButton from './FavoriteButton';
 export default function MyShelf({ items, lang, t }) {
   const isZh = lang === 'zh';
   const [favIds, setFavIds] = useState([]);
+  // Default true so logged-in users never flash the "sign in to sync" hint.
+  const [authed, setAuthed] = useState(true);
 
   useEffect(() => {
     const load = () => setFavIds(readFavorites());
@@ -18,25 +21,55 @@ export default function MyShelf({ items, lang, t }) {
     return () => window.removeEventListener(FAVORITES_EVENT, load);
   }, []);
 
+  useEffect(() => {
+    let active = true;
+    supabase.auth
+      .getSession()
+      .then(({ data }) => {
+        if (active) setAuthed(Boolean(data?.session));
+      })
+      .catch(() => {});
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
+      setAuthed(Boolean(session));
+    });
+    return () => {
+      active = false;
+      sub?.subscription?.unsubscribe?.();
+    };
+  }, []);
+
+  const syncHint = !authed ? (
+    <a
+      href={`/${lang}/login`}
+      className="mb-4 block text-xs text-muted-foreground hover:text-foreground underline underline-offset-2"
+    >
+      {t.favorites.sync_hint}
+    </a>
+  ) : null;
+
   const byId = useMemo(() => new Map(items.map((i) => [i.id, i])), [items]);
   const saved = favIds.map((id) => byId.get(id)).filter(Boolean);
 
   if (saved.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-xl border border-border bg-card py-16 text-center">
-        <p className="text-muted-foreground">{t.favorites.empty}</p>
-        <a
-          href={`/${lang}/ingredients`}
-          className="mt-4 inline-flex items-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
-        >
-          {t.favorites.browse}
-        </a>
+      <div>
+        {syncHint}
+        <div className="flex flex-col items-center justify-center rounded-xl border border-border bg-card py-16 text-center">
+          <p className="text-muted-foreground">{t.favorites.empty}</p>
+          <a
+            href={`/${lang}/ingredients`}
+            className="mt-4 inline-flex items-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+          >
+            {t.favorites.browse}
+          </a>
+        </div>
       </div>
     );
   }
 
   return (
     <div>
+      {syncHint}
       <p className="mb-3 text-sm text-muted-foreground">
         {saved.length} {t.favorites.count_label}
       </p>

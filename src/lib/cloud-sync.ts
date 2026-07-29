@@ -124,16 +124,33 @@ export function initCloudSync(): void {
   if (typeof window === 'undefined' || started) return;
   started = true;
 
+  const PULLED_KEY = 'cosmeticlens:cloudsync:pulled';
+  const pulledThisSession = () => {
+    try {
+      return sessionStorage.getItem(PULLED_KEY) === '1';
+    } catch {
+      return false;
+    }
+  };
+
   const runSync = async () => {
     const headers = await authHeaders();
     if (!headers) return;
+    try {
+      sessionStorage.setItem(PULLED_KEY, '1');
+    } catch {
+      /* storage blocked — fine */
+    }
     await Promise.allSettled([syncFavorites(headers), syncRoutines(headers)]);
   };
 
-  // Existing session on load, and any subsequent sign-in / token refresh.
-  runSync();
+  // Pull once per tab session on load — avoids re-GETting on every MPA
+  // navigation and draining the shared `light` rate-limit budget. A fresh
+  // sign-in always re-pulls (that's the moment devices need to converge);
+  // ongoing local edits keep the cloud current via the debounced push below.
+  if (!pulledThisSession()) runSync();
   supabase.auth.onAuthStateChange((event) => {
-    if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') runSync();
+    if (event === 'SIGNED_IN') runSync();
   });
 
   const pushFavorites = debounce(async () => {
