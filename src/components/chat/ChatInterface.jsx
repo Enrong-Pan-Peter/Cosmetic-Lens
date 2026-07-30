@@ -763,12 +763,21 @@ export default function ChatInterface({ lang, translations: t }) {
 
     const hadPhoto = Boolean(pendingPhotoMeta);
     const userMsg = hadPhoto
-      ? { role: 'user', content: input, fromPhoto: true, photoMeta: pendingPhotoMeta }
+      ? {
+          role: 'user',
+          content: input,
+          fromPhoto: true,
+          photoMeta: pendingPhotoMeta,
+          // Keep the captured image visible in the conversation so it doesn't
+          // feel "lost" once the ingredients are extracted to text.
+          photoPreview: uploadedPreview || undefined,
+        }
       : { role: 'user', content: input };
     const withUser = [...messages, userMsg];
 
     if (hadPhoto) {
-      clearPhotoState();
+      // The message now owns the object URL, so don't revoke it here.
+      clearPhotoState(false);
     }
     const isFirstTurn = messages.length === 0;
 

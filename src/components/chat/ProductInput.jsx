@@ -277,7 +277,9 @@ export default function ProductInput({
             onPaste={handlePaste}
             placeholder={placeholder}
             rows={1}
-            className="flex-1 resize-none bg-transparent text-sm leading-6 text-foreground placeholder:text-muted-foreground focus:outline-none max-h-[200px] py-1"
+            // 16px on mobile (text-base) stops iOS Safari from auto-zooming the
+            // page when the field is focused; text-sm keeps the desktop look.
+            className="flex-1 resize-none bg-transparent text-base sm:text-sm leading-6 text-foreground placeholder:text-muted-foreground focus:outline-none max-h-[200px] py-1"
           />
 
           {isLoading ? (

@@ -34,6 +34,17 @@ export default function ChatMessage({
               {lang === 'zh' ? '已从照片识别' : 'Extracted from photo'}
             </span>
           )}
+          {message.photoPreview && (
+            <img
+              src={message.photoPreview}
+              alt={lang === 'zh' ? '上传的照片' : 'Uploaded photo'}
+              className="max-h-40 w-auto rounded-xl border border-border object-cover"
+              onError={(e) => {
+                // Object URLs don't survive a reload; hide a stale one quietly.
+                e.currentTarget.style.display = 'none';
+              }}
+            />
+          )}
           <div className="rounded-2xl rounded-tr-sm bg-primary/10 px-4 py-2.5 text-sm text-foreground whitespace-pre-wrap break-words">
             {message.content}
           </div>

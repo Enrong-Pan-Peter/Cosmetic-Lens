@@ -141,21 +141,37 @@ export async function extractIngredientsFromImage(
     apiKey,
     opts.signal,
   );
-  if (primary.success) return primary;
 
-  if (primary.code === 'api_key_missing' || primary.code === 'unreadable') {
-    return primary;
-  }
+  // A "successful" call that returns no ingredients and an "unreadable" verdict
+  // means the model could not read the label. That can happen when the primary
+  // model is weaker at OCR than the fallback, so treat it like a failure and let
+  // the proven-multimodal fallback take a turn instead of giving up here.
+  const primaryUnreadable =
+    primary.success &&
+    primary.data.confidence === 'unreadable' &&
+    primary.data.ingredients.length === 0;
+
+  if (primary.success && !primaryUnreadable) return primary;
+
+  // A missing API key will not be fixed by switching models.
+  if (!primary.success && primary.code === 'api_key_missing') return primary;
 
   console.warn(
-    `[vision] primary model ${VISION_MODEL_PRIMARY} failed (${primary.code}: ${primary.error}); trying ${VISION_MODEL_FALLBACK}`,
+    `[vision] primary ${VISION_MODEL_PRIMARY} ${
+      primary.success ? 'returned unreadable' : `failed (${primary.code}: ${primary.error})`
+    }; trying ${VISION_MODEL_FALLBACK}`,
   );
-  return callVisionModel(
+  const fallback = await callVisionModel(
     VISION_MODEL_FALLBACK,
     opts.imageDataUrl,
     apiKey,
     opts.signal,
   );
+  if (fallback.success) return fallback;
+
+  // Both models struck out. Return the primary result if we got one, otherwise
+  // the fallback error.
+  return primary.success ? primary : fallback;
 }
 
 // ---------------------------------------------------------------------------
