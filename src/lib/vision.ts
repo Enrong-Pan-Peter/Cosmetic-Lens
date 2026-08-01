@@ -23,9 +23,14 @@ import { buildModelParams } from './model-params';
 export type VisionConfidence = 'high' | 'medium' | 'low' | 'unreadable';
 
 export interface VisionExtractionResult {
+  /** Whether the photo shows a cosmetic/skincare product. */
+  isCosmetic: boolean;
+  /** Short description of whatever is in the photo (any subject). */
+  description: string;
   ingredients: string[];
   rawText: string;
   productName: string | null;
+  productType: string | null;
   confidence: VisionConfidence;
   warnings: string[];
   language: 'en' | 'zh' | 'other';
@@ -56,8 +61,12 @@ export type VisionExtractionResponse =
 // Configuration
 // ---------------------------------------------------------------------------
 
-const VISION_MODEL_PRIMARY = 'gpt-5.4-mini';
-const VISION_MODEL_FALLBACK = 'gpt-4o-mini';
+// Vision OCR needs a proven multimodal model, which is a separate concern from
+// the chat model. The 2026-07 swap set this to gpt-5.4-mini and that broke photo
+// extraction (the model does not handle the image request), so OCR is pinned to
+// the image models the app used originally. Chat stays on gpt-5.4-mini.
+const VISION_MODEL_PRIMARY = 'gpt-4o-mini';
+const VISION_MODEL_FALLBACK = 'gpt-4.1-mini';
 
 /** Hard upper bound on what we send to OpenAI (independent of API endpoint). */
 export const MAX_IMAGE_BYTES = 8 * 1024 * 1024; // 8 MB
@@ -75,32 +84,35 @@ export const SUPPORTED_MIME_TYPES = new Set([
 // Prompt
 // ---------------------------------------------------------------------------
 
-const SYSTEM_PROMPT = `You are a precise OCR/extraction tool for cosmetic and skincare product labels.
+const SYSTEM_PROMPT = `You are a vision assistant. You identify what is shown in a photo. Your specialty is cosmetic and skincare products, but you can recognize anything.
 
-Read the photo and return ONLY a JSON object matching this schema:
+Return ONLY a JSON object matching this schema:
 
 {
-  "ingredients": [string],     // The INCI ingredient names from the "Ingredients:" section, in the order shown
-  "rawText": string,            // Full readable text you see on the label (preserve line breaks with \\n)
-  "productName": string | null, // Brand + product name if visible, else null (e.g. "CeraVe Moisturizing Cream")
+  "isCosmetic": boolean,        // true if the photo shows a cosmetic or skincare product (or its box/label); false for anything else
+  "description": string,        // A short description (max ~12 words) of what is in the photo, whatever it is (e.g. "a can of lager beer", "a green skincare tube")
+  "ingredients": [string],     // INCI names from the "Ingredients"/"成分"/"全成分" section, in order — ONLY if visible AND this is a cosmetic; otherwise []
+  "rawText": string,            // Readable text on the item: brand, name, and any key claims (preserve line breaks with \\n)
+  "productName": string | null, // Brand + product name if it is a cosmetic you can identify, else null
+  "productType": string | null, // Short category if cosmetic (e.g. "hand cream", "cleanser", "sunscreen", "lipstick"), else null
   "confidence": "high" | "medium" | "low" | "unreadable",
-  "warnings": [string],         // Short notes if image is partially obscured, blurry, glare, cropped, etc.
-  "language": "en" | "zh" | "other"  // Primary language of the ingredient list on the label
+  "warnings": [string],
+  "language": "en" | "zh" | "other"
 }
 
 Rules:
-- "ingredients" MUST come from the actual "Ingredients" / "成分" / "全成分" section. Do NOT include marketing text, claims, directions, warnings, or net weight.
-- Trim whitespace and strip leading bullets, numbers, or asterisks from each ingredient.
-- If the label is in Chinese (e.g. uses 水, 甘油, 烟酰胺) keep ingredients in Chinese as printed. If in English, return the INCI English names as printed. Do not translate.
-- Preserve order — INCI lists are concentration-ordered and the order matters.
-- If an ingredient is illegible or partially obscured, OMIT it and add a warning rather than guessing.
-- If the image is NOT a cosmetic product label (e.g. a landscape, food packaging, a face, blank surface):
-    confidence = "unreadable", ingredients = [], warnings = ["not a cosmetic product label"].
-- If you see a label but the ingredient section isn't visible:
-    confidence = "low" or "unreadable", explain in warnings.
+- ALWAYS fill "description" with what you actually see, whether or not it is a cosmetic.
+- Set isCosmetic = true for skincare/cosmetic products and their packaging (creams, serums, cleansers, sunscreens, makeup, etc.); false for everything else (food, drinks, electronics, animals, people, scenery, documents).
+- Fill productName, productType, and ingredients ONLY when isCosmetic is true. Fill "ingredients" only from an actual ingredient section; never invent ingredients or treat marketing text as ingredients.
+- Keep printed text in its original language. Do not translate product names or ingredients.
+- Preserve ingredient order (INCI lists are concentration-ordered).
+- confidence describes how clearly you can see the subject, NOT whether it is a cosmetic. A clear photo of a non-cosmetic is still "high"/"medium" with isCosmetic=false. Use "unreadable" ONLY when the image is blank, empty, or too blurry to tell what it is.
 - Output JSON ONLY. No markdown code fences. No commentary.`;
 
-const USER_INSTRUCTION = 'Extract the ingredient list from this cosmetic product label photo and return the JSON object as specified.';
+function buildUserInstruction(language: 'en' | 'zh'): string {
+  const descLang = language === 'zh' ? 'Simplified Chinese' : 'English';
+  return `Identify what is in this photo. If it is a cosmetic or skincare product, read its label and extract the ingredient list only if it is visible. Write the "description" field in ${descLang}. Return the JSON object as specified.`;
+}
 
 // ---------------------------------------------------------------------------
 // Public entrypoint
@@ -140,6 +152,7 @@ export async function extractIngredientsFromImage(
     opts.imageDataUrl,
     apiKey,
     opts.signal,
+    opts.language ?? 'en',
   );
 
   // A "successful" call that returns no ingredients and an "unreadable" verdict
@@ -166,6 +179,7 @@ export async function extractIngredientsFromImage(
     opts.imageDataUrl,
     apiKey,
     opts.signal,
+    opts.language ?? 'en',
   );
   if (fallback.success) return fallback;
 
@@ -183,6 +197,7 @@ async function callVisionModel(
   imageDataUrl: string,
   apiKey: string,
   signal?: AbortSignal,
+  language: 'en' | 'zh' = 'en',
 ): Promise<VisionExtractionResponse> {
   const body = JSON.stringify({
     model,
@@ -191,7 +206,7 @@ async function callVisionModel(
       {
         role: 'user',
         content: [
-          { type: 'text', text: USER_INSTRUCTION },
+          { type: 'text', text: buildUserInstruction(language) },
           { type: 'image_url', image_url: { url: imageDataUrl, detail: 'high' } },
         ],
       },
@@ -287,10 +302,17 @@ function parseVisionContent(raw: string): VisionExtractionResult | null {
   const obj = parsed as Record<string, unknown>;
 
   const ingredients = sanitizeIngredients(obj.ingredients);
+  const isCosmetic = obj.isCosmetic === true;
+  const description =
+    typeof obj.description === 'string' ? obj.description.trim().slice(0, 300) : '';
   const rawText = typeof obj.rawText === 'string' ? obj.rawText.slice(0, 4000) : '';
   const productName =
     typeof obj.productName === 'string' && obj.productName.trim().length > 0
       ? obj.productName.trim().slice(0, 200)
+      : null;
+  const productType =
+    typeof obj.productType === 'string' && obj.productType.trim().length > 0
+      ? obj.productType.trim().slice(0, 100)
       : null;
 
   const confidence = normalizeConfidence(obj.confidence);
@@ -304,9 +326,12 @@ function parseVisionContent(raw: string): VisionExtractionResult | null {
   const language = normalizeLanguage(obj.language, ingredients);
 
   return {
+    isCosmetic,
+    description,
     ingredients,
     rawText,
     productName,
+    productType,
     confidence,
     warnings,
     language,

@@ -99,6 +99,7 @@
     "extracted_review_hint": "Review the extracted ingredients, then click Send.",
     "extracted_low_confidence": "Low-confidence extraction — please verify before sending.",
     "extracted_unreadable": "We couldn't read an ingredient list in this photo. Try a clearer, well-lit shot of the back of the package.",
+    "photo_not_product": "I analyze skincare and cosmetic products. Try a photo of a product, or paste its ingredient list.",
     "vision_error_generic": "Couldn't process the photo. Please try again.",
     "vision_error_unsupported_type": "Unsupported file type. Use JPG, PNG, WebP, or GIF.",
     "vision_error_too_large": "Image is too large. Maximum size is 8 MB.",

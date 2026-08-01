@@ -99,6 +99,7 @@
     "extracted_review_hint": "请确认识别到的成分后点击发送。",
     "extracted_low_confidence": "识别置信度较低，请核对后再发送。",
     "extracted_unreadable": "无法从这张照片识别出成分表，请尝试拍摄一张更清晰、光线更好的产品背面照片。",
+    "photo_not_product": "我主要分析护肤和化妆品。请试试拍摄一款产品，或直接粘贴它的成分表。",
     "vision_error_generic": "图片识别失败，请重试。",
     "vision_error_unsupported_type": "不支持的图片格式，请使用 JPG、PNG、WebP 或 GIF。",
     "vision_error_too_large": "图片过大，最大 8 MB。",

@@ -230,6 +230,11 @@ function formatExtractedText(data, lang) {
   if (data.ingredients?.length) {
     const header = lang === 'zh' ? '成分：' : 'Ingredients: ';
     lines.push(`${header}${data.ingredients.join(', ')}`);
+  } else if (data.productType) {
+    // No ingredient list in the photo (e.g. a front-of-product shot). Give the
+    // agent the product category so it can still answer questions about it.
+    const label = lang === 'zh' ? '产品类型：' : 'Product type: ';
+    lines.push(`${label}${data.productType}`);
   }
   return lines.join('\n\n');
 }
@@ -722,14 +727,34 @@ export default function ChatInterface({ lang, translations: t }) {
       }
 
       const data = payload.data;
-      if (data.confidence === 'unreadable' || data.ingredients.length === 0) {
-        setError(t.chat.extracted_unreadable);
+
+      // Not a skincare product: tell the user what it looks like and redirect,
+      // rather than silently dropping the photo.
+      const looksCosmetic =
+        data.isCosmetic === true ||
+        (data.ingredients?.length ?? 0) > 0 ||
+        Boolean(data.productName);
+      if (!looksCosmetic) {
+        if (data.description && data.confidence !== 'unreadable') {
+          const lead =
+            lang === 'zh' ? `这看起来是${data.description}。` : `That looks like ${data.description}. `;
+          setError(`${lead}${t.chat.photo_not_product}`);
+        } else {
+          setError(t.chat.extracted_unreadable);
+        }
         clearPhotoState();
         return;
       }
 
+      // Seed whatever is useful: an ingredient list, or just the product
+      // identity from a front-of-product shot.
       const seedText = formatExtractedText(data, lang);
-      if (seedText) seedComposer(seedText);
+      if (!seedText) {
+        setError(t.chat.extracted_unreadable);
+        clearPhotoState();
+        return;
+      }
+      seedComposer(seedText);
 
       setPhotoWarning(
         data.confidence === 'low' ? t.chat.extracted_low_confidence : null,
