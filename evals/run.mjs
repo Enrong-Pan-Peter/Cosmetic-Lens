@@ -32,10 +32,10 @@ import { coverageMatrix } from './lib/coverage.mjs';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const RESULTS_DIR = join(HERE, 'results');
 
-// Pricing proxy per pipeline for output-cost ESTIMATES only. Production now runs
-// gpt-5.4-mini; until its public price is added to lib/env.mjs we keep the prior
-// models here so the cost column stays populated (see PRICES_PER_MTOK).
-const PIPELINE_MODEL = { agentic: 'gpt-4o-mini', classic: 'gpt-4.1-mini' };
+// Both chat pipelines run gpt-5.6-luna in production; its price is in
+// PRICES_PER_MTOK, so the e2e cost column reflects the real model. Holding the
+// model constant also makes the classic-vs-agentic delta pipeline-only.
+const PIPELINE_MODEL = { agentic: 'gpt-5.6-luna', classic: 'gpt-5.6-luna' };
 
 // The app's retrieval settings (mirrored so evals measure what prod does).
 const APP_MATCH_COUNT = 6;

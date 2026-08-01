@@ -30,7 +30,7 @@ Retrieval is measured separately, because the retrieval dataset itself grows ove
 | classic (pre-injection RAG) | 92.3% | 92.3% | 100% | 805 ms | 0 | $0.00043 |
 | **agentic (default)** | **96.2%** | **100%** | 100% | 1.33 s | 0.69 | **$0.00012** |
 
-Judge dimension means for the agentic pipeline: groundedness 4.5, format 4.96, language fidelity 5.0, safety 5.0, dupe fidelity 5.0. The agentic pipeline buys higher quality for about half a second more time-to-first-token and lower output cost, and that measurement is why it is the default. Both pipelines stay in the codebase behind a flag as a permanent A/B baseline. These generation-quality numbers were measured on the previous default model. The app now runs `gpt-5.4-mini`, and re-running the suites with `evals/compare.mjs` refreshes the comparison.
+Judge dimension means for the agentic pipeline: groundedness 4.5, format 4.96, language fidelity 5.0, safety 5.0, dupe fidelity 5.0. The agentic pipeline buys higher quality for about half a second more time-to-first-token and lower output cost, and that measurement is why it is the default. Both pipelines stay in the codebase behind a flag as a permanent A/B baseline. These generation-quality numbers were measured on an earlier default model. The app now runs `gpt-5.6-luna` (chosen after OpenAI's July 2026 price cut made it both cheap and high quality), and re-running the suites with `evals/compare.mjs` refreshes the comparison.
 
 **Security treated like it is someone else's data.** Identity comes only from verified Supabase JWTs. This fixed an IDOR bug where any caller could read another user's pregnancy status by guessing a UUID. Every authenticated and public endpoint carries a namespaced daily rate limit (`chat`, `vision`, and `light` budgets, keyed per user or hashed IP, atomic increment-then-check) plus input caps. Rate limiting fails open on purpose, favoring availability, with the OpenAI spend cap as the hard backstop. User content is redacted of obvious PII before it reaches logs, and a prompt-injection detector flags manipulation attempts in pasted ingredient text.
 
@@ -68,7 +68,7 @@ The classic pipeline (`/api/chat`) resolves product data, dupes, interactions, a
 | Layer | Choice |
 |---|---|
 | Framework | [Astro 5](https://astro.build) (SSR) with React 19 islands, Tailwind, shadcn-style tokens, [Phosphor Icons](https://phosphoricons.com) |
-| LLM | OpenAI Chat Completions (`gpt-5.4-mini`, streaming and tool calling) |
+| LLM | OpenAI Chat Completions (`gpt-5.6-luna`, streaming and tool calling; `gpt-4o-mini` for vision OCR) |
 | Retrieval | `text-embedding-3-small` with Supabase **pgvector**, hybrid (dense + lexical + RRF + feature rerank), language and type filters |
 | Data / Auth | [Supabase](https://supabase.com): Postgres, RLS, Auth |
 | External data | [Open Beauty Facts](https://world.openbeautyfacts.org) (verified INCI lists), [PubChem](https://pubchem.ncbi.nlm.nih.gov) and [Europe PMC](https://europepmc.org) (citations) |

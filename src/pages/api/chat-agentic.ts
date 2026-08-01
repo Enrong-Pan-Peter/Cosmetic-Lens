@@ -59,7 +59,10 @@ const MAX_HISTORY_MESSAGES = 10;
 // Input caps — generous for real use, hostile to abuse (P1.3).
 const MAX_MESSAGES = 40;
 const MAX_MESSAGE_CHARS = 8000;
-const MODEL = 'gpt-5.4-mini';
+// gpt-5.6-luna: fast tier, ~85% of flagship quality, and ~80% cheaper after the
+// 2026-07-30 price cut. isNextGenModel() in model-params.ts already routes the
+// gpt-5.x parameter contract (max_completion_tokens), so no other change needed.
+const MODEL = 'gpt-5.6-luna';
 const TEMPERATURE = 0.3;
 const MAX_TOKENS_PER_TURN = 1800;
 

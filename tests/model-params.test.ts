@@ -4,6 +4,7 @@ import { isNextGenModel, buildModelParams } from '../src/lib/model-params';
 describe('isNextGenModel', () => {
   it('detects GPT-5 family and o-series', () => {
     expect(isNextGenModel('gpt-5.4-mini')).toBe(true);
+    expect(isNextGenModel('gpt-5.6-luna')).toBe(true); // current chat primary
     expect(isNextGenModel('gpt-5-mini')).toBe(true);
     expect(isNextGenModel('gpt-5')).toBe(true);
     expect(isNextGenModel('o3')).toBe(true);

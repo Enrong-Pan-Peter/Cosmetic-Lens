@@ -39,10 +39,11 @@ export interface ChatRequest {
 import { logLlmCall } from './telemetry';
 import { buildModelParams } from './model-params';
 
-// Primary is gpt-5.4-mini (generous free daily quota). gpt-4o-mini stays as
-// the resilience fallback: if the primary errors on connect, we switch once
-// and never mid-stream.
-const PRIMARY_MODEL = 'gpt-5.4-mini';
+// Primary is gpt-5.6-luna: after OpenAI's 2026-07-30 ~80% price cut it is both
+// cheap ($0.20/$1.20 per M tokens) and high quality (~85% of the flagship Sol).
+// gpt-4o-mini stays as the resilience fallback: if the primary errors on
+// connect, we switch once and never mid-stream.
+const PRIMARY_MODEL = 'gpt-5.6-luna';
 const FALLBACK_MODEL = 'gpt-4o-mini';
 
 async function callModel(

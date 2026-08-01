@@ -23,6 +23,7 @@ export const PIPELINES = {
  * Update when OpenAI pricing changes.
  */
 export const PRICES_PER_MTOK = {
+  'gpt-5.6-luna': { input: 0.2, output: 1.2 }, // after OpenAI's 2026-07-30 ~80% price cut
   'gpt-4o-mini': { input: 0.15, output: 0.6 },
   'gpt-4.1-mini': { input: 0.4, output: 1.6 },
   'gpt-4.1': { input: 2.0, output: 8.0 },

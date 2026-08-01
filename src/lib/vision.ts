@@ -62,9 +62,9 @@ export type VisionExtractionResponse =
 // ---------------------------------------------------------------------------
 
 // Vision OCR needs a proven multimodal model, which is a separate concern from
-// the chat model. The 2026-07 swap set this to gpt-5.4-mini and that broke photo
-// extraction (the model does not handle the image request), so OCR is pinned to
-// the image models the app used originally. Chat stays on gpt-5.4-mini.
+// the chat model (chat runs on gpt-5.6-luna). A 2026-07 swap briefly set this to
+// a text model and that broke photo extraction, so OCR is pinned to the image
+// models the app has always used.
 const VISION_MODEL_PRIMARY = 'gpt-4o-mini';
 const VISION_MODEL_FALLBACK = 'gpt-4.1-mini';
 
