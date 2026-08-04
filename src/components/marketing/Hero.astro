@@ -8,34 +8,69 @@ export interface Props {
 }
 
 const { lang, t } = Astro.props;
+const isZh = lang === 'zh';
+
+// Sample report rows shown inside the analyzer card (static preview; the
+// card links to the real analyzer). Inline bilingual per StatBand precedent.
+// Chinese labels list ingredients in Chinese, so the zh sample mirrors a real
+// back label (Chinese names first) rather than showing raw INCI to zh users.
+const sampleRows = [
+  {
+    name: isZh ? '烟酰胺' : 'Niacinamide',
+    role: isZh ? '美白提亮 · 修护屏障' : 'Brightening · barrier support',
+    verdict: 'safe',
+    label: isZh ? '安全' : 'Safe',
+  },
+  {
+    name: isZh ? '神经酰胺 NP' : 'Ceramide NP',
+    role: isZh ? '屏障修护' : 'Barrier repair',
+    verdict: 'safe',
+    label: isZh ? '安全' : 'Safe',
+  },
+  {
+    name: isZh ? '香精' : 'Fragrance (Parfum)',
+    role: isZh ? '致敏风险' : 'Known sensitizer',
+    verdict: 'caution',
+    label: isZh ? '注意' : 'Caution',
+  },
+];
 ---
 
-<section class="relative overflow-hidden py-12 md:py-20 lg:py-28">
-  <div class="absolute inset-0 -z-10 bg-gradient-to-br from-primary/5 via-background to-secondary/30"></div>
+<section class="relative overflow-hidden">
+  <!-- Faint graph-paper grid, faded at the edges -->
+  <div
+    aria-hidden="true"
+    class="absolute inset-0 -z-10 opacity-60"
+    style="background-image:linear-gradient(hsl(var(--border)/.55) 1px,transparent 1px),linear-gradient(90deg,hsl(var(--border)/.55) 1px,transparent 1px);background-size:44px 44px;-webkit-mask-image:radial-gradient(80% 90% at 50% 8%,#000 35%,transparent 80%);mask-image:radial-gradient(80% 90% at 50% 8%,#000 35%,transparent 80%);"
+  >
+  </div>
 
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-16">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 md:py-16 lg:py-20">
+    <div class="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-14">
       <!-- Text column -->
-      <div class="lg:col-span-6 lg:pr-4">
-        <span class="inline-flex items-center gap-1.5 rounded-full border border-border bg-card/60 px-3 py-1 text-sm font-medium text-foreground backdrop-blur">
-          <svg class="h-4 w-4 text-primary" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">
-            <path d={icons.sparkle} />
-          </svg>
+      <div class="lg:col-span-6">
+        <span class="text-[11px] font-bold uppercase tracking-[0.22em] text-foreground/70">
           {t.home.hero_badge}
         </span>
 
-        <h1 class="mt-6 text-4xl font-semibold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
-          {t.home.hero_title}
+        <h1 class="mt-5 font-display font-medium text-4xl leading-[1.14] tracking-normal text-foreground sm:text-5xl lg:text-[3.4rem]">
+          {t.home.hero_title_pre}{
+            isZh ? (
+              <span class="text-brand">{t.home.hero_title_accent}</span>
+            ) : (
+              <em class="italic">{t.home.hero_title_accent}</em>
+            )
+          }{t.home.hero_title_post}
         </h1>
 
-        <p class="mt-6 max-w-xl text-lg text-muted-foreground sm:text-xl">
+        <p class="mt-6 max-w-xl text-lg text-muted-foreground">
           {t.home.hero_subtitle}
         </p>
 
-        <div class="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
+        <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
           <a
             href={`/${lang}/chat`}
-            class="inline-flex h-12 items-center justify-center rounded-lg bg-primary px-8 text-base font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            class="inline-flex h-12 items-center justify-center rounded-lg bg-primary px-8 text-base font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
           >
             <svg class="mr-2 h-4 w-4" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">
               <path d={icons.microscope} />
@@ -44,7 +79,7 @@ const { lang, t } = Astro.props;
           </a>
           <a
             href={`/${lang}/glossary`}
-            class="inline-flex h-12 items-center justify-center rounded-lg border border-input bg-background px-8 text-base font-medium text-foreground shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground"
+            class="inline-flex h-12 items-center justify-center rounded-lg border border-input bg-card px-8 text-base font-medium text-foreground shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground"
           >
             <svg class="mr-2 h-4 w-4" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">
               <path d={icons.bookOpen} />
@@ -54,27 +89,76 @@ const { lang, t } = Astro.props;
         </div>
       </div>
 
-      <!-- Image column -->
+      <!-- Analyzer card (links to the real analyzer) -->
       <div class="lg:col-span-6">
-        <div class="relative">
-          <div
-            aria-hidden="true"
-            class="absolute -inset-4 rounded-3xl bg-gradient-to-tr from-primary/20 via-transparent to-secondary/40 blur-2xl"
-          ></div>
-
-          <div class="relative overflow-hidden rounded-2xl border border-border bg-card shadow-2xl">
-            <img
-              src="/images/hero-lab.webp"
-              alt={t.home.hero_image_alt}
-              width="2400"
-              height="1800"
-              loading="eager"
-              fetchpriority="high"
-              decoding="async"
-              class="aspect-[4/3] w-full object-cover"
-            />
+        <a
+          href={`/${lang}/chat`}
+          class="group block overflow-hidden rounded-2xl border border-border bg-card shadow-xl shadow-foreground/5 transition-shadow hover:shadow-2xl hover:shadow-foreground/10"
+          aria-label={t.home.cta_analyze}
+        >
+          <!-- Tabs (decorative preview) -->
+          <div class="flex border-b border-border bg-muted/60 text-[13px] font-semibold" aria-hidden="true">
+            <span class="border-r border-border px-4 py-3 text-muted-foreground">{t.home.analyzer_tab_name}</span>
+            <span class="border-r border-border bg-card px-4 py-3 text-brand shadow-[inset_0_2px_0_hsl(var(--brand))]">{t.home.analyzer_tab_paste}</span>
+            <span class="border-r border-border px-4 py-3 text-muted-foreground">{t.home.analyzer_tab_photo}</span>
           </div>
-        </div>
+
+          <div class="p-4 sm:p-5">
+            <div class="rounded-lg border border-input bg-card px-4 py-3.5 font-mono text-[12.5px] leading-relaxed text-foreground/85 ring-2 ring-ring/50 ring-offset-2 ring-offset-card">
+              {isZh ? (
+                <>水、甘油、<b class="text-brand">烟酰胺</b>、椰油酰胺丙基羟磺基甜菜碱、神经酰胺 NP、透明质酸钠、苯氧乙醇……</>
+              ) : (
+                <>Aqua, Glycerin, <b class="text-brand">Niacinamide</b>, Cocamidopropyl Hydroxysultaine, Ceramide NP, Sodium Hyaluronate, Phenoxyethanol…</>
+              )}
+            </div>
+            <div class="mt-4 flex items-center justify-between gap-3">
+              <span class="inline-flex items-center gap-2 text-[12.5px] text-muted-foreground">
+                <svg class="h-4 w-4 text-safe" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">
+                  <path d={icons.shieldCheck} />
+                </svg>
+                {t.home.analyzer_note}
+              </span>
+              <span class="inline-flex h-10 items-center justify-center rounded-lg bg-primary px-5 text-sm font-semibold text-primary-foreground transition-colors group-hover:bg-primary/90">
+                {t.home.analyzer_button}
+                <svg class="ml-2 h-4 w-4" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">
+                  <path d={icons.arrowRight} />
+                </svg>
+              </span>
+            </div>
+          </div>
+
+          <!-- Sample report -->
+          <div class="border-t border-dashed border-border bg-muted/40 px-4 pb-4 pt-3 sm:px-5">
+            <span class="text-[10.5px] font-bold uppercase tracking-[0.14em] text-muted-foreground/80">
+              {t.home.analyzer_sample}
+            </span>
+            {sampleRows.map(row => (
+              <div class="mt-2 flex items-center gap-3 text-[13px]">
+                <span class="w-[38%] min-w-0 truncate font-semibold text-foreground sm:w-[200px]">{row.name}</span>
+                <span class="hidden flex-1 text-xs text-muted-foreground sm:block">{row.role}</span>
+                <span
+                  class={`ml-auto inline-flex items-center gap-1 rounded-md border px-2.5 py-0.5 text-xs font-semibold ${
+                    row.verdict === 'safe'
+                      ? 'border-safe/25 bg-safe-bg text-safe'
+                      : 'border-caution/30 bg-caution-bg text-caution'
+                  }`}
+                >
+                  {row.verdict === 'safe' ? (
+                    <svg class="h-3 w-3" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.5l5 5 10-11" />
+                    </svg>
+                  ) : (
+                    <svg class="h-3 w-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                      <path stroke-linecap="round" d="M12 8v5.2M12 16.8v.2" />
+                      <circle cx="12" cy="12" r="9" />
+                    </svg>
+                  )}
+                  {row.label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </a>
       </div>
     </div>
   </div>

@@ -71,7 +71,7 @@ export default function LanguageSwitcher({ lang, currentPath }) {
                   : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
               }`}
             >
-              <span className="text-xs" aria-hidden="true">🇺🇸</span> English
+              English
             </a>
             <a
               href={lang === 'zh' ? sameLangHref : otherLangHref}
@@ -83,7 +83,7 @@ export default function LanguageSwitcher({ lang, currentPath }) {
                   : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
               }`}
             >
-              <span className="text-xs" aria-hidden="true">🇨🇳</span> 中文
+              中文
             </a>
           </div>
         </>

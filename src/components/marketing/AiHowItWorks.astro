@@ -7,26 +7,28 @@ export interface Props {
 
 const { t } = Astro.props;
 
+// 02g imagery rule: no metaphor photos. Each card shows the real thing —
+// a marked-up label, a real molecule structure, a typeset reference index.
 const cards = [
   {
     icon: icons.camera,
     title: t.home.ai_card_1_title,
     desc: t.home.ai_card_1_desc,
-    img: '/images/feature-vision.webp',
+    img: '/images/plate-label.png',
     alt: t.home.ai_card_1_image_alt,
   },
   {
     icon: icons.brain,
     title: t.home.ai_card_2_title,
     desc: t.home.ai_card_2_desc,
-    img: '/images/feature-agent.webp',
+    img: '/images/plate-molecule.png',
     alt: t.home.ai_card_2_image_alt,
   },
   {
     icon: icons.bookOpen,
     title: t.home.ai_card_3_title,
     desc: t.home.ai_card_3_desc,
-    img: '/images/feature-rag.webp',
+    img: '/images/plate-citation.png',
     alt: t.home.ai_card_3_image_alt,
   },
 ];
@@ -35,7 +37,7 @@ const cards = [
 <section class="py-16 md:py-20 lg:py-24">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="mx-auto mb-12 max-w-3xl text-center sm:mb-16">
-      <h2 class="text-2xl font-semibold text-foreground sm:text-3xl lg:text-4xl">
+      <h2 class="font-display text-2xl font-medium text-foreground sm:text-3xl lg:text-4xl">
         {t.home.ai_section_title}
       </h2>
       <p class="mt-4 text-base text-muted-foreground sm:text-lg">

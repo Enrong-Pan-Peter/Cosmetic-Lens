@@ -2,6 +2,7 @@
 import BaseLayout from '../../components/layout/BaseLayout.astro';
 import Hero from '../../components/marketing/Hero.astro';
 import TrustStrip from '../../components/marketing/TrustStrip.astro';
+import FigureStrip from '../../components/marketing/FigureStrip.astro';
 import StatBand from '../../components/marketing/StatBand.astro';
 import Features from '../../components/marketing/Features.astro';
 import AiHowItWorks from '../../components/marketing/AiHowItWorks.astro';
@@ -20,6 +21,7 @@ const t = getTranslations(lang);
 >
   <Hero lang={lang} t={t} />
   <TrustStrip t={t} />
+  <FigureStrip lang={lang} />
 
   <div class="gradient-divider"></div>
 

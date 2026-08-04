@@ -16,6 +16,14 @@ export interface SamplingOptions {
   temperature?: number;
   maxTokens?: number;
   topP?: number;
+  /**
+   * Set when the request includes function tools. Newer gpt-5.x models apply a
+   * server-side default reasoning effort, and /v1/chat/completions rejects
+   * function tools combined with reasoning effort ("Function tools with
+   * reasoning_effort are not supported … set reasoning_effort to 'none'").
+   * When true, next-gen models get an explicit `reasoning_effort: 'none'`.
+   */
+  toolCalling?: boolean;
 }
 
 /** GPT-5 family and o-series reasoning models use the new parameter contract. */
@@ -30,14 +38,16 @@ export function isNextGenModel(model: string): boolean {
  * temperature/top_p (they'd 400). For legacy models we send the classic trio.
  * Pass whatever your call site wants; the helper drops what the model can't take.
  */
-export function buildModelParams(model: string, opts: SamplingOptions = {}): Record<string, number> {
-  const { temperature, maxTokens, topP } = opts;
-  const params: Record<string, number> = {};
+export function buildModelParams(model: string, opts: SamplingOptions = {}): Record<string, number | string> {
+  const { temperature, maxTokens, topP, toolCalling } = opts;
+  const params: Record<string, number | string> = {};
 
   if (isNextGenModel(model)) {
     if (typeof maxTokens === 'number') params.max_completion_tokens = maxTokens;
     // temperature (unless default 1) and top_p are unsupported → omit.
     if (typeof temperature === 'number' && temperature === 1) params.temperature = 1;
+    // Function tools on /v1/chat/completions require reasoning off (see above).
+    if (toolCalling) params.reasoning_effort = 'none';
     return params;
   }
 

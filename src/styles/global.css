@@ -3,80 +3,99 @@
 @tailwind utilities;
 
 /* =============================================
-   shadcn/ui CSS Variables — Light Theme
+   Design tokens — Light Theme ("Clean Room, tailored + trust" / 02g)
+   Porcelain paper, white cards, ink primary, petrol brand, brass detail.
+   See design/mockups/comparison.md for the full rationale.
    ============================================= */
 :root {
-  --background: 0 0% 100%;
-  --foreground: 240 10% 3.9%;
+  --background: 40 22% 98%;
+  --foreground: 212 30% 11%;
 
   --card: 0 0% 100%;
-  --card-foreground: 240 10% 3.9%;
+  --card-foreground: 212 30% 11%;
 
   --popover: 0 0% 100%;
-  --popover-foreground: 240 10% 3.9%;
+  --popover-foreground: 212 30% 11%;
 
-  --primary: 240 5.9% 10%;
-  --primary-foreground: 0 0% 98%;
+  /* Ink primary: buttons assert themselves like the original B&W design */
+  --primary: 212 28% 13%;
+  --primary-foreground: 40 25% 97%;
 
-  --secondary: 240 4.8% 95.9%;
-  --secondary-foreground: 240 5.9% 10%;
+  --secondary: 208 26% 96%;
+  --secondary-foreground: 213 25% 22%;
 
-  --muted: 240 4.8% 95.9%;
-  --muted-foreground: 240 3.8% 46.1%;
+  --muted: 210 22% 96%;
+  --muted-foreground: 215 12% 40%;
 
-  --accent: 240 4.8% 95.9%;
-  --accent-foreground: 240 5.9% 10%;
+  --accent: 196 30% 94%;
+  --accent-foreground: 197 55% 17%;
 
-  --destructive: 0 84.2% 60.2%;
-  --destructive-foreground: 0 0% 98%;
+  --destructive: 356 72% 44%;
+  --destructive-foreground: 0 0% 100%;
 
-  --border: 240 5.9% 90%;
-  --input: 240 5.9% 90%;
-  --ring: 240 5.9% 10%;
+  --border: 210 15% 90%;
+  --input: 210 15% 86%;
+  --ring: 197 52% 30%;
 
   --radius: 0.625rem;
 
-  /* Brand blue for CTA and accent highlights */
-  --brand: 221 83% 53%;
+  /* Petrol: functional accent for links, active states, and focus */
+  --brand: 197 48% 26%;
   --brand-foreground: 0 0% 100%;
+
+  /* Status tokens: always paired with an icon + label, never color alone */
+  --safe: 161 75% 24%;
+  --safe-bg: 160 45% 93%;
+  --caution: 33 90% 33%;
+  --caution-bg: 40 80% 93%;
+
+  /* Brass: decorative only (FIG labels, hairline details). Never for status. */
+  --metal: 36 35% 38%;
 }
 
 /* =============================================
    Dark Theme — applied via class="dark" on <html> (13.1)
    ============================================= */
 .dark {
-  --background: 240 10% 4%;
-  --foreground: 0 0% 96%;
+  --background: 212 25% 7%;
+  --foreground: 40 15% 94%;
 
-  --card: 240 8% 7%;
-  --card-foreground: 0 0% 96%;
+  --card: 212 20% 10%;
+  --card-foreground: 40 15% 94%;
 
-  --popover: 240 8% 7%;
-  --popover-foreground: 0 0% 96%;
+  --popover: 212 20% 10%;
+  --popover-foreground: 40 15% 94%;
 
-  /* In dark, "primary" flips to near-white so primary buttons stay high-contrast */
-  --primary: 0 0% 96%;
-  --primary-foreground: 240 6% 10%;
+  /* In dark, "primary" flips to warm near-white so primary buttons stay high-contrast */
+  --primary: 40 18% 92%;
+  --primary-foreground: 212 25% 10%;
 
-  --secondary: 240 5% 15%;
-  --secondary-foreground: 0 0% 96%;
+  --secondary: 214 18% 15%;
+  --secondary-foreground: 210 15% 90%;
 
-  --muted: 240 5% 14%;
-  --muted-foreground: 240 5% 65%;
+  --muted: 215 16% 13%;
+  --muted-foreground: 214 12% 65%;
 
-  --accent: 240 5% 16%;
-  --accent-foreground: 0 0% 96%;
+  --accent: 194 40% 16%;
+  --accent-foreground: 194 50% 85%;
 
-  --destructive: 0 72% 51%;
+  --destructive: 356 65% 48%;
   --destructive-foreground: 0 0% 98%;
 
-  --border: 240 5% 18%;
-  --input: 240 5% 20%;
-  --ring: 0 0% 83%;
+  --border: 214 15% 20%;
+  --input: 214 15% 22%;
+  --ring: 195 55% 55%;
 
-  /* Brand blue reads better a touch lighter on dark */
-  --brand: 217 91% 60%;
-  --brand-foreground: 0 0% 100%;
+  /* Petrol lifts toward cyan on dark; text on it flips to ink */
+  --brand: 195 55% 55%;
+  --brand-foreground: 212 40% 8%;
+
+  --safe: 160 55% 55%;
+  --safe-bg: 160 30% 13%;
+  --caution: 35 85% 60%;
+  --caution-bg: 33 45% 13%;
+
+  --metal: 38 40% 62%;
 }
 
 @layer base {
@@ -205,8 +224,18 @@
   @apply text-sm leading-relaxed;
 }
 
+/* Section headings as uppercase micro-labels with a trailing rule (report style) */
 .prose-analysis h2 {
-  @apply text-base font-semibold text-foreground mt-5 mb-2 flex items-center gap-2;
+  @apply text-[12.5px] font-bold text-foreground mt-6 mb-2.5 flex items-center gap-2 uppercase;
+  letter-spacing: 0.1em;
+}
+
+.prose-analysis h2::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: hsl(var(--border));
+  margin-left: 0.375rem;
 }
 
 .prose-analysis h3 {
@@ -229,20 +258,28 @@
   @apply text-muted-foreground;
 }
 
+/* Ledger tables: heavy rule under the header, horizontal hairlines only */
 .prose-analysis table {
   @apply my-3 w-full border-collapse;
+  border-bottom: 1px solid hsl(var(--border));
 }
 
 .prose-analysis thead {
-  @apply bg-muted;
+  background: transparent;
 }
 
 .prose-analysis th {
-  @apply border border-border px-3 py-1.5 text-left text-xs font-medium text-muted-foreground;
+  @apply px-3 py-2 text-left text-[11px] font-semibold text-muted-foreground uppercase;
+  letter-spacing: 0.07em;
+  border: none;
+  border-top: 1px solid hsl(var(--border));
+  border-bottom: 2px solid hsl(var(--foreground) / 0.8);
 }
 
 .prose-analysis td {
-  @apply border border-border px-3 py-1.5 text-sm;
+  @apply px-3 py-2 text-sm;
+  border: none;
+  border-bottom: 1px solid hsl(var(--border));
 }
 
 .prose-analysis a {
@@ -268,6 +305,65 @@
   }
   .card-hover:hover {
     @apply -translate-y-0.5 shadow-md;
+  }
+
+  /* Masthead double rule (thick over hairline) — certificates and broadsheets */
+  .masthead {
+    position: relative;
+    border-bottom: 1.5px solid hsl(var(--foreground) / 0.85);
+  }
+  .masthead::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -4px;
+    height: 1px;
+    background: hsl(var(--foreground) / 0.28);
+    pointer-events: none;
+  }
+
+  /* Spaced-caps wordmark */
+  .wordmark {
+    font-size: 0.8125rem;
+    font-weight: 650;
+    letter-spacing: 0.24em;
+    white-space: nowrap;
+  }
+
+  /* Analysis record header: the answer presents itself as a numbered document */
+  .record-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    border-bottom: 2px solid hsl(var(--foreground) / 0.85);
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.875rem;
+  }
+  .record-head .rh-label {
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: hsl(var(--foreground));
+  }
+  .record-head .rh-meta {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+    font-size: 11px;
+    letter-spacing: 0.03em;
+    color: hsl(var(--muted-foreground));
+    white-space: nowrap;
+  }
+
+  /* Figure plate caption label (FIG. 01 …) — brass, mono */
+  .fig-label {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: hsl(var(--metal));
+    white-space: nowrap;
   }
 }
 

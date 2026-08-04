@@ -160,7 +160,7 @@ async function streamOneTurn(
     model: MODEL,
     messages,
     ...(includeTools ? { tools: OPENAI_TOOLS, tool_choice: toolChoice } : {}),
-    ...buildModelParams(MODEL, { temperature: TEMPERATURE, maxTokens }),
+    ...buildModelParams(MODEL, { temperature: TEMPERATURE, maxTokens, toolCalling: includeTools }),
     stream: true,
     stream_options: { include_usage: true },
   });

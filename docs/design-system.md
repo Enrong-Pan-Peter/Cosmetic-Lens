@@ -8,20 +8,30 @@ The single source of truth for the visual layer of Cosmetic-Lens, and a brief fo
 
 Colors are HSL triples defined in `src/styles/global.css` (light values in `:root`, dark values in `.dark`) and exposed as Tailwind classes through `tailwind.config.mjs` (`bg-background`, `text-primary`, `border-border`, `bg-brand`, and so on). Edit the values here; do not hardcode hex in components.
 
+The current system is "Clean Room, tailored + trust" (02g): porcelain paper, white cards, ink primary, petrol functional accent, brass decorative detail, and document-of-record furniture (masthead double rule, ledger tables, analysis record headers). Full rationale and the mockup history live in `design/mockups/comparison.md`.
+
 | Token | Light | Dark | Used for |
 |---|---|---|---|
-| `background` / `foreground` | white / near-black | near-black / near-white | page base and default text |
-| `card` | white | `240 8% 7%` | panels, cards, popovers |
-| `primary` | `240 5.9% 10%` (near-black) | `0 0% 96%` (near-white) | primary buttons and strong emphasis |
-| `secondary` / `muted` / `accent` | light grays | dark grays | subtle surfaces and secondary text |
-| `brand` | `221 83% 53%` (blue) | `217 91% 60%` | CTAs and accent highlights |
-| `destructive` | `0 84% 60%` (red) | `0 72% 51%` | errors and "avoid" states |
-| `border` / `input` / `ring` | light gray / focus ring | dark gray | outlines and focus rings |
+| `background` / `foreground` | `40 22% 98%` (porcelain) / `212 30% 11%` (ink) | `212 25% 7%` / `40 15% 94%` | page base and default text |
+| `card` | white | `212 20% 10%` | panels, cards, popovers |
+| `primary` | `212 28% 13%` (ink) | `40 18% 92%` (warm near-white) | primary buttons; the ink authority carried over from the original B&W design |
+| `secondary` / `muted` / `accent` | cool light grays / pale petrol wash | dark equivalents | subtle surfaces and secondary text |
+| `brand` | `197 48% 26%` (petrol) | `195 55% 55%` | links, active tabs, focus, functional accents only |
+| `destructive` | `356 72% 44%` | `356 65% 48%` | errors and "avoid" states |
+| `safe` on `safe-bg` | `161 75% 24%` on `160 45% 93%` | `160 55% 55%` on `160 30% 13%` | safe/supported status; always icon + label, never color alone |
+| `caution` on `caution-bg` | `33 90% 33%` on `40 80% 93%` | `35 85% 60%` on `33 45% 13%` | caution/partial status; always icon + label |
+| `metal` | `36 35% 38%` (brass) | `38 40% 62%` | decorative only: FIG labels, hairline details; never status |
+| `border` / `input` / `ring` | cool hairlines / petrol ring | dark equivalents | outlines and focus rings |
 | `radius` | `0.625rem` | same | corner rounding (lg/md/sm derive from it) |
 
 ### Typography
 
-Inter for Latin text and Noto Sans SC for Chinese, weights 400/500/600/700, loaded in `BaseLayout.astro` and set as the default sans family in Tailwind. The type is bilingual by design; do not drop Noto Sans SC.
+Inter for Latin text and Noto Sans SC for Chinese (weights 400/500/600/700) remain the body and UI faces. Two purpose-bound additions, all loaded in `BaseLayout.astro`:
+
+- `font-display` — Playfair Display 500/600 (+ 500 italic) with Noto Serif SC 600 for Chinese. Headlines, section titles, stat numerals, ingredient and product names. Never italicize CJK; accent the key word with `text-brand` instead.
+- `font-mono` — JetBrains Mono 400/500. Data details only: INCI strings, PubChem CIDs, record numbers, FIG labels.
+
+The type is bilingual by design; do not drop Noto Sans SC or Noto Serif SC.
 
 ### Interaction and accessibility
 
@@ -38,13 +48,9 @@ Dark mode is class-based (`.dark` on `<html>`) with a no-flash script in the hea
 - Share: `SharedAnalysisView`
 - Plus marketing (homepage), education, profile, and history surfaces.
 
-## The current look, honestly
+## The current look
 
-The chrome is the neutral shadcn default: a near-black primary and cool grays. It is clean, consistent, and accessible, but it is generic and it does not echo the product's own imagery.
-
-## The biggest opportunity
-
-`docs/ASSETS.md` defines the photography as a "soft pastel skincare lab": cream marble, amber-glass dropper bottles, blush pink, eucalyptus, and warm golden-hour light. The interface palette is cool and neutral, so the chrome and the photography currently pull in different directions. Warming the palette toward that softer identity (a warm off-white background, an amber or blush accent alongside or instead of the blue, and a more considered type scale) is likely the highest-impact change. Because the colors are tokens, most of this is editing `global.css`, not touching every component.
+The 02g system described above, implemented 2026-08. The original hero photograph survives in a clinically graded version (`public/images/hero-lab-clinical.webp`; the grade recipe is in `design/mockups/comparison.md`), presented as a captioned figure plate rather than a lifestyle hero. The `docs/ASSETS.md` prompt style remains useful for generating new photography, but grade anything new to neutral before shipping it, and never ship metaphor images.
 
 ## Constraints for any redesign
 
@@ -54,13 +60,11 @@ The chrome is the neutral shadcn default: a near-black primary and cool grays. I
 - Keep accessibility. Visible focus rings, reduced-motion support, and sufficient contrast.
 - Verify with `npx astro check` and `npx vitest run`.
 
-## Target direction (please fill in)
+## Target direction (decided 2026-08, implemented)
 
-"Better design" is a taste decision the codebase cannot make on its own. Fill this in before a redesign so a fresh session designs toward a target instead of guessing:
+Enrong chose "Clean Room, tailored + trust" (02g) after three candidate directions and six review rounds; `design/mockups/` holds the full trail. The standing rules:
 
-- Desired vibe (for example: warm and premium, clinical and precise, playful and fresh):
-- Reference sites or brands you like:
-- Fixed brand colors or a logo, if any:
-- Surfaces to keep as-is versus surfaces open to change:
-
-Until this is set, the working brief is: align the cool neutral chrome to the warm pastel imagery, raise overall polish, and keep everything accessible and bilingual.
+- Vibe: evidence-first and classy. Class comes from the finish (serif display, porcelain, petrol, brass detail); trust comes from the structure (ink buttons, masthead double rule, ledger tables, numbered analysis records, verification checks on data sources).
+- Voice: no "AI" wording in the interface. The product speaks through data sources (PubChem, Europe PMC, Open Beauty Facts), knowledge-base counts, and citations, not through its machinery. No model names, no tool-name chips, no sparkle icons.
+- Imagery: no metaphor photos, and homepage figures must read in one glance. Every picture depicts something real: the clinically graded bench photo, molecule structures drawn from PubChem (see `scripts/fetch-molecule-svgs.mjs`), and plates typeset from live `src/data` records (the dupe card renders from `curated-dupes.json`). Retired: `feature-agent.webp`, `feature-vision.webp`, `feature-rag.webp`.
+- Status semantics: `safe`/`caution` tokens with an icon and a label every time; brass is never used for meaning.

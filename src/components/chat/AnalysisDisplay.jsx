@@ -29,18 +29,25 @@ function parseClaimsData(content) {
 
 // ---------------------------------------------------------------------------
 // Detect verdict wording (or legacy emoji from old saved chats) in a table
-// cell and return a badge class. Monochrome to match the homepage design
-// language — semantic distinction comes from the label text itself.
+// cell and return a badge class. Uses the 02g status tokens (--safe/--caution);
+// the label text and surrounding icons keep the meaning readable without color.
 // ---------------------------------------------------------------------------
 function getVerdictBadgeClass(children) {
   const text = extractText(children);
   const t = text.toLowerCase();
-  if (
-    /✅|⚠️|⚠|❌|❓/.test(text) ||
-    /\b(supported|partial|unsupported|unverifiable)\b/.test(t) ||
-    /(有支持|部分支持|无支持|无法验证)/.test(text)
-  ) {
-    return 'bg-card border border-border text-foreground';
+
+  // Order matters: "partially supported" must not match the "supported" branch.
+  if (/partial|partly|⚠️|⚠/.test(t) || /(部分支持|注意|谨慎)/.test(text)) {
+    return 'border border-caution/30 bg-caution-bg text-caution';
+  }
+  if (/unsupport|not support|❌/.test(t) || /(无支持|避免)/.test(text)) {
+    return 'border border-destructive/30 bg-destructive/10 text-destructive';
+  }
+  if (/unverif|❓/.test(t) || /无法验证/.test(text)) {
+    return 'border border-border bg-card text-muted-foreground';
+  }
+  if (/\bsupported\b|\bsafe\b|✅/.test(t) || /(有支持|安全)/.test(text)) {
+    return 'border border-safe/25 bg-safe-bg text-safe';
   }
   return null;
 }
@@ -116,7 +123,7 @@ export default function AnalysisDisplay({
         aria-label={lang === 'zh' ? '复制' : 'Copy'}
       >
         {copied ? (
-          <svg className="w-3.5 h-3.5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-3.5 h-3.5 text-safe" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
           </svg>
         ) : (

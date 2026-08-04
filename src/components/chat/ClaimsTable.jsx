@@ -3,7 +3,7 @@ import { CheckCircle, WarningCircle, XCircle, Question } from '@phosphor-icons/r
 /**
  * ClaimsTable — renders structured claim-vs-reality data.
  *
- * Verdict badges use monochrome Phosphor line icons (regular weight) to match
+ * Verdict badges use the 02g status tokens with Phosphor line icons to match
  * the homepage design language — no emoji, no candy colors.
  *
  * Props:
@@ -24,7 +24,7 @@ export default function ClaimsTable({ claims, lang }) {
       return {
         label: lang === 'zh' ? '有支持' : 'Supported',
         Icon: CheckCircle,
-        cls: 'border-border bg-card text-foreground',
+        cls: 'border-safe/25 bg-safe-bg text-safe',
       };
     }
 
@@ -32,7 +32,7 @@ export default function ClaimsTable({ claims, lang }) {
       return {
         label: lang === 'zh' ? '部分支持' : 'Partial',
         Icon: WarningCircle,
-        cls: 'border-border bg-card text-foreground',
+        cls: 'border-caution/30 bg-caution-bg text-caution',
       };
     }
 
@@ -40,7 +40,7 @@ export default function ClaimsTable({ claims, lang }) {
       return {
         label: lang === 'zh' ? '无支持' : 'Unsupported',
         Icon: XCircle,
-        cls: 'border-border bg-card text-foreground',
+        cls: 'border-destructive/30 bg-destructive/10 text-destructive',
       };
     }
 

@@ -6,6 +6,11 @@ export default {
     extend: {
       fontFamily: {
         sans: ['Inter', 'Noto Sans SC', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        // Display serif for headlines, stat numerals, and ingredient names.
+        // Noto Serif SC carries the Chinese; never italicize CJK (color instead).
+        display: ['Playfair Display', 'Noto Serif SC', 'Georgia', 'serif'],
+        // Data details: INCI strings, CIDs, record numbers, FIG labels.
+        mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'monospace'],
       },
       colors: {
         border: 'hsl(var(--border))',
@@ -41,6 +46,17 @@ export default {
           DEFAULT: 'hsl(var(--brand))',
           foreground: 'hsl(var(--brand-foreground))',
         },
+        // Status tokens (02g): always rendered with an icon + label, never color alone
+        safe: {
+          DEFAULT: 'hsl(var(--safe) / <alpha-value>)',
+          bg: 'hsl(var(--safe-bg) / <alpha-value>)',
+        },
+        caution: {
+          DEFAULT: 'hsl(var(--caution) / <alpha-value>)',
+          bg: 'hsl(var(--caution-bg) / <alpha-value>)',
+        },
+        // Brass: decorative details only (FIG labels, hairlines), never status
+        metal: 'hsl(var(--metal) / <alpha-value>)',
       },
       borderRadius: {
         lg: 'var(--radius)',

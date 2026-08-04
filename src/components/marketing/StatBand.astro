@@ -1,8 +1,9 @@
 ---
 /**
- * "By the numbers" band (13.7) — surfaces real, defensible project metrics.
- * These are model-independent (deterministic intent accuracy, embedding recall,
- * test count, content depth), so they stay true across model swaps.
+ * "The evidence behind every answer" band (02g) — surfaces the knowledge base
+ * itself rather than ML metrics: counts a user can verify by browsing the app.
+ * Values mirror src/data (ingredients, interactions, dupe sets) plus the CI
+ * test count; update them when the data grows.
  */
 export interface Props {
   lang: 'en' | 'zh';
@@ -11,23 +12,23 @@ const { lang } = Astro.props;
 const isZh = lang === 'zh';
 
 const stats = [
-  { value: '100', label: isZh ? '精选成分' : 'Curated ingredients' },
-  { value: '100%', label: isZh ? '意图识别准确率（中英）' : 'Intent accuracy (EN + ZH)' },
-  { value: '97%', label: isZh ? '检索召回率 @6' : 'Retrieval recall@6' },
-  { value: '190+', label: isZh ? 'CI 自动化测试' : 'Automated tests in CI' },
+  { value: '100+', label: isZh ? '收录成分' : 'Documented ingredients' },
+  { value: '39+', label: isZh ? '相互作用' : 'Interactions mapped' },
+  { value: '30+', label: isZh ? '平替对比组' : 'Dupe sets compared' },
+  { value: '190+', label: isZh ? '自动化测试' : 'Automated tests' },
 ];
 ---
 
 <section class="py-10 sm:py-14">
   <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-    <p class="text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-      {isZh ? '严谨的工程实现' : 'Engineered, measured, tested'}
+    <p class="text-center text-xs font-semibold uppercase tracking-[0.16em] text-foreground/70">
+      {isZh ? '每个答案都有出处' : 'The evidence behind every answer'}
     </p>
-    <dl class="mt-6 grid grid-cols-2 gap-6 sm:grid-cols-4">
+    <dl class="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-5">
       {stats.map((s) => (
-        <div class="flex flex-col items-center text-center">
-          <dt class="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">{s.value}</dt>
-          <dd class="mt-1 text-sm text-muted-foreground">{s.label}</dd>
+        <div class="flex flex-col items-center rounded-lg border border-border border-t-2 border-t-foreground/80 bg-card px-4 py-5 text-center">
+          <dt class="font-display text-3xl font-medium tabular-nums tracking-tight text-foreground sm:text-4xl">{s.value}</dt>
+          <dd class="mt-1.5 font-mono text-xs text-muted-foreground">{s.label}</dd>
         </div>
       ))}
     </dl>

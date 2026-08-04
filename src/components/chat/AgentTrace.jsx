@@ -114,10 +114,10 @@ function TraceRow({ call, runningLabel }) {
         className={
           'mt-1 inline-block h-1.5 w-1.5 rounded-full shrink-0 ' +
           (status === 'pending'
-            ? 'bg-amber-500 animate-pulse'
+            ? 'bg-caution animate-pulse'
             : success === false
               ? 'bg-destructive'
-              : 'bg-emerald-500')
+              : 'bg-safe')
         }
         aria-hidden="true"
       />

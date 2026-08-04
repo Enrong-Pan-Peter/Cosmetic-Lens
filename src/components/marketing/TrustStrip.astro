@@ -1,15 +1,19 @@
 ---
+/**
+ * Data-sources band (02g): the places every fact traces back to, each with a
+ * verification check. Replaces the old infrastructure list (OpenAI, Supabase,
+ * pgvector): users trust sources, not stacks.
+ */
 export interface Props {
   t: any;
 }
 
 const { t } = Astro.props;
 
-const partners = [
-  t.home.trust_openai,
-  t.home.trust_supabase,
+const sources = [
+  t.home.trust_pubchem,
+  t.home.trust_europepmc,
   t.home.trust_obf,
-  t.home.trust_pgvector,
 ];
 ---
 
@@ -19,9 +23,14 @@ const partners = [
       <span class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
         {t.home.trust_strip_label}
       </span>
-      <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-2">
-        {partners.map(p => (
-          <span class="text-sm font-medium text-foreground/80">{p}</span>
+      <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+        {sources.map(s => (
+          <span class="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-3 py-1.5 font-mono text-xs font-medium text-muted-foreground">
+            <svg class="h-3 w-3 text-safe" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.5l5 5 10-11" />
+            </svg>
+            {s}
+          </span>
         ))}
       </div>
     </div>

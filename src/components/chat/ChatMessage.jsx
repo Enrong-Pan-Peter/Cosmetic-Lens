@@ -1,5 +1,13 @@
 import { Microscope, SealCheck, BookOpen, TreeStructure, ClockCounterClockwise } from '@phosphor-icons/react';
 import AnalysisDisplay from './AnalysisDisplay';
+
+// Deterministic short record number for the analysis-record header (02g).
+// Hash of the final content, so saved chats keep stable numbers.
+function recordNo(text) {
+  let h = 0;
+  for (let i = 0; i < (text || '').length; i++) h = (h * 31 + text.charCodeAt(i)) | 0;
+  return Math.abs(h).toString(16).toUpperCase().padStart(4, '0').slice(0, 4);
+}
 import AgentTrace from './AgentTrace';
 import MessageFeedback from './MessageFeedback';
 import ShareButton from './ShareButton';
@@ -98,7 +106,7 @@ export default function ChatMessage({
             {message.source === 'agentic' && message.mode === 'agentic' && (
               <span className="inline-flex items-center gap-1 rounded-full bg-card border border-border px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
                 <TreeStructure size={12} weight="regular" aria-hidden="true" />
-                {lang === 'zh' ? '智能体式' : 'Agentic'}
+                {lang === 'zh' ? '多源核查' : 'Cross-checked'}
               </span>
             )}
             {message.cached && (
@@ -117,6 +125,19 @@ export default function ChatMessage({
             active={Boolean(message._streaming)}
             labels={agentLabels}
           />
+        )}
+
+        {/* Analysis record header (02g): the answer presents as a numbered document */}
+        {!message._streaming && message.intent && (message.content?.length ?? 0) > 400 && (
+          <div className="record-head mt-1">
+            <span className="rh-label">{lang === 'zh' ? '分析档案' : 'Analysis record'}</span>
+            <span className="rh-meta">
+              NO. CL-{recordNo(message.content)}
+              {Array.isArray(message.sources) && message.sources.length > 0
+                ? ` · ${message.sources.length} ${lang === 'zh' ? '个来源' : message.sources.length === 1 ? 'SOURCE' : 'SOURCES'}`
+                : ''}
+            </span>
+          </div>
         )}
 
         <AnalysisDisplay

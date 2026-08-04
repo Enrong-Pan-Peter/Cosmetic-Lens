@@ -37,6 +37,20 @@ describe('buildModelParams', () => {
     expect(p).toEqual({ max_tokens: 4096, temperature: 0.7, top_p: 0.95 });
   });
 
+  it('disables reasoning when function tools ride on a next-gen chat-completions call', () => {
+    // gpt-5.6-luna rejects tools + default reasoning effort on /v1/chat/completions
+    // ("set reasoning_effort to 'none'"), so toolCalling must pin it off.
+    const p = buildModelParams('gpt-5.6-luna', { temperature: 0.3, maxTokens: 1800, toolCalling: true });
+    expect(p).toEqual({ max_completion_tokens: 1800, reasoning_effort: 'none' });
+  });
+
+  it('omits reasoning_effort without tools and on legacy models', () => {
+    expect(buildModelParams('gpt-5.6-luna', { maxTokens: 100 })).not.toHaveProperty('reasoning_effort');
+    expect(
+      buildModelParams('gpt-4o-mini', { maxTokens: 100, toolCalling: true }),
+    ).not.toHaveProperty('reasoning_effort');
+  });
+
   it('omits params that were not provided', () => {
     expect(buildModelParams('gpt-4o-mini', { maxTokens: 512 })).toEqual({ max_tokens: 512 });
     expect(buildModelParams('gpt-5.4-mini', {})).toEqual({});

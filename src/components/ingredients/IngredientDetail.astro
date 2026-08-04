@@ -68,10 +68,16 @@ const evidenceLabel =
 
 const levelClasses: Record<string, string> = {
   avoid: 'border-destructive/30 bg-destructive/5 text-destructive',
-  caution: 'border-amber-300 bg-amber-50 text-amber-800 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-300',
-  synergy: 'border-emerald-300 bg-emerald-50 text-emerald-800 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-300',
+  caution: 'border-caution/30 bg-caution-bg text-caution',
+  synergy: 'border-safe/25 bg-safe-bg text-safe',
   info: 'border-border bg-muted text-muted-foreground',
 };
+// Ingredients with a committed structure SVG in public/images/molecules/.
+// Run scripts/fetch-molecule-svgs.mjs to extend this set from PubChem CIDs.
+const MOLECULE_SVGS = new Set(['niacinamide', 'retinol', 'ascorbic_acid']);
+const moleculeSvg = MOLECULE_SVGS.has(ing.id) ? `/images/molecules/${ing.id}.svg` : null;
+const moleculeCid = compoundRefs.find((r) => r.cid)?.cid;
+
 const levelLabel: Record<string, string> = {
   avoid: t.ingredients.level_avoid,
   caution: t.ingredients.level_caution,
@@ -98,7 +104,7 @@ const levelLabel: Record<string, string> = {
         {categoryName(ing.category, lang)}
       </span>
     )}
-    <h1 class="text-3xl font-bold text-foreground">
+    <h1 class="font-display text-4xl font-medium tracking-normal text-foreground">
       {isZh ? ing.chinese_name : ing.inci_name}
     </h1>
     <p class="text-muted-foreground mt-1">
@@ -116,6 +122,29 @@ const levelLabel: Record<string, string> = {
   </header>
 
   <div class="space-y-8">
+    <!-- Structure plate (02g): the real molecule, drawn from PubChem -->
+    {moleculeSvg && (
+      <figure class="overflow-hidden rounded-xl border border-border bg-card">
+        <div
+          class="flex h-48 items-center justify-center sm:h-56"
+          style="background-image:linear-gradient(hsl(var(--border)/.45) 1px,transparent 1px),linear-gradient(90deg,hsl(var(--border)/.45) 1px,transparent 1px);background-size:28px 28px;"
+        >
+          <img
+            src={moleculeSvg}
+            alt={`${ing.inci_name} structure`}
+            loading="lazy"
+            decoding="async"
+            class="h-[80%] w-auto dark:invert dark:hue-rotate-180"
+          />
+        </div>
+        <figcaption class="flex items-center gap-2.5 border-t border-border px-4 py-2.5">
+          <span class="fig-label">{isZh ? '分子结构' : 'STRUCTURE'}</span>
+          <span class="truncate text-[12.5px] text-muted-foreground">
+            {ing.inci_name}{moleculeCid ? ` · PubChem CID ${moleculeCid}` : ''}
+          </span>
+        </figcaption>
+      </figure>
+    )}
     <!-- Functions -->
     {functions.length > 0 && (
       <section>
@@ -153,7 +182,7 @@ const levelLabel: Record<string, string> = {
     {ing.evidence_level && (
       <section>
         <h2 class="text-lg font-semibold text-foreground mb-2">{t.ingredients.evidence}</h2>
-        <span class="inline-flex items-center rounded-full border border-border bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground">
+        <span class={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${ing.evidence_level === 'strong' ? 'border-safe/25 bg-safe-bg text-safe' : 'border-border bg-secondary text-secondary-foreground'}`}>
           {evidenceLabel}
         </span>
         {evidenceNotes && <p class="text-sm text-muted-foreground mt-2">{evidenceNotes}</p>}
@@ -169,7 +198,7 @@ const levelLabel: Record<string, string> = {
             <div class="flex flex-wrap items-center gap-1.5">
               <span class="text-sm text-muted-foreground mr-1">{t.ingredients.suited_for}:</span>
               {ing.skin_types.suited.map((s) => (
-                <span class="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-xs text-emerald-800 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-300">
+                <span class="inline-flex items-center rounded-full border border-safe/25 bg-safe-bg px-2.5 py-0.5 text-xs text-safe">
                   {skinTypeLabel(s)}
                 </span>
               ))}
@@ -179,7 +208,7 @@ const levelLabel: Record<string, string> = {
             <div class="flex flex-wrap items-center gap-1.5">
               <span class="text-sm text-muted-foreground mr-1">{t.ingredients.use_caution}:</span>
               {ing.skin_types.caution.map((s) => (
-                <span class="inline-flex items-center rounded-full border border-amber-200 bg-amber-50 px-2.5 py-0.5 text-xs text-amber-800 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-300">
+                <span class="inline-flex items-center rounded-full border border-caution/30 bg-caution-bg px-2.5 py-0.5 text-xs text-caution">
                   {skinTypeLabel(s)}
                 </span>
               ))}
@@ -263,7 +292,7 @@ const levelLabel: Record<string, string> = {
         <div class="rounded-lg border border-border bg-card px-3 py-2.5">
           <div class="text-xs text-muted-foreground">{t.ingredients.pregnancy}</div>
           <div
-            class={`text-sm font-medium mt-0.5 ${ing.pregnancy_safe ? 'text-emerald-700 dark:text-emerald-400' : 'text-destructive'}`}
+            class={`text-sm font-medium mt-0.5 ${ing.pregnancy_safe ? 'text-safe' : 'text-destructive'}`}
           >
             {ing.pregnancy_safe
               ? t.ingredients.pregnancy_safe_yes
