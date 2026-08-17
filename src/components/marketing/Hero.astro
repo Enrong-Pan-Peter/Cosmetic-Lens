@@ -79,9 +79,9 @@ const sampleRows = [
           </a>
           <a
             href={`/${lang}/glossary`}
-            class="inline-flex h-12 items-center justify-center rounded-lg border border-input bg-card px-8 text-base font-medium text-foreground shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground"
+            class="inline-flex h-12 items-center justify-center gap-2 px-2 text-base font-semibold text-foreground underline decoration-border underline-offset-8 transition-colors hover:decoration-foreground"
           >
-            <svg class="mr-2 h-4 w-4" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">
+            <svg class="h-4 w-4" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">
               <path d={icons.bookOpen} />
             </svg>
             {t.home.cta_learn}
@@ -89,28 +89,26 @@ const sampleRows = [
         </div>
       </div>
 
-      <!-- Analyzer card (links to the real analyzer) -->
+      <!-- Analyzer card: a real input. Typing here carries into the chat page. -->
       <div class="lg:col-span-6">
-        <a
-          href={`/${lang}/chat`}
-          class="group block overflow-hidden rounded-2xl border border-border bg-card shadow-xl shadow-foreground/5 transition-shadow hover:shadow-2xl hover:shadow-foreground/10"
-          aria-label={t.home.cta_analyze}
-        >
-          <!-- Tabs (decorative preview) -->
-          <div class="flex border-b border-border bg-muted/60 text-[13px] font-semibold" aria-hidden="true">
-            <span class="border-r border-border px-4 py-3 text-muted-foreground">{t.home.analyzer_tab_name}</span>
+        <div class="overflow-hidden rounded-2xl border border-border bg-card shadow-xl shadow-foreground/5">
+          <!-- Tabs: the other two modes live on the analyzer page -->
+          <div class="flex border-b border-border bg-muted/60 text-[13px] font-semibold">
+            <a href={`/${lang}/chat`} class="border-r border-border px-4 py-3 text-muted-foreground transition-colors hover:text-foreground">{t.home.analyzer_tab_name}</a>
             <span class="border-r border-border bg-card px-4 py-3 text-brand shadow-[inset_0_2px_0_hsl(var(--brand))]">{t.home.analyzer_tab_paste}</span>
-            <span class="border-r border-border px-4 py-3 text-muted-foreground">{t.home.analyzer_tab_photo}</span>
+            <a href={`/${lang}/chat`} class="border-r border-border px-4 py-3 text-muted-foreground transition-colors hover:text-foreground">{t.home.analyzer_tab_photo}</a>
           </div>
 
-          <div class="p-4 sm:p-5">
-            <div class="rounded-lg border border-input bg-card px-4 py-3.5 font-mono text-[12.5px] leading-relaxed text-foreground/85 ring-2 ring-ring/50 ring-offset-2 ring-offset-card">
-              {isZh ? (
-                <>水、甘油、<b class="text-brand">烟酰胺</b>、椰油酰胺丙基羟磺基甜菜碱、神经酰胺 NP、透明质酸钠、苯氧乙醇……</>
-              ) : (
-                <>Aqua, Glycerin, <b class="text-brand">Niacinamide</b>, Cocamidopropyl Hydroxysultaine, Ceramide NP, Sodium Hyaluronate, Phenoxyethanol…</>
-              )}
-            </div>
+          <form id="hero-analyzer" data-chat-href={`/${lang}/chat`} class="p-4 sm:p-5">
+            <label class="sr-only" for="hero-analyzer-input">{t.chat.placeholder}</label>
+            <textarea
+              id="hero-analyzer-input"
+              rows="2"
+              placeholder={isZh
+                ? '粘贴成分表，例如：水、甘油、烟酰胺、神经酰胺 NP、透明质酸钠……'
+                : 'Paste an ingredient list, e.g. Aqua, Glycerin, Niacinamide, Ceramide NP, Sodium Hyaluronate…'}
+              class="w-full resize-none rounded-lg border border-input bg-card px-4 py-3.5 font-mono text-base leading-relaxed text-foreground placeholder:text-muted-foreground/70 sm:text-[12.5px]"
+            ></textarea>
             <div class="mt-4 flex items-center justify-between gap-3">
               <span class="inline-flex items-center gap-2 text-[12.5px] text-muted-foreground">
                 <svg class="h-4 w-4 text-safe" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">
@@ -118,14 +116,17 @@ const sampleRows = [
                 </svg>
                 {t.home.analyzer_note}
               </span>
-              <span class="inline-flex h-10 items-center justify-center rounded-lg bg-primary px-5 text-sm font-semibold text-primary-foreground transition-colors group-hover:bg-primary/90">
+              <button
+                type="submit"
+                class="inline-flex h-10 items-center justify-center rounded-lg bg-primary px-5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+              >
                 {t.home.analyzer_button}
                 <svg class="ml-2 h-4 w-4" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">
                   <path d={icons.arrowRight} />
                 </svg>
-              </span>
+              </button>
             </div>
-          </div>
+          </form>
 
           <!-- Sample report -->
           <div class="border-t border-dashed border-border bg-muted/40 px-4 pb-4 pt-3 sm:px-5">
@@ -158,8 +159,25 @@ const sampleRows = [
               </div>
             ))}
           </div>
-        </a>
+        </div>
       </div>
     </div>
   </div>
 </section>
+
+<script>
+  // Hero analyzer: carry the typed ingredient list into the chat page.
+  // The chat composer (ProductInput) reads `cl:prefill` on mount.
+  const form = document.getElementById('hero-analyzer');
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const ta = form.querySelector('textarea');
+    const value = (ta?.value ?? '').trim();
+    try {
+      if (value) sessionStorage.setItem('cl:prefill', value);
+    } catch {
+      /* private mode: fall through to plain navigation */
+    }
+    window.location.href = (form as HTMLFormElement).dataset.chatHref || '/';
+  });
+</script>
