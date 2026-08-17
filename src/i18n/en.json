@@ -13,6 +13,8 @@
     "ingredients": "Ingredients",
     "quiz": "Skin Quiz",
     "shelf": "My Shelf",
+    "account": "Account",
+    "account_hint": "Sign in to sync your shelf and history",
     "profile": "My Profile",
     "history": "My History",
     "login": "Log In",

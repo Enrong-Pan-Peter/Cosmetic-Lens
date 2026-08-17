@@ -13,6 +13,8 @@
     "ingredients": "成分库",
     "quiz": "测肤",
     "shelf": "收藏夹",
+    "account": "账户",
+    "account_hint": "登录以同步收藏与历史记录",
     "profile": "我的",
     "history": "历史分析",
     "login": "登录",
