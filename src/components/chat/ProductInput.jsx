@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { isBarcodeScanSupported } from './BarcodeScanner';
+import ThinkingMark from './ThinkingMark';
 
 /**
  * Composer for the chat page.
@@ -205,11 +206,7 @@ export default function ProductInput({
             <div className="min-w-0 flex-1">
               {isExtracting ? (
                 <div className="flex items-center gap-2 text-sm text-foreground">
-                  <span className="thinking-dots">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                  </span>
+                  <ThinkingMark size={14} className="text-foreground/70" />
                   <span>{extractingLabel}</span>
                 </div>
               ) : (

@@ -4,6 +4,10 @@
  * itself rather than ML metrics: counts a user can verify by browsing the app.
  * Values mirror src/data (ingredients, interactions, dupe sets) plus the CI
  * test count; update them when the data grows.
+ *
+ * Motion: the digits roll into place odometer-style, once, the first time the
+ * band scrolls into view (script below). The server-rendered text is the
+ * source of truth — no-JS and prefers-reduced-motion users keep static values.
  */
 export interface Props {
   lang: 'en' | 'zh';
@@ -25,12 +29,102 @@ const stats = [
       {isZh ? '每个答案都有出处' : 'The evidence behind every answer'}
     </p>
     <dl class="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-5">
-      {stats.map((s) => (
+      {stats.map((s, i) => (
         <div class="flex flex-col items-center rounded-lg border border-border border-t-2 border-t-foreground/80 bg-card px-4 py-5 text-center">
-          <dt class="font-display text-3xl font-medium tabular-nums tracking-tight text-foreground sm:text-4xl">{s.value}</dt>
+          <dt
+            class="js-odo font-display text-3xl font-medium leading-[1.2] tabular-nums tracking-tight text-foreground sm:text-4xl"
+            data-delay={i * 90}
+          >
+            {s.value}
+          </dt>
           <dd class="mt-1.5 font-mono text-xs text-muted-foreground">{s.label}</dd>
         </div>
       ))}
     </dl>
   </div>
 </section>
+
+<script>
+  // Odometer roll: build digit strips on first view, animate with rAF, then
+  // restore the plain text node so the DOM ends exactly as server-rendered.
+  const els = Array.from(document.querySelectorAll<HTMLElement>('.js-odo'));
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (els.length && !reduced && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          io.unobserve(entry.target);
+          roll(entry.target as HTMLElement);
+        }
+      },
+      { threshold: 0.5 }
+    );
+    els.forEach((el) => io.observe(el));
+  }
+
+  function roll(el: HTMLElement) {
+    const raw = el.textContent?.trim() ?? '';
+    const m = raw.match(/^(\d+)(.*)$/);
+    if (!m) return;
+    const digits = m[1].split('').map(Number);
+    const suffix = m[2];
+    const delay = Number(el.dataset.delay ?? 0);
+    const SPINS = 2; // full 0-9 cycles before a digit lands
+    const COL_STAGGER = 50; // ms between columns
+    const DUR = 700; // ms per column
+
+    // Screen readers keep the final value while the strips churn.
+    el.setAttribute('aria-label', raw);
+    const wrap = document.createElement('span');
+    wrap.className = 'odo-wrap';
+    wrap.setAttribute('aria-hidden', 'true');
+    const cols = digits.map((d) => {
+      const col = document.createElement('span');
+      col.className = 'odo-col';
+      const strip = document.createElement('span');
+      strip.className = 'odo-strip';
+      const steps = SPINS * 10 + d;
+      for (let k = 0; k <= steps; k++) {
+        const span = document.createElement('span');
+        span.textContent = String(k % 10);
+        strip.appendChild(span);
+      }
+      col.appendChild(strip);
+      wrap.appendChild(col);
+      return { strip, steps };
+    });
+    let plus: HTMLElement | null = null;
+    if (suffix) {
+      plus = document.createElement('span');
+      plus.className = 'odo-plus';
+      plus.textContent = suffix;
+      plus.style.opacity = '0';
+      wrap.appendChild(plus);
+    }
+    el.textContent = '';
+    el.appendChild(wrap);
+
+    const t0 = performance.now() + delay;
+    const total = DUR + (cols.length - 1) * COL_STAGGER;
+    const easeOut = (u: number) => 1 - Math.pow(1 - u, 3);
+    const clamp = (x: number) => Math.max(0, Math.min(1, x));
+
+    function frame(now: number) {
+      const t = now - t0;
+      cols.forEach((c, j) => {
+        const u = easeOut(clamp((t - j * COL_STAGGER) / DUR));
+        c.strip.style.transform = `translateY(${(-u * c.steps * 1.2).toFixed(3)}em)`;
+      });
+      if (plus) plus.style.opacity = String(clamp((t / total - 0.85) / 0.15));
+      if (t < total) {
+        requestAnimationFrame(frame);
+      } else {
+        el.removeAttribute('aria-label');
+        el.textContent = raw; // back to the exact server-rendered text
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+</script>

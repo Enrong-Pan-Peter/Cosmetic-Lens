@@ -183,23 +183,56 @@
     background: rgba(0, 0, 0, 0.18);
   }
 
-  /* "Thinking..." animated dots — used while waiting for first streamed token */
-  .thinking-dots {
-    font-weight: 600;
-    color: hsl(var(--muted-foreground));
-    letter-spacing: 0.15em;
+  /* Agent thinking mark — a circle of vertical hairlines that breathes
+     outward from the center while the agent works (ThinkingMark.jsx).
+     Static under prefers-reduced-motion; the caption still says what runs. */
+  .think-mark line {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: thinkPulse 1.05s ease-in-out infinite;
   }
 
-  .thinking-dot {
-    animation: thinkingBlink 1.4s infinite ease-in-out;
+  .think-mark line:nth-child(3),
+  .think-mark line:nth-child(5) { animation-delay: 0.12s; }
+  .think-mark line:nth-child(2),
+  .think-mark line:nth-child(6) { animation-delay: 0.24s; }
+  .think-mark line:nth-child(1),
+  .think-mark line:nth-child(7) { animation-delay: 0.36s; }
+
+  @keyframes thinkPulse {
+    0%, 100% { transform: scaleY(0.5); opacity: 0.5; }
+    50% { transform: scaleY(1); opacity: 1; }
   }
 
-  .thinking-dot:nth-child(2) { animation-delay: 0.2s; }
-  .thinking-dot:nth-child(3) { animation-delay: 0.4s; }
+  /* Stat odometer (StatBand): digit strips roll once when the band first
+     scrolls into view. The script never runs under prefers-reduced-motion,
+     so these classes only ever exist during the one-shot animation. */
+  .odo-wrap {
+    display: inline-flex;
+    align-items: flex-end;
+  }
 
-  @keyframes thinkingBlink {
-    0%, 80%, 100% { opacity: 0.25; transform: translateY(0); }
-    40% { opacity: 1; transform: translateY(-2px); }
+  .odo-col {
+    display: inline-block;
+    height: 1.2em;
+    overflow: hidden;
+  }
+
+  .odo-strip {
+    display: block;
+    will-change: transform;
+  }
+
+  .odo-strip > span,
+  .odo-plus {
+    display: block;
+    height: 1.2em;
+    line-height: 1.2em;
+    text-align: center;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .think-mark line { animation: none; }
   }
 
   /* Streaming caret blink at the end of an in-flight assistant message */

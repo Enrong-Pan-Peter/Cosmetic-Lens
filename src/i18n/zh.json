@@ -117,6 +117,15 @@
     "photo_preview_alt": "已上传的产品照片预览",
     "agent_thinking": "正在核对资料来源…",
     "agent_running": "核对中…",
+    "agent_writing": "正在撰写答案…",
+    "tools": {
+      "search_product": "查询产品信息",
+      "find_dupes": "查找平替",
+      "get_ingredient_interactions": "检查相互作用",
+      "search_knowledge_base": "检索知识库",
+      "check_routine": "检查护肤搭配",
+      "compare_products": "对比产品"
+    },
     "agent_no_tools": "尚未调用工具",
     "agent_show": "展开",
     "agent_hide": "收起",

@@ -1213,6 +1213,8 @@ export default function ChatInterface({ lang, translations: t }) {
                             ? `AI 智能体调用了 ${n} 个工具`
                             : `Agent used ${n} tool${n === 1 ? '' : 's'}`,
                         running: t.chat.agent_running,
+                        writing: t.chat.agent_writing,
+                        tools: t.chat.tools,
                         no_tools: t.chat.agent_no_tools,
                         show: t.chat.agent_show,
                         hide: t.chat.agent_hide,

@@ -117,6 +117,15 @@
     "photo_preview_alt": "Uploaded product photo preview",
     "agent_thinking": "Checking sources…",
     "agent_running": "Checking…",
+    "agent_writing": "Writing answer…",
+    "tools": {
+      "search_product": "Looking up product",
+      "find_dupes": "Finding dupes",
+      "get_ingredient_interactions": "Checking interactions",
+      "search_knowledge_base": "Searching knowledge base",
+      "check_routine": "Checking routine",
+      "compare_products": "Comparing products"
+    },
     "agent_no_tools": "No tool calls yet",
     "agent_show": "Show",
     "agent_hide": "Hide",

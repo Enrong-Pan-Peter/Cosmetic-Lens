@@ -68,3 +68,12 @@ Enrong chose "Clean Room, tailored + trust" (02g) after three candidate directio
 - Voice: no "AI" wording in the interface. The product speaks through data sources (PubChem, Europe PMC, Open Beauty Facts), knowledge-base counts, and citations, not through its machinery. No model names, no tool-name chips, no sparkle icons.
 - Imagery: no metaphor photos, and homepage figures must read in one glance. Every picture depicts something real: the clinically graded bench photo, molecule structures drawn from PubChem (see `scripts/fetch-molecule-svgs.mjs`), and plates typeset from live `src/data` records (the dupe card renders from `curated-dupes.json`). Retired: `feature-agent.webp`, `feature-vision.webp`, `feature-rag.webp`.
 - Status semantics: `safe`/`caution` tokens with an icon and a label every time; brass is never used for meaning.
+
+## Motion (added 2026-08, from the inspora review)
+
+Motion in this system narrates real work or settles real numbers — never decoration. Three pieces exist; hold any new motion to the same three rules: it depicts something actually happening, it runs once (or only while the real work runs), and it is disabled under `prefers-reduced-motion` with a static state that loses nothing.
+
+- **Thinking mark** (`ThinkingMark.jsx` + `.think-mark` in `global.css`): a circle of vertical hairlines that breathes outward from the center. Replaces all bouncing-dot spinners (pre-stream row, agent-trace header, photo extraction). Tint with a text token: `text-foreground/70` idle, `text-brand` for a running step.
+- **Live stage captions** (`AgentTrace.jsx`): while streaming, the trace header names the tool that is actually running (`chat.tools.*` labels in both i18n files), then "Writing answer…" once tools finish. Labels map 1:1 to streamed tool events; never invent a stage.
+- **Stepped trace**: tool calls render as steps on a vertical connector — safe-check circle when done, thinking mark while running, X on error. Same status semantics as everywhere: token colors plus an icon, never color alone.
+- **Stat odometer** (`StatBand.astro` + `.odo-*` in `global.css`): the band's digits roll into place once, the first time the band scrolls into view. Server-rendered text is the source of truth; the script restores the exact text node when done, keeps the final value in `aria-label` while strips churn, and never runs under reduced motion or without JS.
