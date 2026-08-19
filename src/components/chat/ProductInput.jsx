@@ -60,20 +60,8 @@ export default function ProductInput({
   const localTextareaRef = useRef(null);
   const fileInputRef = useRef(null);
 
-  // Prefill handoff from the homepage hero analyzer (sessionStorage, one-shot).
-  useEffect(() => {
-    try {
-      const prefill = sessionStorage.getItem('cl:prefill');
-      if (prefill) {
-        sessionStorage.removeItem('cl:prefill');
-        setInput(prefill);
-        requestAnimationFrame(() => (inputRef || localTextareaRef).current?.focus());
-      }
-    } catch {
-      /* private mode: nothing to prefill */
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // (The homepage hero handoff is consumed by ChatInterface, which either
+  // auto-sends it or seeds this composer via the set-text custom event.)
 
   // Bridge the externally-supplied ref to our local ref.
   const textareaRef = inputRef || localTextareaRef;

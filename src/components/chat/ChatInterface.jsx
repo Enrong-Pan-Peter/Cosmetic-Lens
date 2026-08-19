@@ -1068,6 +1068,41 @@ export default function ChatInterface({ lang, translations: t }) {
   };
 
   // -------------------------------------------------------------------
+  // Homepage hero handoff (one-shot, via sessionStorage)
+  // -------------------------------------------------------------------
+  // The hero analyzer stores the typed text plus a send flag, then navigates
+  // here. With the flag we ask the question immediately — same code path as
+  // pressing Send — so the user never has to press it twice. Without the flag
+  // (legacy / defensive) we just seed the composer. Keys are removed before
+  // acting, which also makes a double-mount harmless.
+  const handleAnalyzeRef = useRef(null);
+  handleAnalyzeRef.current = handleAnalyze;
+  useEffect(() => {
+    let prefill = null;
+    let autoSend = false;
+    try {
+      prefill = sessionStorage.getItem('cl:prefill');
+      if (prefill) {
+        autoSend = sessionStorage.getItem('cl:prefill-send') === '1';
+        sessionStorage.removeItem('cl:prefill');
+        sessionStorage.removeItem('cl:prefill-send');
+      }
+    } catch {
+      return; // private mode: nothing to hand off
+    }
+    if (!prefill) return;
+    if (autoSend) {
+      // Next tick, so chat restore / auth hydration effects settle first.
+      setTimeout(() => handleAnalyzeRef.current?.(prefill), 50);
+    } else {
+      composerInputRef.current?.dispatchEvent(
+        new CustomEvent('cosmeticlens:set-text', { detail: { value: prefill } })
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // -------------------------------------------------------------------
   // Render
   // -------------------------------------------------------------------
   const stopLabel = t.chat.stop;
@@ -1126,7 +1161,7 @@ export default function ChatInterface({ lang, translations: t }) {
 
         {/* Messages area */}
         <div className="flex-1 overflow-y-auto scrollbar-thin">
-          <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-6">
+          <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-6">
             {messages.length === 0 ? (
               <div className="flex flex-col items-center justify-center min-h-[60vh]">
                 <div className="text-center max-w-xl w-full">
@@ -1242,7 +1277,7 @@ export default function ChatInterface({ lang, translations: t }) {
 
         {/* Input bar */}
         <div className="shrink-0 border-t border-border bg-card">
-          <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-3">
+          <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-3">
             <ProductInput
               onSubmit={handleAnalyze}
               onStop={handleStop}

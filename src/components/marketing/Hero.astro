@@ -166,15 +166,19 @@ const sampleRows = [
 </section>
 
 <script>
-  // Hero analyzer: carry the typed ingredient list into the chat page.
-  // The chat composer (ProductInput) reads `cl:prefill` on mount.
+  // Hero analyzer: carry the typed ingredient list into the chat page and ask
+  // it immediately. ChatInterface consumes `cl:prefill` (+ the send flag) on
+  // mount and runs the same code path as pressing Send.
   const form = document.getElementById('hero-analyzer');
   form?.addEventListener('submit', (e) => {
     e.preventDefault();
     const ta = form.querySelector('textarea');
     const value = (ta?.value ?? '').trim();
     try {
-      if (value) sessionStorage.setItem('cl:prefill', value);
+      if (value) {
+        sessionStorage.setItem('cl:prefill', value);
+        sessionStorage.setItem('cl:prefill-send', '1');
+      }
     } catch {
       /* private mode: fall through to plain navigation */
     }
