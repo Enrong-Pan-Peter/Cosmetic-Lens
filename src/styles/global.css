@@ -254,12 +254,12 @@
    Prose styles for LLM analysis output
    ============================================= */
 .prose-analysis {
-  @apply text-[15px] leading-relaxed;
+  @apply text-base leading-relaxed;
 }
 
 /* Section headings as uppercase micro-labels with a trailing rule (report style) */
 .prose-analysis h2 {
-  @apply text-[13px] font-bold text-foreground mt-6 mb-2.5 flex items-center gap-2 uppercase;
+  @apply text-[13.5px] font-bold text-foreground mt-6 mb-2.5 flex items-center gap-2 uppercase;
   letter-spacing: 0.1em;
 }
 
@@ -272,7 +272,7 @@
 }
 
 .prose-analysis h3 {
-  @apply text-[15px] font-medium text-foreground mt-3 mb-1.5;
+  @apply text-base font-medium text-foreground mt-3 mb-1.5;
 }
 
 .prose-analysis p {
@@ -302,7 +302,7 @@
 }
 
 .prose-analysis th {
-  @apply px-3 py-2 text-left text-[11.5px] font-semibold text-muted-foreground uppercase;
+  @apply px-3 py-2 text-left text-xs font-semibold text-muted-foreground uppercase;
   letter-spacing: 0.07em;
   border: none;
   border-top: 1px solid hsl(var(--border));
@@ -310,7 +310,7 @@
 }
 
 .prose-analysis td {
-  @apply px-3 py-2 text-[14.5px];
+  @apply px-3 py-2 text-[15px];
   border: none;
   border-bottom: 1px solid hsl(var(--border));
 }

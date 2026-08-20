@@ -1161,7 +1161,7 @@ export default function ChatInterface({ lang, translations: t }) {
 
         {/* Messages area */}
         <div className="flex-1 overflow-y-auto scrollbar-thin">
-          <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-6">
+          <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-6">
             {messages.length === 0 ? (
               <div className="flex flex-col items-center justify-center min-h-[60vh]">
                 <div className="text-center max-w-xl w-full">
@@ -1277,7 +1277,7 @@ export default function ChatInterface({ lang, translations: t }) {
 
         {/* Input bar */}
         <div className="shrink-0 border-t border-border bg-card">
-          <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-3">
+          <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-3">
             <ProductInput
               onSubmit={handleAnalyze}
               onStop={handleStop}

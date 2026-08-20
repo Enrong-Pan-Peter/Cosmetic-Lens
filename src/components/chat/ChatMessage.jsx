@@ -53,7 +53,7 @@ export default function ChatMessage({
               }}
             />
           )}
-          <div className="rounded-2xl rounded-tr-sm bg-primary/10 px-4 py-2.5 text-[15px] text-foreground whitespace-pre-wrap break-words">
+          <div className="rounded-2xl rounded-tr-sm bg-primary/10 px-4 py-2.5 text-base text-foreground whitespace-pre-wrap break-words">
             {message.content}
           </div>
         </div>
