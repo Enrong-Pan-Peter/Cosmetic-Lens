@@ -17,6 +17,17 @@ const navLinks = [
   { href: `/${lang}/glossary`, label: t.nav.glossary },
   { href: `/${lang}/education`, label: t.nav.education },
 ];
+
+// Secondary destinations, discoverable from every page via the Explore
+// dropdown (same pattern as the Account menu) instead of footer-only.
+const exploreLinks = [
+  { href: `/${lang}/ingredients`, label: t.nav.ingredients, hint: t.nav.explore_ingredients_hint },
+  { href: `/${lang}/quiz`, label: t.nav.quiz, hint: t.nav.explore_quiz_hint },
+  { href: `/${lang}/shelf`, label: t.nav.shelf, hint: t.nav.explore_shelf_hint },
+];
+const exploreActive = exploreLinks.some(
+  (l) => currentPath === l.href || currentPath.startsWith(`${l.href}/`)
+);
 ---
 
 <header class="bg-background/95 backdrop-blur sticky top-0 z-50 masthead">
@@ -43,6 +54,36 @@ const navLinks = [
           {link.label}
         </a>
       ))}
+
+      <!-- Explore: secondary destinations behind one calm trigger -->
+      <div class="relative" id="explore-wrap">
+        <button
+          id="explore-button"
+          type="button"
+          aria-haspopup="menu"
+          aria-expanded="false"
+          class={`inline-flex items-center gap-1 whitespace-nowrap text-base font-medium transition-colors ${
+            exploreActive ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
+          }`}
+        >
+          {t.nav.explore}
+          <svg class="w-3.5 h-3.5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <div
+          id="explore-dropdown"
+          class="hidden absolute left-0 mt-3 w-64 rounded-lg border border-border bg-card shadow-md z-50 py-1.5"
+          role="menu"
+        >
+          {exploreLinks.map(link => (
+            <a href={link.href} role="menuitem" class="block px-4 py-2 hover:bg-accent transition-colors">
+              <span class="block text-sm font-medium text-foreground">{link.label}</span>
+              <span class="block text-[11px] text-muted-foreground">{link.hint}</span>
+            </a>
+          ))}
+        </div>
+      </div>
     </nav>
 
     <!-- Right side: Auth + Language + Mobile -->
@@ -187,6 +228,18 @@ const navLinks = [
           {link.label}
         </a>
       ))}
+      {exploreLinks.map(link => (
+        <a
+          href={link.href}
+          class={`block rounded-md px-3 py-2 text-base font-medium transition-colors ${
+            currentPath === link.href
+              ? 'bg-accent text-accent-foreground'
+              : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+          }`}
+        >
+          {link.label}
+        </a>
+      ))}
       <div class="border-t border-border my-2 pt-2">
         <div id="mobile-auth-buttons">
           <a
@@ -275,6 +328,13 @@ const navLinks = [
     document.getElementById('account-button')?.setAttribute('aria-expanded', String(open));
   });
 
+  // Explore dropdown toggle
+  document.getElementById('explore-button')?.addEventListener('click', () => {
+    const dd = document.getElementById('explore-dropdown');
+    const open = dd ? !dd.classList.toggle('hidden') : false;
+    document.getElementById('explore-button')?.setAttribute('aria-expanded', String(open));
+  });
+
   // Close dropdowns on outside click
   document.addEventListener('click', (e) => {
     const profileMenu = document.getElementById('profile-menu');
@@ -287,6 +347,12 @@ const navLinks = [
     if (accountWrap && accountDd && !accountWrap.contains(e.target as Node)) {
       accountDd.classList.add('hidden');
       document.getElementById('account-button')?.setAttribute('aria-expanded', 'false');
+    }
+    const exploreWrap = document.getElementById('explore-wrap');
+    const exploreDd = document.getElementById('explore-dropdown');
+    if (exploreWrap && exploreDd && !exploreWrap.contains(e.target as Node)) {
+      exploreDd.classList.add('hidden');
+      document.getElementById('explore-button')?.setAttribute('aria-expanded', 'false');
     }
   });
 

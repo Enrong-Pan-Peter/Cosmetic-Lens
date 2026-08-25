@@ -1,4 +1,18 @@
 ---
+/**
+ * How It Works (02g motion pass): the analyzer in miniature.
+ *
+ * Instead of numbered circles describing the process, three small plates SHOW
+ * the process — a composer with an ingredient list typing itself, a live agent
+ * trace mid-check, and a verdict list — joined by a rail that draws itself
+ * left to right. Everything depicted is the real UI; trace labels reuse the
+ * chat's own `chat.tools` strings.
+ *
+ * Motion (script below + `.steps-*` in global.css): one-shot on first scroll
+ * into view. No JS or `prefers-reduced-motion` → the settled state renders
+ * as-is. The blinking caret and breathing mark are the only ambient movement,
+ * both static under reduced motion.
+ */
 import { icons } from './icons';
 import type { Language } from '../../i18n/utils';
 
@@ -8,31 +22,138 @@ export interface Props {
 }
 
 const { lang, t } = Astro.props;
+const isZh = lang === 'zh';
+
+// Demo content mirrors real app data (Chinese-first for zh, per Hero precedent).
+const typed = isZh
+  ? '水、甘油、烟酰胺、神经酰胺 NP、透明质酸钠'
+  : 'Aqua, Glycerin, Niacinamide, Ceramide NP';
+
+const traceRows = [
+  { label: t.chat.tools.search_knowledge_base, ms: '412 ms', done: true },
+  { label: t.chat.tools.get_ingredient_interactions, ms: '118 ms', done: true },
+  { label: t.chat.agent_writing, ms: '…', done: false },
+];
+
+const verdictRows = [
+  { name: isZh ? '烟酰胺' : 'Niacinamide', safe: true, label: isZh ? '安全' : 'Safe' },
+  { name: isZh ? '神经酰胺 NP' : 'Ceramide NP', safe: true, label: isZh ? '安全' : 'Safe' },
+  { name: isZh ? '香精' : 'Fragrance', safe: false, label: isZh ? '注意' : 'Caution' },
+];
 
 const steps = [
-  { num: '1', text: t.home.step_1 },
-  { num: '2', text: t.home.step_2 },
-  { num: '3', text: t.home.step_3 },
+  { n: '01', label: t.home.step_label_1, cap: t.home.step_1 },
+  { n: '02', label: t.home.step_label_2, cap: t.home.step_2 },
+  { n: '03', label: t.home.step_label_3, cap: t.home.step_3 },
 ];
 ---
 
 <section class="py-16 md:py-20 lg:py-24">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="mb-12 text-center sm:mb-16">
+    <div class="mb-10 text-center sm:mb-12">
       <h2 class="font-display text-2xl font-medium text-foreground sm:text-3xl lg:text-4xl">
         {t.home.how_it_works}
       </h2>
+      <p class="mt-3 text-[15px] text-muted-foreground">{t.home.steps_lede}</p>
     </div>
 
-    <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
-      {steps.map(step => (
-        <div class="text-center">
-          <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full border-2 border-border bg-secondary">
-            <span class="text-lg font-semibold text-secondary-foreground">{step.num}</span>
+    <div id="steps-flow" class="relative mx-auto max-w-6xl">
+      <!-- The rail: draws itself left → right when the section enters view -->
+      <div class="absolute left-[8%] right-[8%] top-[5px] hidden h-px bg-border md:block" aria-hidden="true">
+        <span class="steps-fill block h-px w-full origin-left bg-foreground/80"></span>
+      </div>
+
+      <div class="grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-8 lg:gap-10">
+        {steps.map((step, i) => (
+          <div class="relative md:pt-7">
+            <span
+              class={`steps-tick absolute left-1/2 top-0 hidden h-2.5 w-2.5 -translate-x-1/2 rounded-full bg-background md:block ${
+                i === 2 ? 'border-[1.5px] border-input' : 'border-[1.5px] border-foreground'
+              }`}
+              aria-hidden="true"
+            ></span>
+            <div class="mb-3 text-center font-mono text-[11px] uppercase tracking-[0.16em] text-metal">
+              {step.n} · {step.label}
+            </div>
+
+            <div class={`step-plate step-plate-${i + 1} rounded-xl border border-border bg-card p-4 shadow-sm md:min-h-[128px]`}>
+              {i === 0 && (
+                <>
+                  <div class="flex items-center gap-1.5 rounded-lg border border-input bg-card px-3 py-2.5">
+                    <span class="type-demo overflow-hidden whitespace-nowrap font-mono text-[12px] leading-5 text-foreground">{typed}</span>
+                    <span class="type-caret h-3.5 w-px shrink-0 bg-foreground" aria-hidden="true"></span>
+                    <span class="ml-auto flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-primary" aria-hidden="true">
+                      <svg class="h-3.5 w-3.5 text-primary-foreground" viewBox="0 0 256 256" fill="currentColor"><path d={icons.arrowRight} /></svg>
+                    </span>
+                  </div>
+                  <p class="mt-2.5 text-[11.5px] text-muted-foreground">{t.home.steps_hint}</p>
+                </>
+              )}
+
+              {i === 1 && (
+                <div class="space-y-1">
+                  {traceRows.map((row) => (
+                    <div class="flex items-center gap-2.5 py-1">
+                      {row.done ? (
+                        <span class="flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-safe/30 bg-safe-bg">
+                          <svg class="h-2.5 w-2.5 text-safe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M4.5 12.5l5 5 10-11" />
+                          </svg>
+                        </span>
+                      ) : (
+                        <span class="flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-input bg-card">
+                          <svg class="think-mark h-[9px] w-[9px] text-brand" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true">
+                            <line x1="2" y1="4.6" x2="2" y2="11.4" />
+                            <line x1="4" y1="2.4" x2="4" y2="13.6" />
+                            <line x1="6" y1="1.4" x2="6" y2="14.6" />
+                            <line x1="8" y1="1.1" x2="8" y2="14.9" />
+                            <line x1="10" y1="1.4" x2="10" y2="14.6" />
+                            <line x1="12" y1="2.4" x2="12" y2="13.6" />
+                            <line x1="14" y1="4.6" x2="14" y2="11.4" />
+                          </svg>
+                        </span>
+                      )}
+                      <span class="text-[13px] font-semibold text-foreground">{row.label}</span>
+                      <span class="ml-auto font-mono text-[10px] text-muted-foreground/80">{row.ms}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {i === 2 && (
+                <div>
+                  {verdictRows.map((row) => (
+                    <div class="flex items-center justify-between gap-3 border-b border-border/60 py-[7px] last:border-0">
+                      <span class="text-[13px] font-semibold text-foreground">{row.name}</span>
+                      <span
+                        class={`v-chip inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-xs font-semibold ${
+                          row.safe
+                            ? 'border-safe/25 bg-safe-bg text-safe'
+                            : 'border-caution/30 bg-caution-bg text-caution'
+                        }`}
+                      >
+                        {row.safe ? (
+                          <svg class="h-3 w-3" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.5l5 5 10-11" />
+                          </svg>
+                        ) : (
+                          <svg class="h-3 w-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" d="M12 8v5.2M12 16.8v.2" />
+                            <circle cx="12" cy="12" r="9" />
+                          </svg>
+                        )}
+                        {row.label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <p class="mt-3 px-2 text-center text-sm leading-relaxed text-muted-foreground">{step.cap}</p>
           </div>
-          <p class="text-muted-foreground">{step.text}</p>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
 
     <div class="mt-12 text-center">
@@ -48,3 +169,25 @@ const steps = [
     </div>
   </div>
 </section>
+
+<script>
+  // One-shot entrance: prep (hide) only when JS runs and motion is allowed,
+  // then play when the flow scrolls into view. No JS / reduced motion / no IO
+  // → the server-rendered settled state stays exactly as-is.
+  const flow = document.getElementById('steps-flow');
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (flow && !reduced && 'IntersectionObserver' in window) {
+    flow.classList.add('steps-prep');
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          io.disconnect();
+          requestAnimationFrame(() => flow.classList.add('steps-live'));
+        }
+      },
+      { threshold: 0.3 }
+    );
+    io.observe(flow);
+  }
+</script>
